@@ -1,0 +1,55 @@
+/*
+	Format is as follows (whitespace is completely ignored, index must be between 0 and 31 inclusive):
+		Flag <name> <index>		// flag is allowed on all types
+	or:
+		Flag <name> <index> { <list of script, property, variable, structvar, function, or group> }	// flag is allowed only on the specified types
+	or:
+		Flag <name> <childName> (& <childName>)+
+		// flag made up of a combination of child flags. This flag will NOT appear in the object, only the ones it is made up of
+*/
+
+// List of flags for Institute - DO NOT EDIT
+
+// Flag hides the script or property from the game editor
+Flag Hidden 0
+{
+	Script
+	Property
+	StructVar
+}
+
+// Flag on an object designates it as the script the condition system will look at
+// Flag on a variable allows the script variable to be examined by the condition system
+Flag Conditional 1
+{
+	Script
+	Variable
+}
+
+// Flags the specified script as a default script, for filtering in the editor
+Flag Default 2
+{
+	Script
+}
+
+// Flags this group as collapsed on the reference in the editor
+Flag CollapsedOnRef 3
+{
+	Group
+}
+
+// Flags this group as collapsed on the base object in the editor
+Flag CollapsedOnBase 4
+{
+	Group
+}
+
+// Flags this group as collapsed (on both ref and base) in the editor
+Flag Collapsed CollapsedOnRef & CollapsedOnBase
+
+// Flags a property as mandatory - in other words, will spit out a warning in
+// the editor if it isn't given a value
+Flag Mandatory 5
+{
+	Property
+}

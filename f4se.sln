@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "f4se_loader", "f4se_loader\f4se_loader.vcxproj", "{4229A810-8CB3-4C31-A0F5-8E73D89C0379}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common_vc11", "..\common\common_vc11.vcxproj", "{D4C128A1-73DC-4941-A453-CE55AF239BA8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "f4se", "f4se\f4se.vcxproj", "{A236F69D-8FF9-4491-AC5F-45BF49448BBE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "f4se_common", "f4se_common\f4se_common.vcxproj", "{20C6411C-596F-4B85-BE4E-8BC91F59D8A6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "f4se_steam_loader", "f4se_steam_loader\f4se_steam_loader.vcxproj", "{B13F31AC-C86C-47FF-B900-EDA1F6EC6C84}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "f4se_loader_common", "f4se_loader_common\f4se_loader_common.vcxproj", "{BE858737-949E-48CF-ADF9-079389049B57}"
+	ProjectSection(ProjectDependencies) = postProject
+		{20C6411C-596F-4B85-BE4E-8BC91F59D8A6} = {20C6411C-596F-4B85-BE4E-8BC91F59D8A6}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4229A810-8CB3-4C31-A0F5-8E73D89C0379}.Debug|x64.ActiveCfg = Debug|x64
+		{4229A810-8CB3-4C31-A0F5-8E73D89C0379}.Debug|x64.Build.0 = Debug|x64
+		{4229A810-8CB3-4C31-A0F5-8E73D89C0379}.Release|x64.ActiveCfg = Release|x64
+		{4229A810-8CB3-4C31-A0F5-8E73D89C0379}.Release|x64.Build.0 = Release|x64
+		{D4C128A1-73DC-4941-A453-CE55AF239BA8}.Debug|x64.ActiveCfg = Debug|x64
+		{D4C128A1-73DC-4941-A453-CE55AF239BA8}.Debug|x64.Build.0 = Debug|x64
+		{D4C128A1-73DC-4941-A453-CE55AF239BA8}.Release|x64.ActiveCfg = Release|x64
+		{D4C128A1-73DC-4941-A453-CE55AF239BA8}.Release|x64.Build.0 = Release|x64
+		{A236F69D-8FF9-4491-AC5F-45BF49448BBE}.Debug|x64.ActiveCfg = Debug|x64
+		{A236F69D-8FF9-4491-AC5F-45BF49448BBE}.Debug|x64.Build.0 = Debug|x64
+		{A236F69D-8FF9-4491-AC5F-45BF49448BBE}.Release|x64.ActiveCfg = Release|x64
+		{A236F69D-8FF9-4491-AC5F-45BF49448BBE}.Release|x64.Build.0 = Release|x64
+		{20C6411C-596F-4B85-BE4E-8BC91F59D8A6}.Debug|x64.ActiveCfg = Debug|x64
+		{20C6411C-596F-4B85-BE4E-8BC91F59D8A6}.Debug|x64.Build.0 = Debug|x64
+		{20C6411C-596F-4B85-BE4E-8BC91F59D8A6}.Release|x64.ActiveCfg = Release|x64
+		{20C6411C-596F-4B85-BE4E-8BC91F59D8A6}.Release|x64.Build.0 = Release|x64
+		{B13F31AC-C86C-47FF-B900-EDA1F6EC6C84}.Debug|x64.ActiveCfg = Debug|x64
+		{B13F31AC-C86C-47FF-B900-EDA1F6EC6C84}.Debug|x64.Build.0 = Debug|x64
+		{B13F31AC-C86C-47FF-B900-EDA1F6EC6C84}.Release|x64.ActiveCfg = Release|x64
+		{B13F31AC-C86C-47FF-B900-EDA1F6EC6C84}.Release|x64.Build.0 = Release|x64
+		{BE858737-949E-48CF-ADF9-079389049B57}.Debug|x64.ActiveCfg = Debug|x64
+		{BE858737-949E-48CF-ADF9-079389049B57}.Debug|x64.Build.0 = Debug|x64
+		{BE858737-949E-48CF-ADF9-079389049B57}.Release|x64.ActiveCfg = Release|x64
+		{BE858737-949E-48CF-ADF9-079389049B57}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

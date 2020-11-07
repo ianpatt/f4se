@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="f4se_version.h" />
+    <ClInclude Include="Utilities.h" />
+    <ClInclude Include="Relocation.h" />
+    <ClInclude Include="SafeWrite.h" />
+    <ClInclude Include="BranchTrampoline.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="Relocation.cpp" />
+    <ClCompile Include="SafeWrite.cpp" />
+    <ClCompile Include="BranchTrampoline.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="f4se_version.rc" />
+  </ItemGroup>
+</Project>

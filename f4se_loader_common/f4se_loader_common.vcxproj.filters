@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="IdentifyEXE.cpp" />
+    <ClCompile Include="Inject.cpp" />
+    <ClCompile Include="LoaderError.cpp" />
+    <ClCompile Include="Steam.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IdentifyEXE.h" />
+    <ClInclude Include="Inject.h" />
+    <ClInclude Include="LoaderError.h" />
+    <ClInclude Include="Steam.h" />
+  </ItemGroup>
+</Project>

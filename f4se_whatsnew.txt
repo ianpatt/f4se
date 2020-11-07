@@ -1,0 +1,395 @@
+0.6.22
+- fix ConstructibleComponent.object type
+
+0.6.21
+- fix Game.GetInstalledLightPlugins when more than 255 plugins are installed
+
+0.6.20
+- support for runtime 1.10.163
+
+0.6.19
+- fix serialization of light mod list
+
+0.6.18
+- support for runtime 1.10.162
+- send kMessage_NewGame on new game (thanks to HLP for porting from skse64)
+
+0.6.17
+- support for runtime 1.10.138
+
+0.6.16
+- support for runtime 1.10.130
+- Game.UpdateThirdPerson, Game.GetCameraState (based on code from Neanka, thanks)
+- fix Actor.GetWornItemMods
+
+0.6.15
+- fix crash when loading cosaves with light mod list entries
+
+0.6.14
+- support for runtime 1.10.120
+
+0.6.13
+- support for runtime 1.10.114
+
+0.6.12
+- support for runtime 1.10.111
+
+0.6.11
+- support for runtime 1.10.106
+- added InstanceData.Get/SetAddAmmoList
+- fixed nullptr crash with material swaps with no material name
+
+0.6.10
+- support for runtime 1.10.98
+- added GetExternalEventRegistrations to Papyrus Plugin API
+    - Returns all scripts and callbackName registered with F4SE's RegisterForExternalEvent
+- added Form functions
+    - Get/SetRaceForm
+    - GetSlotMask
+    - AddSlotToMask
+    - RemoveSlotFromMask
+- added Armor.GetArmorAddons
+- added ArmorAddon class
+    - GetAdditionalRaces
+
+0.6.9
+- fixes UI.Load deadlock
+
+0.6.8
+- support for runtime 1.10.89
+- changed locking implementations to BSReadWriteLock
+- added Scaleform functions to load dds images
+    - MountImage(menuName, pathToMount, mountName)
+    - UnmountImage(menuName, pathToUnmount)
+    - Image is loaded through URLRequest("img://mountName")
+- added Scaleform receiving function
+    - function onF4SEObjCreated(codeObject:Object):void
+    - This function is called on the menu root document as well as first-level children
+
+0.6.7
+- support for runtime 1.10.82
+- added ObjectReference.Get/SetMaterialSwap
+- fixed ObjectReference.ApplyMaterialSwap crash
+
+0.6.6
+- support for runtime 1.10.75
+- fixed SimpleLock implementation (again)
+
+0.6.5
+- support for runtime 1.10.64
+- fixed bug with SimpleLock implementation
+- added MatSwap class and MatSwap.Get/SetRemapData
+- added ObjectReference.ApplyMaterialSwap
+- added UI functions
+    - IsMenuRegistered
+    - RegisterCustomMenu
+    - Open/CloseMenu
+
+0.6.4
+- support for runtime 1.10.50
+
+0.6.3
+- fixed compiling against outdated script files (ObjectReference was missing ClearFromOldLocations)
+
+0.6.2
+- fixed crash in ObjectReference::AttachWireLatent
+- fixed input handler
+
+0.6.1
+- support for runtime 1.10.40
+
+0.6.0
+- support for runtime 1.10.26
+
+0.5.1
+- Fixed bug with F4SE based inventory-safe functions
+- Fixed crash when passing None structs to native functions taking structs as args
+- Fixed incorrect definitions to ActorValueInfo
+- Added UI.IsMenuOpen
+- InstanceData functions will now create InstanceData where applicable (e.g. target equipped item has no mods at all)
+- Added InstanceData.Get/SetKeywords
+- Fixed Scaleform function AllowTextInput
+- Added missing two control mappings to CustomControlMap.txt
+- ObjectReference.GetDisplayName is now inventory safe
+
+0.5.0
+- Added support for Light plugins
+- Added Game.GetInstalledLightPlugins
+- Update for new game version
+
+0.4.2
+- Added DefaultObject class and functions:
+    - Get/Set
+    - GetDefaultObject
+- Added ObjectReference functions:
+    - GetInventoryWeight
+- Fixed Input binding
+- Fixed Perk.IsEligible
+- Added Math functions:
+    - Exp
+- Added Location functions:
+    - SetParent
+- Added Actor functions:
+    - GetFurnitureReference
+- Added ScriptObject functions:
+    - Un/registerForFurnitureEvent
+    - OnFurnitureEvent(Actor akActor, ObjectReference akFurniture, bool isGettingUp)
+- Added ConstructibleObject functions:
+    - Get/SetConstructibleComponents
+    - Get/SetCreatedObject
+    - Get/SetCreatedCount
+    - Get/SetPriority
+    - Get/SetWorkbenchKeyword
+- Added Component functions:
+    - Get/SetScrapItem
+    - Get/SetScrapScalar
+- Added MiscObject functions:
+    - Get/SetMiscComponents
+
+0.4.1
+- Fixed bug when passing Script objects to Scaleform
+- Added ObjectReference Functions:
+    - TransmitConnectedPower
+    - GetConnectPoints
+
+0.4.0
+- InstanceData Get/SetDamageTypes now supports both Armor and Weapon instances
+- Added InstanceData functions:
+    - Get/SetWeight - supports Weapon and Armor instances
+    - Get/SetGoldValue - supports Weapon and Armor instances
+- Added ObjectReference Functions:
+    - GetInventoryItems
+
+0.3.2
+- Fixed Scaleform SendExternalEvent and CallFunctionNoWait
+- Fixed UI.Invoke when Args > 0
+- Added UI.Load (see UI.psc for example usage)
+- Added Scaleform GetDirectoryListing 
+    - e.g. root.f4se.GetDirectoryListing("Data/Somewhere", "*.ini", recursive=false)
+    result: Array=[{"nativePath": "Data/Somewhere/File.ini", "name": "File.ini", "lastModified": Date(), "creationDate": Date(), "isDirectory" : false, "isHidden": false0}]
+- Added Location Functions:
+    -GetParent
+    -Get/SetEncounterZone
+- Added EncounterZone Functions:
+    -Get/SetLocation
+    -Get/SetRank
+    -Get/SetMinLevel
+    -Get/SetMaxLevel
+    -Set/IsNeverResetable
+    -Set/IsWorkshop
+- InstanceData functions can now accept ObjectReferences as the Form
+- ObjectReference.GetAllMods is now inventory safe
+- Added Game Functions:
+    -SetGameSettingInt/Float/Bool/String
+
+0.3.1
+- Fixed script unique event registration
+- Added template serialization of VM for Latent functions
+- Added object serialization interface
+- Added Scaleform to Papyrus Adapters
+- Added Scaleform functions:
+    -AllowTextInput
+    -SendExternalEvent
+    -CallFunctionNoWait
+- Added UI Functions:
+    -Set/Get/Invoke
+- Added ScriptObject Functions:
+    -Un/RegisterForExternalEvent
+    -Un/RegisterForCameraState
+- Added ObjectReference Functions:
+    -GetConnectedObjects
+    -AttachWire (Creates a disabled wire)
+    -CreateWire (non-native to Create and enable)
+    -GetDisplayName
+- Added Utility Functions:
+    -VarToVarArray
+    -VarArrayToVar
+- Added Actor Functions:
+    -QueueUpdate
+    -GetInstanceOwner
+- Added ActorBase Functions:
+    -Get/SetBodyWeight
+- Added Form functions:
+    -Set/GetName
+    -Set/GetWeight
+    -SetGoldValue
+    -GetKeywords
+    -HasWorldModel
+    -Set/GetWorldModelPath
+    -Set/GetIconPath
+    -Set/GetMessageIconPath
+    -Set/GetEnchantment
+    -Set/GetEnchantmentValue
+    -Set/GetEquipType
+    -GetDescription
+- Added Weapon functions:
+    -Set/GetEmbeddedMod
+    -GetInstanceOwner
+- Added new InstanceData global class functions:
+    -Set/GetAttackDamage
+    -Set/GetDamageTypes
+    -Set/GetAmmoCapacity
+    -Set/GetAccuracyBonus
+    -Set/GetActionPointCost
+    -Set/GetAttackDelay
+    -Set/GetOutOfRangeMultiplier
+    -Set/GetReloadSpeed
+    -Set/GetReach
+    -Set/GetMinRange
+    -Set/GetMaxRange
+    -Set/GetSpeed
+    -Set/GetStagger
+    -Set/GetMeleeSpeed
+    -Set/GetSkill
+    -Set/GetResist
+    -Set/GetCritMultiplier
+    -Set/GetCritChargeBonus
+    -Set/GetProjectileOverride
+    -Set/GetNumProjectiles
+    -Set/GetSightedTransition
+- Added ObjectMod functions:
+    -GetPropertyModifiers
+    -Set/GetMaxRank
+    -Set/GetPriority
+    -GetLooseMod
+- Added Cell functions:
+    -GetWaterType
+- Added WaterType functions:
+    -Set/GetConsumeSpell
+    -Set/GetContactSpell
+- Added Perk functions:
+    -IsPlayable
+    -IsHidden
+    -GetLevel
+    -GetNumRanks
+    -GetNextPerk
+    -GetSWFPath
+    -IsEligible
+- Added Scaleform Translation Injection via Interface/Translations/ModName_en.txt
+
+0.3.0
+- support for runtime 1.9.4
+- input event hook
+- event sending
+- ScriptObject.Register/UnregisterForKey/Control
+- enabled papyrus API for plugins
+
+0.2.8
+- support for runtime 1.8.7
+
+0.2.7
+- support for runtime 1.7.22
+
+0.2.6
+- support for runtime 1.7.19
+
+0.2.5
+- support for runtime 1.7.15
+- fixed papyrus complex parameter type setup
+- internal papyrus function calls
+
+0.2.4
+- support for runtime 1.7.12
+
+0.2.3
+- support for runtime 1.7.10
+
+0.2.2
+- fixed a crash on savegame load
+
+0.2.1
+- support for runtime 1.7.9
+- plugin serialization interface
+- plugin delete message
+
+0.2.0
+- support for runtime 1.6.9
+- alpha papyrus support (see scripts for details)
+
+0.1.19
+- support for beta runtime 1.6.3
+- papyrus mostly done, plugin support currently disabled until it's more tested
+
+0.1.18
+- support for runtime 1.5.416
+
+0.1.17
+- support for beta runtime 1.5.412
+- improved version check messages (hopefully)
+
+0.1.16
+- support for runtime 1.5.307
+
+0.1.15
+- support for beta runtime 1.5.210
+- more internal decoding
+- start of papyrus, 1.5.210 came out at a bad time
+
+0.1.14
+- support for beta runtime 1.5.205
+
+0.1.13
+- support for beta runtime 1.5.157
+
+0.1.12
+- support for beta runtime 1.5.154
+
+0.1.11:
+- support for beta runtime 1.5.151
+
+0.1.10:
+- support for beta runtime 1.5.147
+- DataLoaded, PreSaveGame/PostSaveGame/PreLoadGame/PostLoadGame plugin messages
+- more internal class decoding
+
+0.1.9:
+- support for beta runtime 1.5.141
+- more internal class/global/etc decoding
+- exposed scaleform registration interface
+
+0.1.8:
+- support for runtime 1.4.132
+- more internal class decoding
+
+0.1.7:
+- support for beta runtime 1.4.131
+- more internal class decoding
+
+0.1.6:
+- support for beta runtime 1.4.125
+- internal tools updates
+- more internal class decoding (inventory, input, netimmerse skin)
+
+0.1.5:
+- support for beta runtime 1.3.47
+- initial game menu support and utilities
+- more internal class decoding
+
+0.1.4:
+- support for beta runtime 1.3.45
+- enable logging from scaleform. add bEnableGFXLog=1 to the [Interface] section of your f4se.ini. create it if it doesn't exist.
+- hook global scaleform tint functions to allow interface mods to selectively modify tint colors/intensities
+- initial scaleform native plugin API
+- more internal class decoding
+
+0.1.3:
+- support for beta runtime 1.2.37
+
+0.1.2:
+- support for beta runtime 1.2.33
+- more internal class decoding
+
+0.1.1:
+- fixed crash when resetting keybindings from ui
+
+0.1.0:
+- everything
+- plugin manager
+- simple hooks for papyrus, scaleform, and the classic script system, but nothing useful for modders yet
+- customization of internal keymappings
+	Copy CustomControlMap.txt to Data\F4SE\CustomControlMap.txt.
+	Edit that file to set your bindings. The format is the same as Skyrim, it's a space-separated file.
+	The first column is the name of the internal keybind. The second column is the keyboard scan code that should activate the bind in hex, or 0xFF if unbound. Use google to find a table of scan codes. The third column is for mice, the fourth for controllers. The next three columns control whether or not a control should be written to the user's config file. The final column specifies which input layer the bind is associated with - you will probably not want to change that.
+- currently-installed version of F4SE is shown in the Settings menu next to the game version
+- running GetF4SEVersion from the console will print the current version as well
+- log spam is written to My Documents\My Games\Fallout4\F4SE\

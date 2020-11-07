@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PapyrusProject Output="build_bin" Flags="Institute_Papyrus_Flags.flg" Asm="Discard" Optimize="true" Release="true" Final="true">
+  <Imports>
+    <Import>build_src</Import>
+    <Import>vanilla</Import>
+  </Imports>
+  <Folders>
+    <Folder NoRecurse="true">build_src</Folder>
+  </Folders>
+</PapyrusProject>
