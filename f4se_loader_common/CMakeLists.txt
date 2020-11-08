@@ -4,7 +4,6 @@ cmake_minimum_required(VERSION 3.18)
 
 project(
 	f4se_loader_common
-	VERSION 0.6.21
 	LANGUAGES CXX
 )
 

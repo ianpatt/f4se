@@ -57,15 +57,11 @@ if (NOT TARGET f4se_common)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../f4se_common f4se_common)	# bundled
 endif()
 
-find_package(common REQUIRED CONFIG)
+if (NOT TARGET xbyak)
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../xbyak xbyak)	# bundled
+endif()
 
-find_path(
-	XBYAK_INCLUDE_DIRS
-	"xbyak/xbyak.h"
-	HINTS
-		${CMAKE_CURRENT_SOURCE_DIR}/..	# bundled
-	REQUIRED
-)
+find_package(common REQUIRED CONFIG)
 
 # ---- Add source files ----
 
@@ -362,6 +358,7 @@ add_library(
 	${headers}
 	${sources}
 	exports.def
+	${f4se_common_SOURCE_DIR}/f4se_version.rc
 )
 
 add_library(f4se::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
@@ -398,13 +395,13 @@ target_include_directories(
 	PUBLIC
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
 		$<INSTALL_INTERFACE:include>
-		${XBYAK_INCLUDE_DIRS}
 )
 
 target_link_libraries(
 	${PROJECT_NAME}
 	PUBLIC
 		f4se::f4se_common
+		Xbyak::xbyak
 		xse::common
 )
 

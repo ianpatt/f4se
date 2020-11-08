@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.18)
 
 project(
 	f4se_steam_loader
-	VERSION 1.0.0
+	VERSION 0.6.21
 	LANGUAGES CXX
 )
 
@@ -81,6 +81,7 @@ add_library(
 	SHARED
 	${headers}
 	${sources}
+	${f4se_common_SOURCE_DIR}/f4se_version.rc
 )
 
 add_library(f4se::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
