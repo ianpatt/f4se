@@ -1,0 +1,465 @@
+cmake_minimum_required(VERSION 3.18)
+
+# ---- Project ----
+
+project(
+	f4se
+	VERSION 0.6.21
+	LANGUAGES CXX
+)
+
+# ---- Include guards ----
+
+if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
+	message(
+		FATAL_ERROR
+			"In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there."
+)
+endif()
+
+# ---- Build options ----
+
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_DEBUG OFF)
+
+if (MSVC)
+	set(COMPILE_OPTIONS
+		/Gy	# Enable Function-Level Linking
+		/MP	# Build with Multiple Processes
+		
+		/W3	# Warning level
+	)
+	
+	set(COMPILE_OPTIONS_DEBUG
+		/JMC	# Just My Code debugging
+		/ZI	# Debug Information Format
+	)
+	
+	set(COMPILE_OPTIONS_RELEASE
+		/Zi	# Debug Information Format
+		/Oi	# Generate Intrinsic Functions
+	)
+	
+	set(LINK_OPTIONS_DEBUG
+		/INCREMENTAL	# Link Incrementally
+	)
+	
+	set(LINK_OPTIONS_RELEASE
+		/INCREMENTAL:NO	# Link Incrementally
+		/OPT:REF	# Optimizations (eliminate functions/data never referenced)
+		/OPT:ICF	# Optimizations (perform identical COMDAT folding)
+	)
+endif()
+
+# ---- Dependencies ----
+
+if (NOT TARGET f4se_common)
+	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../f4se_common f4se_common)	# bundled
+endif()
+
+find_package(common REQUIRED CONFIG)
+
+find_path(
+	XBYAK_INCLUDE_DIRS
+	"xbyak/xbyak.h"
+	HINTS
+		${CMAKE_CURRENT_SOURCE_DIR}/..	# bundled
+	REQUIRED
+)
+
+# ---- Add source files ----
+
+file(
+	GLOB
+	headers
+	CONFIGURE_DEPENDS
+	*.h
+	*.inl
+)
+
+file(
+	GLOB
+	sources
+	CONFIGURE_DEPENDS
+	*.cpp
+)
+
+source_group(
+	${PROJECT_NAME}
+	FILES
+		exports.def
+		f4se.cpp
+)
+
+source_group(
+	${PROJECT_NAME}/api
+	FILES
+		GameAPI.cpp
+		GameAPI.h
+		GameCamera.cpp
+		GameCamera.h
+		GameCustomization.cpp
+		GameCustomization.h
+		GameData.cpp
+		GameData.h
+		GameEvents.cpp
+		GameEvents.h
+		GameExtraData.cpp
+		GameExtraData.h
+		GameFormComponents.cpp
+		GameFormComponents.h
+		GameForms.cpp
+		GameForms.h
+		GameHandle.cpp
+		GameHandle.h
+		GameInput.cpp
+		GameInput.h
+		GameMemory.cpp
+		GameMemory.h
+		GameMenus.cpp
+		GameMenus.h
+		GameMessages.cpp
+		GameMessages.h
+		GameObjects.cpp
+		GameObjects.h
+		GameReferences.cpp
+		GameReferences.h
+		GameRTTI.cpp
+		GameRTTI.h
+		GameRTTI.inl
+		GameSettings.cpp
+		GameSettings.h
+		GameStreams.cpp
+		GameStreams.h
+		GameThreads.cpp
+		GameThreads.h
+		GameTypes.cpp
+		GameTypes.h
+		GameUtilities.cpp
+		GameUtilities.h
+		GameWorkshop.cpp
+		GameWorkshop.h
+)
+
+source_group(
+	${PROJECT_NAME}/hooks
+	FILES
+		Hooks_Camera.cpp
+		Hooks_Camera.h
+		Hooks_Debug.cpp
+		Hooks_Debug.h
+		Hooks_GameData.cpp
+		Hooks_GameData.h
+		Hooks_Gameplay.cpp
+		Hooks_Gameplay.h
+		Hooks_Input.cpp
+		Hooks_Input.h
+		Hooks_Memory.cpp
+		Hooks_Memory.h
+		Hooks_ObScript.cpp
+		Hooks_ObScript.h
+		Hooks_Papyrus.cpp
+		Hooks_Papyrus.h
+		Hooks_SaveLoad.cpp
+		Hooks_SaveLoad.h
+		Hooks_Scaleform.cpp
+		Hooks_Scaleform.h
+		Hooks_Threads.cpp
+		Hooks_Threads.h
+)
+
+source_group(
+	${PROJECT_NAME}/internal
+	FILES
+		CustomMenu.cpp
+		CustomMenu.h
+		InputMap.cpp
+		InputMap.h
+		InternalSerialization.cpp
+		InternalSerialization.h
+		PluginAPI.h
+		PluginManager.cpp
+		PluginManager.h
+		Serialization.cpp
+		Serialization.h
+		Translation.cpp
+		Translation.h
+)
+
+source_group(
+	${PROJECT_NAME}/netimmerse
+	FILES
+		bhkWorld.cpp
+		bhkWorld.h
+		BSCollision.cpp
+		BSCollision.h
+		BSGeometry.cpp
+		BSGeometry.h
+		BSGraphics.cpp
+		BSGraphics.h
+		BSLight.cpp
+		BSLight.h
+		BSModelDB.cpp
+		BSModelDB.h
+		BSParticleShaderEmitter.cpp
+		BSParticleShaderEmitter.h
+		BSSkin.cpp
+		BSSkin.h
+		NiCloningProcess.h
+		NiExtraData.cpp
+		NiExtraData.h
+		NiMaterials.cpp
+		NiMaterials.h
+		NiNodes.cpp
+		NiNodes.h
+		NiObjects.cpp
+		NiObjects.h
+		NiProperties.cpp
+		NiProperties.h
+		NiRTTI.cpp
+		NiRTTI.h
+		NiSerialization.cpp
+		NiSerialization.h
+		NiTextures.cpp
+		NiTextures.h
+		NiTypes.cpp
+		NiTypes.h
+)
+
+source_group(
+	${PROJECT_NAME}/obscript
+	FILES
+		ObScript.cpp
+		ObScript.h
+)
+
+source_group(
+	${PROJECT_NAME}/papyrus/functions
+	FILES
+		PapyrusActor.cpp
+		PapyrusActor.h
+		PapyrusActorBase.cpp
+		PapyrusActorBase.h
+		PapyrusArmor.cpp
+		PapyrusArmor.h
+		PapyrusArmorAddon.cpp
+		PapyrusArmorAddon.h
+		PapyrusCell.cpp
+		PapyrusCell.h
+		PapyrusComponent.cpp
+		PapyrusComponent.h
+		PapyrusConstructibleObject.cpp
+		PapyrusConstructibleObject.h
+		PapyrusDefaultObject.cpp
+		PapyrusDefaultObject.h
+		PapyrusEncounterZone.cpp
+		PapyrusEncounterZone.h
+		PapyrusEquipSlot.cpp
+		PapyrusEquipSlot.h
+		PapyrusF4SE.cpp
+		PapyrusF4SE.h
+		PapyrusFavoritesManager.cpp
+		PapyrusFavoritesManager.h
+		PapyrusForm.cpp
+		PapyrusForm.h
+		PapyrusGame.cpp
+		PapyrusGame.h
+		PapyrusHeadPart.cpp
+		PapyrusHeadPart.h
+		PapyrusInput.cpp
+		PapyrusInput.h
+		PapyrusInstanceData.cpp
+		PapyrusInstanceData.h
+		PapyrusLocation.cpp
+		PapyrusLocation.h
+		PapyrusMaterialSwap.cpp
+		PapyrusMaterialSwap.h
+		PapyrusMath.cpp
+		PapyrusMath.h
+		PapyrusMiscObject.cpp
+		PapyrusMiscObject.h
+		PapyrusObjectMod.cpp
+		PapyrusObjectMod.h
+		PapyrusObjectReference.cpp
+		PapyrusObjectReference.h
+		PapyrusPerk.cpp
+		PapyrusPerk.h
+		PapyrusScriptObject.cpp
+		PapyrusScriptObject.h
+		PapyrusUI.cpp
+		PapyrusUI.h
+		PapyrusUtility.cpp
+		PapyrusUtility.h
+		PapyrusWaterType.cpp
+		PapyrusWaterType.h
+		PapyrusWeapon.cpp
+		PapyrusWeapon.h
+)
+
+source_group(
+	${PROJECT_NAME}/papyrus/vm
+	FILES
+		PapyrusArgs.cpp
+		PapyrusArgs.h
+		PapyrusDelayFunctors.cpp
+		PapyrusDelayFunctors.h
+		PapyrusDelayFunctorsDef.inl
+		PapyrusDelayFunctorsDef_Base.inl
+		PapyrusEvents.cpp
+		PapyrusEvents.h
+		PapyrusEventsDef.inl
+		PapyrusEventsDef_Base.inl
+		PapyrusInterfaces.cpp
+		PapyrusInterfaces.h
+		PapyrusNativeFunctionDef.inl
+		PapyrusNativeFunctionDef_Base.inl
+		PapyrusNativeFunctions.cpp
+		PapyrusNativeFunctions.h
+		PapyrusObjects.cpp
+		PapyrusObjects.h
+		PapyrusScaleformAdapter.cpp
+		PapyrusScaleformAdapter.h
+		PapyrusSerialization.cpp
+		PapyrusSerialization.h
+		PapyrusStruct.cpp
+		PapyrusStruct.h
+		PapyrusUtilities.cpp
+		PapyrusUtilities.h
+		PapyrusValue.cpp
+		PapyrusValue.h
+		PapyrusVM.cpp
+		PapyrusVM.h
+)
+
+source_group(
+	${PROJECT_NAME}/scaleform
+	FILES
+		ScaleformAPI.cpp
+		ScaleformAPI.h
+		ScaleformCallbacks.cpp
+		ScaleformCallbacks.h
+		ScaleformLoader.cpp
+		ScaleformLoader.h
+		ScaleformMovie.cpp
+		ScaleformMovie.h
+		ScaleformSerialization.cpp
+		ScaleformSerialization.h
+		ScaleformState.cpp
+		ScaleformState.h
+		ScaleformTranslator.cpp
+		ScaleformTranslator.h
+		ScaleformTypes.cpp
+		ScaleformTypes.h
+		ScaleformValue.cpp
+		ScaleformValue.h
+)
+
+# ---- Create library ----
+
+add_library(
+	${PROJECT_NAME}
+	SHARED
+	${headers}
+	${sources}
+	exports.def
+)
+
+add_library(f4se::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
+set_target_properties(
+	${PROJECT_NAME}
+	PROPERTIES
+		OUTPUT_NAME "${PROJECT_NAME}_1_10_163"
+)
+
+target_compile_definitions(
+	${PROJECT_NAME}
+	PRIVATE
+		RUNTIME
+		RUNTIME_VERSION=0x010A0A30
+)
+
+target_compile_features(
+	${PROJECT_NAME}
+	PUBLIC
+		cxx_std_11
+)
+
+target_compile_options(
+	${PROJECT_NAME}
+	PRIVATE
+		${COMPILE_OPTIONS}
+		"$<$<CONFIG:Debug>:${COMPILE_OPTIONS_DEBUG}>"
+		"$<$<CONFIG:Release>:${COMPILE_OPTIONS_RELEASE}>"
+)
+
+target_include_directories(
+	${PROJECT_NAME}
+	PUBLIC
+		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+		$<INSTALL_INTERFACE:include>
+		${XBYAK_INCLUDE_DIRS}
+)
+
+target_link_libraries(
+	${PROJECT_NAME}
+	PUBLIC
+		f4se::f4se_common
+		xse::common
+)
+
+target_link_options(
+	${PROJECT_NAME}
+	PRIVATE
+		"$<$<CONFIG:Debug>:${LINK_OPTIONS_DEBUG}>"
+		"$<$<CONFIG:Release>:${LINK_OPTIONS_RELEASE}>"
+)
+
+# ---- Configure all targets ----
+
+set_target_properties(
+	${PROJECT_NAME}
+	f4se_common
+	PROPERTIES
+		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+)
+
+# ---- Create an installable target ----
+
+include(GNUInstallDirs)
+
+install(
+	TARGETS
+		${PROJECT_NAME}
+	EXPORT
+		${PROJECT_NAME}-targets
+)
+
+install(
+	FILES
+		${headers}
+	DESTINATION
+		${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
+)
+
+configure_file(
+	cmake/config.cmake.in
+	${PROJECT_NAME}-config.cmake
+	@ONLY
+)
+
+install(
+	FILES
+		${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+	DESTINATION
+		${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+)
+
+install(
+	EXPORT
+		${PROJECT_NAME}-targets
+	NAMESPACE
+		f4se::
+	DESTINATION
+		${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+)
