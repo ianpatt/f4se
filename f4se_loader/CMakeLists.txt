@@ -65,19 +65,8 @@ find_package(common REQUIRED CONFIG)
 
 # ---- Add source files ----
 
-file(
-	GLOB
-	headers
-	CONFIGURE_DEPENDS
-	*.h
-)
-
-file(
-	GLOB
-	sources
-	CONFIGURE_DEPENDS
-	*.cpp
-)
+include(cmake/headerlist.cmake)
+include(cmake/sourcelist.cmake)
 
 source_group(
 	${PROJECT_NAME}

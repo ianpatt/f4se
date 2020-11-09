@@ -63,9 +63,8 @@ endif()
 
 # ---- Add source files ----
 
-set(sources
-	main.cpp
-)
+include(cmake/headerlist.cmake)
+include(cmake/sourcelist.cmake)
 
 source_group(
 	${PROJECT_NAME}
