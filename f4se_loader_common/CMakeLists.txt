@@ -2,8 +2,11 @@ cmake_minimum_required(VERSION 3.18)
 
 # ---- Project ----
 
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/versioning.cmake)
+
 project(
 	f4se_loader_common
+	VERSION ${F4SE_VERSION_MAJOR}.${F4SE_VERSION_MINOR}.${F4SE_VERSION_PATCH}
 	LANGUAGES CXX
 )
 
