@@ -407,9 +407,9 @@ public:
 				EquippedWeaponData	* equippedData;	// 20
 			};
 
-			EquipData * equipData;		// 288
+			tArray<EquipData> equipData;		// 288
 
-			UInt64	unk290[(0x3A0 - 0x290) >> 3];
+			UInt64	unk290[(0x3A0 - 0x2A0) >> 3];
 			UInt32	unk3A0;				// 3A0
 			UInt32	furnitureHandle1;	// 3A4
 			UInt32	furnitureHandle2;	// 3A8
@@ -425,6 +425,7 @@ public:
 			UInt16	unk494;				// 494
 			UInt16	unk496;				// 496 - somekind of dirty flag?
 		};
+		STATIC_ASSERT(offsetof(Data08, furnitureHandle1) == 0x3A4);
 
 		Data08 * unk08;	// 08
 
