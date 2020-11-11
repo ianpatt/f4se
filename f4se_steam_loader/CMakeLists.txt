@@ -2,9 +2,11 @@ cmake_minimum_required(VERSION 3.18)
 
 # ---- Project ----
 
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/versioning.cmake)
+
 project(
 	f4se_steam_loader
-	VERSION 0.6.21
+	VERSION ${F4SE_VERSION_MAJOR}.${F4SE_VERSION_MINOR}.${F4SE_VERSION_PATCH}
 	LANGUAGES CXX
 )
 
@@ -22,35 +24,6 @@ endif()
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_DEBUG OFF)
 
-if (MSVC)
-	set(COMPILE_OPTIONS
-		/Gy	# Enable Function-Level Linking
-		/MP	# Build with Multiple Processes
-		
-		/W3	# Warning level
-	)
-	
-	set(COMPILE_OPTIONS_DEBUG
-		/JMC	# Just My Code debugging
-		/ZI	# Debug Information Format
-	)
-	
-	set(COMPILE_OPTIONS_RELEASE
-		/Zi	# Debug Information Format
-		/Oi	# Generate Intrinsic Functions
-	)
-	
-	set(LINK_OPTIONS_DEBUG
-		/INCREMENTAL	# Link Incrementally
-	)
-	
-	set(LINK_OPTIONS_RELEASE
-		/INCREMENTAL:NO	# Link Incrementally
-		/OPT:REF	# Optimizations (eliminate functions/data never referenced)
-		/OPT:ICF	# Optimizations (perform identical COMDAT folding)
-	)
-endif()
-
 # ---- Dependencies ----
 
 if (NOT TARGET f4se_common)
@@ -63,9 +36,8 @@ endif()
 
 # ---- Add source files ----
 
-set(sources
-	main.cpp
-)
+include(cmake/headerlist.cmake)
+include(cmake/sourcelist.cmake)
 
 source_group(
 	${PROJECT_NAME}
@@ -86,18 +58,12 @@ add_library(
 
 add_library(f4se::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/configuration.cmake)
+
 target_compile_features(
 	${PROJECT_NAME}
 	PUBLIC
 		cxx_std_11
-)
-
-target_compile_options(
-	${PROJECT_NAME}
-	PRIVATE
-		${COMPILE_OPTIONS}
-		"$<$<CONFIG:Debug>:${COMPILE_OPTIONS_DEBUG}>"
-		"$<$<CONFIG:Release>:${COMPILE_OPTIONS_RELEASE}>"
 )
 
 target_include_directories(
@@ -113,13 +79,6 @@ target_link_libraries(
 		f4se::f4se_common
 		f4se::f4se_loader_common
 		Version.lib
-)
-
-target_link_options(
-	${PROJECT_NAME}
-	PRIVATE
-		"$<$<CONFIG:Debug>:${LINK_OPTIONS_DEBUG}>"
-		"$<$<CONFIG:Release>:${LINK_OPTIONS_RELEASE}>"
 )
 
 # ---- Configure all targets ----

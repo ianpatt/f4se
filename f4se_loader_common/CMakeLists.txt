@@ -2,8 +2,11 @@ cmake_minimum_required(VERSION 3.18)
 
 # ---- Project ----
 
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/versioning.cmake)
+
 project(
 	f4se_loader_common
+	VERSION ${F4SE_VERSION_MAJOR}.${F4SE_VERSION_MINOR}.${F4SE_VERSION_PATCH}
 	LANGUAGES CXX
 )
 
@@ -22,19 +25,8 @@ find_package(common REQUIRED CONFIG)
 
 # ---- Add source files ----
 
-file(
-	GLOB
-	headers
-	CONFIGURE_DEPENDS
-	*.h
-)
-
-file(
-	GLOB
-	sources
-	CONFIGURE_DEPENDS
-	*.cpp
-)
+include(cmake/headerlist.cmake)
+include(cmake/sourcelist.cmake)
 
 source_group(
 	${PROJECT_NAME}
