@@ -90,3 +90,5 @@ set_target_properties(
 	PROPERTIES
 		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
 )
+
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/installation.cmake)

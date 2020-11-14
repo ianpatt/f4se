@@ -1,4 +1,4 @@
-set(F4SE_COPY_OUTPUT OFF CACHE BOOL "copies output files to the fallout 4 directory")
+option(F4SE_COPY_OUTPUT "Copies output files to the fallout 4 directory" OFF)
 
 if (F4SE_COPY_OUTPUT)
 	add_custom_command(
