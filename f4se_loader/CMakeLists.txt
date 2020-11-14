@@ -79,6 +79,7 @@ target_link_libraries(
 	PUBLIC
 		f4se::f4se_common
 		f4se::f4se_loader_common
+		Shlwapi.lib
 		Version.lib
 		xse::common
 )
