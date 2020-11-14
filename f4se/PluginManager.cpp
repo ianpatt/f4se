@@ -4,6 +4,100 @@
 #include "f4se_common/Utilities.h"
 #include "f4se_common/f4se_version.h"
 
+#include <cassert>
+#include <cstdint>
+#include <functional>
+
+namespace
+{
+	class ScopeExit
+	{
+	public:
+		ScopeExit(std::function<void()> fn) noexcept :
+			m_fn(std::move(fn))
+		{
+			assert(m_fn);
+		}
+
+		ScopeExit(const ScopeExit&) = delete;
+		ScopeExit(ScopeExit&&) = delete;
+
+		~ScopeExit()
+		{
+			if (m_fn)
+			{
+				m_fn();
+			}
+		}
+
+		ScopeExit& operator=(const ScopeExit&) = delete;
+		ScopeExit& operator=(ScopeExit&&) = delete;
+
+	private:
+		std::function<void()> m_fn;
+	};
+
+	std::string CheckModNotFound(const char* a_plugin)
+	{
+		assert(a_plugin != nullptr);
+
+		const auto file = LoadLibraryExA(
+			a_plugin,
+			NULL,
+			LOAD_LIBRARY_AS_DATAFILE);
+		if (file == NULL)
+		{
+			return "failed to load resource with error code " + std::to_string(GetLastError());
+		}
+		ScopeExit _file([&]() { FreeLibrary(file); });
+
+		const auto base = reinterpret_cast<const char*>(
+			reinterpret_cast<std::uintptr_t>(file) & 
+			~(static_cast<std::uintptr_t>(0xFFFF)));	// https://devblogs.microsoft.com/oldnewthing/20051006-09/?p=33883
+		const auto dosHeader = reinterpret_cast<const IMAGE_DOS_HEADER*>(base);
+		const auto ntHeader = reinterpret_cast<const IMAGE_NT_HEADERS64*>(base +  dosHeader->e_lfanew);
+		const auto sections = IMAGE_FIRST_SECTION(ntHeader);
+		const auto adjustRVA = [&](std::size_t rva) -> DWORD
+		{
+			for (WORD i = 0; i < ntHeader->FileHeader.NumberOfSections; ++i)
+			{
+				const auto section = sections[i];
+				if (section.VirtualAddress <= rva && rva < section.VirtualAddress + section.Misc.VirtualSize)
+				{
+					return rva - section.VirtualAddress + section.PointerToRawData;
+				}
+			}
+			return 0;
+		};
+
+		const auto importDirectory = ntHeader->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT];
+		if (importDirectory.Size == 0)
+		{
+			return "no import entry to enumerate";
+		}
+
+		const auto imports = reinterpret_cast<const IMAGE_IMPORT_DESCRIPTOR*>(base + adjustRVA(importDirectory.VirtualAddress));
+		for (auto iter = imports; iter->Characteristics != 0; ++iter)
+		{
+			const auto name = reinterpret_cast<const char*>(base + adjustRVA(iter->Name));
+			if (name && name[0] != '\0')
+			{
+				const auto handle = LoadLibraryA(name);
+				if (handle == NULL)
+				{
+					return std::string("failed to load ") + name;
+				}
+				else
+				{
+					FreeLibrary(handle);
+				}
+			}
+		}
+
+		return "";
+	}
+}
+
 PluginManager	g_pluginManager;
 
 PluginManager::LoadedPlugin *	PluginManager::s_currentLoadingPlugin = NULL;
@@ -249,7 +343,7 @@ void PluginManager::InstallPlugins(void)
 		s_currentLoadingPlugin = &plugin;
 		s_currentPluginHandle = m_plugins.size() + 1;	// +1 because 0 is reserved for internal use
 
-		plugin.handle = (HMODULE)LoadLibrary(pluginPath.c_str());
+		plugin.handle = LoadLibraryA(pluginPath.c_str());
 		if(plugin.handle)
 		{
 			bool		success = false;
@@ -310,7 +404,23 @@ void PluginManager::InstallPlugins(void)
 		}
 		else
 		{
-			_ERROR("couldn't load plugin %s (Error %d)", pluginPath.c_str(), GetLastError());
+			std::string post;
+			const auto err = GetLastError();
+			switch (err) {
+			case ERROR_MOD_NOT_FOUND:
+				post = CheckModNotFound(pluginPath.c_str());
+				break;
+			}
+
+			if (!post.empty())
+			{
+				post = ": " + post;
+			}
+
+			_ERROR("couldn't load plugin %s (Error %d%s)",
+				   pluginPath.c_str(),
+				   err,
+				   post.c_str());
 		}
 	}
 
