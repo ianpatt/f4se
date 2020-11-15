@@ -13,14 +13,11 @@ namespace
 	class ScopeExit
 	{
 	public:
-		ScopeExit(std::function<void()> fn) noexcept :
+		ScopeExit(std::function<void()> fn) :
 			m_fn(std::move(fn))
 		{
 			assert(m_fn);
 		}
-
-		ScopeExit(const ScopeExit&) = delete;
-		ScopeExit(ScopeExit&&) = delete;
 
 		~ScopeExit()
 		{
@@ -30,11 +27,14 @@ namespace
 			}
 		}
 
-		ScopeExit& operator=(const ScopeExit&) = delete;
-		ScopeExit& operator=(ScopeExit&&) = delete;
-
 	private:
 		std::function<void()> m_fn;
+
+		ScopeExit(const ScopeExit&);
+		ScopeExit(ScopeExit&&);
+
+		ScopeExit& operator=(const ScopeExit&);
+		ScopeExit& operator=(ScopeExit&&);
 	};
 
 	std::string CheckModNotFound(const char* a_plugin)
@@ -55,7 +55,7 @@ namespace
 			reinterpret_cast<std::uintptr_t>(file) & 
 			~(static_cast<std::uintptr_t>(0xFFFF)));	// https://devblogs.microsoft.com/oldnewthing/20051006-09/?p=33883
 		const auto dosHeader = reinterpret_cast<const IMAGE_DOS_HEADER*>(base);
-		const auto ntHeader = reinterpret_cast<const IMAGE_NT_HEADERS64*>(base +  dosHeader->e_lfanew);
+		const auto ntHeader = reinterpret_cast<const IMAGE_NT_HEADERS64*>(base + dosHeader->e_lfanew);
 		const auto sections = IMAGE_FIRST_SECTION(ntHeader);
 		const auto adjustRVA = [&](std::size_t rva) -> DWORD
 		{
