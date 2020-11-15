@@ -13,8 +13,6 @@
 #include <tlhelp32.h>
 #include "Options.h"
 
-#pragma comment( lib, "Shlwapi" )
-
 IDebugLog gLog;
 
 static void PrintModuleInfo(UInt32 procID);
