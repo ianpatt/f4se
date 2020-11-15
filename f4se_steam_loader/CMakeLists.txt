@@ -91,42 +91,4 @@ set_target_properties(
 		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
 )
 
-# ---- Create an installable target ----
-
-include(GNUInstallDirs)
-
-install(
-	TARGETS
-		${PROJECT_NAME}
-	EXPORT
-		${PROJECT_NAME}-targets
-)
-
-install(
-	FILES
-		${headers}
-	DESTINATION
-		${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
-)
-
-configure_file(
-	cmake/config.cmake.in
-	${PROJECT_NAME}-config.cmake
-	@ONLY
-)
-
-install(
-	FILES
-		${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-	DESTINATION
-		${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-)
-
-install(
-	EXPORT
-		${PROJECT_NAME}-targets
-	NAMESPACE
-		f4se::
-	DESTINATION
-		${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-)
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/installation.cmake)

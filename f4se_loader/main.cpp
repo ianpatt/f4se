@@ -5,8 +5,11 @@
 #include "f4se_loader_common/IdentifyEXE.h"
 #include "f4se_loader_common/Steam.h"
 #include "f4se_loader_common/Inject.h"
+#include <algorithm>
 #include <string>
+#include <vector>
 #include "common/IFileStream.h"
+#include <Shlwapi.h>
 #include <tlhelp32.h>
 #include "Options.h"
 
@@ -216,6 +219,14 @@ int main(int argc, char ** argv)
 	PROCESS_INFORMATION	procInfo = { 0 };
 
 	startupInfo.cb = sizeof(startupInfo);
+
+	// augment environment
+	{
+		std::vector<char> runtime(procPath.length() + 1, '\0');
+		std::copy(procPath.cbegin(), procPath.cend(), runtime.begin());
+		PathStripPathA(runtime.data());
+		SetEnvironmentVariableA("F4SE_RUNTIME", runtime.data());
+	}
 
 	if(!CreateProcess(
 		procPath.c_str(),

@@ -231,6 +231,7 @@ void Options::PrintUsage(void)
 	_MESSAGE("  -noskiplauncher - does not skip the default Bethesda launcher window");
 	_MESSAGE("                    note: specifying this option may cause compatibility problems");
 	_MESSAGE("  -launchsteam - attempt to launch steam if it is not running");
+	_MESSAGE("  -notimeout - don't automatically terminate the process if the proxy takes too long");
 	_MESSAGE("  -affinity <mask> - set the processor affinity mask");
 	_MESSAGE("  -forcesteamloader - override exe type detection and use steam loader");
 }

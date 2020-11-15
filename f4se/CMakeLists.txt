@@ -408,3 +408,5 @@ install(
 	DESTINATION
 		${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
+
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/installation.cmake)
