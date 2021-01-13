@@ -23,6 +23,7 @@ enum
 	kInterface_Serialization,
 	kInterface_Task,
 	kInterface_Object,
+	kInterface_Trampoline,
 	kInterface_Max,
 };
 
@@ -210,6 +211,19 @@ struct F4SEObjectInterface
 	F4SEDelayFunctorManager & (* GetDelayFunctorManager)();
 	F4SEObjectRegistry & (* GetObjectRegistry)();
 	F4SEPersistentObjectStorage & (* GetPersistentObjectStorage)();
+};
+
+struct F4SETrampolineInterface
+{
+	enum
+	{
+		kInterfaceVersion = 1
+	};
+
+	UInt32	interfaceVersion;
+
+	void* (*AllocateFromBranchPool)(PluginHandle plugin, size_t size);
+	void* (*AllocateFromLocalPool)(PluginHandle plugin, size_t size);
 };
 
 struct PluginInfo

@@ -3,10 +3,12 @@
 #include "GameAPI.h"
 #include "f4se_common/Utilities.h"
 #include "f4se_common/f4se_version.h"
+#include "f4se_common/BranchTrampoline.h"
 
 #include <cassert>
 #include <cstdint>
 #include <functional>
+#include <mutex>
 
 namespace
 {
@@ -95,6 +97,35 @@ namespace
 		}
 
 		return "";
+	}
+
+	void* AllocateFromPool(BranchTrampoline& pool, const char* name, PluginHandle plugin, size_t size)
+	{
+		assert(name != nullptr);
+
+		const auto mem = [](BranchTrampoline& alloc, size_t n) {
+			static std::mutex lock;
+			const auto guard = std::unique_lock<decltype(lock)>(lock);
+			return alloc.Allocate(n);
+		}(pool, size);
+
+		if (mem) {
+			static std::mutex lock;	// the global log isn't thread safe
+			const auto guard = std::unique_lock<decltype(lock)>(lock);
+			_DMESSAGE("plugin %u allocated %u bytes from %s pool", plugin, size, name);
+		}
+
+		return mem;
+	}
+
+	void* AllocateFromBranchPool(PluginHandle plugin, size_t size)
+	{
+		return AllocateFromPool(g_branchTrampoline, "branch", plugin, size);
+	}
+
+	void* AllocateFromLocalPool(PluginHandle plugin, size_t size)
+	{
+		return AllocateFromPool(g_localTrampoline, "local", plugin, size);
 	}
 }
 
@@ -188,6 +219,13 @@ static const F4SEObjectInterface g_F4SEObjectInterface =
 	F4SEDelayFunctorManagerInstance,
 	F4SEObjectRegistryInstance,
 	F4SEObjectStorageInstance
+};
+
+static const F4SETrampolineInterface g_F4SETrampolineInterface =
+{
+	F4SETrampolineInterface::kInterfaceVersion,
+	AllocateFromBranchPool,
+	AllocateFromLocalPool
 };
 
 PluginManager::PluginManager()
@@ -286,6 +324,9 @@ void * PluginManager::QueryInterface(UInt32 id)
 		break;
 	case kInterface_Object:
 		result = (void *)&g_F4SEObjectInterface;
+		break;
+	case kInterface_Trampoline:
+		result = (void *)&g_F4SETrampolineInterface;
 		break;
 	default:
 		_WARNING("unknown QueryInterface %08X", id);
