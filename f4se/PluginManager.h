@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cassert>
+#include <cstddef>
+#include <mutex>
 #include <string>
 #include <vector>
 
@@ -57,7 +60,46 @@ private:
 	static PluginHandle		s_currentPluginHandle;
 };
 
+// a non-owning, thread-safe allocator for a block of memory
+class PluginAllocator
+{
+public:
+	using Byte = unsigned char;
+
+	Byte* Allocate(size_t n)
+	{
+		const Locker l(m_lock);
+
+		Byte* result = nullptr;
+		if (m_first + n < m_last)
+		{
+			result = m_first;
+			m_first += n;
+		}
+
+		return result;
+	}
+
+	void Initialize(void* memory, size_t size)
+	{
+		const Locker l(m_lock);
+		assert(!m_first && !m_last);
+		m_first = static_cast<Byte*>(memory);
+		m_last = m_first + size;
+	}
+
+private:
+	using Lock = std::mutex;
+	using Locker = std::lock_guard<Lock>;
+
+	Lock m_lock;
+	Byte* m_first{ nullptr };
+	Byte* m_last{ nullptr };
+};
+
 extern PluginManager	g_pluginManager;
+extern PluginAllocator	g_branchPluginAllocator;
+extern PluginAllocator	g_localPluginAllocator;
 
 extern const F4SESerializationInterface	g_F4SESerializationInterface;
 extern const F4SEPapyrusInterface		g_F4SEPapyrusInterface;

@@ -99,14 +99,14 @@ namespace
 		return "";
 	}
 
-	void* AllocateFromPool(BranchTrampoline& pool, const char* name, PluginHandle plugin, size_t size)
+	void* AllocateFromPool(PluginAllocator& alloc, const char* name, PluginHandle plugin, size_t size)
 	{
 		assert(name != nullptr);
 
-		static std::mutex lock;
-		const auto guard = std::unique_lock<decltype(lock)>(lock);
-		const auto mem = pool.Allocate(size);
+		const auto mem = alloc.Allocate(size);
 		if (mem) {
+			static std::mutex lock;
+			const std::lock_guard<decltype(lock)> l(lock);	// global log isn't thread-safe
 			_DMESSAGE("plugin %u allocated %u bytes from %s pool", plugin, size, name);
 		}
 
@@ -115,16 +115,18 @@ namespace
 
 	void* AllocateFromBranchPool(PluginHandle plugin, size_t size)
 	{
-		return AllocateFromPool(g_branchTrampoline, "branch", plugin, size);
+		return AllocateFromPool(g_branchPluginAllocator, "branch", plugin, size);
 	}
 
 	void* AllocateFromLocalPool(PluginHandle plugin, size_t size)
 	{
-		return AllocateFromPool(g_localTrampoline, "local", plugin, size);
+		return AllocateFromPool(g_localPluginAllocator, "local", plugin, size);
 	}
 }
 
 PluginManager	g_pluginManager;
+PluginAllocator	g_branchPluginAllocator;
+PluginAllocator	g_localPluginAllocator;
 
 PluginManager::LoadedPlugin *	PluginManager::s_currentLoadingPlugin = NULL;
 PluginHandle					PluginManager::s_currentPluginHandle = 0;
