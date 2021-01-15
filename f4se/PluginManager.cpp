@@ -103,15 +103,10 @@ namespace
 	{
 		assert(name != nullptr);
 
-		const auto mem = [](BranchTrampoline& alloc, size_t n) {
-			static std::mutex lock;
-			const auto guard = std::unique_lock<decltype(lock)>(lock);
-			return alloc.Allocate(n);
-		}(pool, size);
-
+		static std::mutex lock;
+		const auto guard = std::unique_lock<decltype(lock)>(lock);
+		const auto mem = pool.Allocate(size);
 		if (mem) {
-			static std::mutex lock;	// the global log isn't thread safe
-			const auto guard = std::unique_lock<decltype(lock)>(lock);
 			_DMESSAGE("plugin %u allocated %u bytes from %s pool", plugin, size, name);
 		}
 
