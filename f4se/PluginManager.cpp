@@ -3,10 +3,12 @@
 #include "GameAPI.h"
 #include "f4se_common/Utilities.h"
 #include "f4se_common/f4se_version.h"
+#include "f4se_common/BranchTrampoline.h"
 
 #include <cassert>
 #include <cstdint>
 #include <functional>
+#include <mutex>
 
 namespace
 {
@@ -96,9 +98,35 @@ namespace
 
 		return "";
 	}
+
+	void* AllocateFromPool(PluginAllocator& alloc, const char* name, PluginHandle plugin, size_t size)
+	{
+		assert(name != nullptr);
+
+		const auto mem = alloc.Allocate(size);
+		if (mem) {
+			static std::mutex lock;
+			const std::lock_guard<decltype(lock)> l(lock);	// global log isn't thread-safe
+			_DMESSAGE("plugin %u allocated %u bytes from %s pool", plugin, size, name);
+		}
+
+		return mem;
+	}
+
+	void* AllocateFromBranchPool(PluginHandle plugin, size_t size)
+	{
+		return AllocateFromPool(g_branchPluginAllocator, "branch", plugin, size);
+	}
+
+	void* AllocateFromLocalPool(PluginHandle plugin, size_t size)
+	{
+		return AllocateFromPool(g_localPluginAllocator, "local", plugin, size);
+	}
 }
 
 PluginManager	g_pluginManager;
+PluginAllocator	g_branchPluginAllocator;
+PluginAllocator	g_localPluginAllocator;
 
 PluginManager::LoadedPlugin *	PluginManager::s_currentLoadingPlugin = NULL;
 PluginHandle					PluginManager::s_currentPluginHandle = 0;
@@ -188,6 +216,13 @@ static const F4SEObjectInterface g_F4SEObjectInterface =
 	F4SEDelayFunctorManagerInstance,
 	F4SEObjectRegistryInstance,
 	F4SEObjectStorageInstance
+};
+
+static const F4SETrampolineInterface g_F4SETrampolineInterface =
+{
+	F4SETrampolineInterface::kInterfaceVersion,
+	AllocateFromBranchPool,
+	AllocateFromLocalPool
 };
 
 PluginManager::PluginManager()
@@ -286,6 +321,9 @@ void * PluginManager::QueryInterface(UInt32 id)
 		break;
 	case kInterface_Object:
 		result = (void *)&g_F4SEObjectInterface;
+		break;
+	case kInterface_Trampoline:
+		result = (void *)&g_F4SETrampolineInterface;
 		break;
 	default:
 		_WARNING("unknown QueryInterface %08X", id);

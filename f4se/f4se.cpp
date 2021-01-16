@@ -3,6 +3,7 @@
 #include "f4se_common/Relocation.h"
 #include "f4se_common/BranchTrampoline.h"
 #include "f4se_common/SafeWrite.h"
+#include <cassert>
 #include <shlobj.h>
 #include "common/IFileStream.h"
 #include "Hooks_ObScript.h"
@@ -61,17 +62,28 @@ void F4SE_Initialize(void)
 		WaitForDebugger();
 #endif
 
-		if(!g_branchTrampoline.Create(1024 * 64))
+		const size_t poolSize = 1024 * 64;
+		const size_t reserveSize = 512;
+
+		if(!g_branchTrampoline.Create(poolSize))
 		{
 			_ERROR("couldn't create branch trampoline. this is fatal. skipping remainder of init process.");
 			return;
 		}
 
-		if(!g_localTrampoline.Create(1024 * 64, g_moduleHandle))
+		if(!g_localTrampoline.Create(poolSize, g_moduleHandle))
 		{
 			_ERROR("couldn't create codegen buffer. this is fatal. skipping remainder of init process.");
 			return;
 		}
+
+		const auto initAlloc = [=](PluginAllocator& alloc, BranchTrampoline& trampoline)
+		{
+			const auto size = poolSize - reserveSize;
+			alloc.Initialize(trampoline.Allocate(size), size);
+		};
+		initAlloc(g_branchPluginAllocator, g_branchTrampoline);
+		initAlloc(g_localPluginAllocator, g_localTrampoline);
 
 		Hooks_Debug_Init();
 		Hooks_ObScript_Init();
@@ -96,6 +108,15 @@ void F4SE_Initialize(void)
 		Hooks_Input_Commit();
 		Hooks_Threads_Commit();
 		Hooks_Camera_Commit();
+
+		const auto printAlloc = [=](BranchTrampoline& pool, const char* name)
+		{
+			const auto allocated = reserveSize - pool.Remain();
+			assert(allocated <= reserveSize);
+			_DMESSAGE("F4SE allocated %u bytes from %s pool", allocated, name);
+		};
+		printAlloc(g_branchTrampoline, "branch");
+		printAlloc(g_localTrampoline, "local");
 
 		Init_CoreSerialization_Callbacks();
 
