@@ -64,13 +64,14 @@ private:
 class PluginAllocator
 {
 public:
-	using Byte = unsigned char;
+	PluginAllocator()
+		:m_first(nullptr), m_last(nullptr) { }
 
-	Byte* Allocate(size_t n)
+	UInt8* Allocate(size_t n)
 	{
 		const Locker l(m_lock);
 
-		Byte* result = nullptr;
+		UInt8* result = nullptr;
 		if (m_first + n < m_last)
 		{
 			result = m_first;
@@ -84,17 +85,17 @@ public:
 	{
 		const Locker l(m_lock);
 		assert(!m_first && !m_last);
-		m_first = static_cast<Byte*>(memory);
+		m_first = static_cast<UInt8*>(memory);
 		m_last = m_first + size;
 	}
 
 private:
-	using Lock = std::mutex;
-	using Locker = std::lock_guard<Lock>;
+	typedef std::mutex Lock;
+	typedef std::lock_guard<Lock> Locker;
 
 	Lock m_lock;
-	Byte* m_first{ nullptr };
-	Byte* m_last{ nullptr };
+	UInt8* m_first;
+	UInt8* m_last;
 };
 
 extern PluginManager	g_pluginManager;
