@@ -147,7 +147,8 @@ static const F4SEInterface g_F4SEInterface =
 
 	PluginManager::QueryInterface,
 	PluginManager::GetPluginHandle,
-	PluginManager::GetReleaseIndex
+	PluginManager::GetReleaseIndex,
+	PluginManager::GetPluginInfo
 };
 
 static const F4SEMessagingInterface g_F4SEMessagingInterface =
@@ -346,6 +347,12 @@ PluginHandle PluginManager::GetPluginHandle(void)
 UInt32 PluginManager::GetReleaseIndex( void )
 {
 	return F4SE_VERSION_RELEASEIDX;
+}
+
+
+const PluginInfo* PluginManager::GetPluginInfo(const char* name)
+{
+	return g_pluginManager.GetInfoByName(name);
 }
 
 bool PluginManager::FindPluginDirectory(void)
