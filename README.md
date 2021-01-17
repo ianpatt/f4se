@@ -1,3 +1,5 @@
+![testbuild](https://github.com/ianpatt/f4se/workflows/testbuild/badge.svg)
+
 ## Building
 
 ```
