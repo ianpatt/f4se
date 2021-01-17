@@ -25,9 +25,10 @@ public:
 
 	UInt32			GetNumPlugins(void);
 
-	static void *		QueryInterface(UInt32 id);
-	static PluginHandle	GetPluginHandle(void);
-	static UInt32		GetReleaseIndex(void);
+	static void *				QueryInterface(UInt32 id);
+	static PluginHandle			GetPluginHandle(void);
+	static UInt32				GetReleaseIndex(void);
+	static const PluginInfo*	GetPluginInfo(const char* name);
 
 	static bool Dispatch_Message(PluginHandle sender, UInt32 messageType, void * data, UInt32 dataLen, const char* receiver);
 	static bool	RegisterListener(PluginHandle listener, const char* sender, F4SEMessagingInterface::EventCallback handler);

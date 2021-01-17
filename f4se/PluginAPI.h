@@ -8,6 +8,7 @@ class ITaskDelegate;
 class F4SEDelayFunctorManager;
 class F4SEObjectRegistry;
 class F4SEPersistentObjectStorage;
+struct PluginInfo;
 
 enum
 {
@@ -41,6 +42,10 @@ struct F4SEInterface
 	
 	// returns the F4SE build's release index
 	UInt32			(* GetReleaseIndex)(void);
+
+	// Minimum F4SE version 0.6.22
+	// returns the plugin info structure for a plugin by name, only valid to be called after PostLoad message
+	const PluginInfo*	(*GetPluginInfo)(const char* name);
 };
 
 
