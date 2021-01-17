@@ -1,0 +1,17 @@
+name: testbuild
+on: [push]
+jobs:
+    run-testbuild:
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v2
+                with:
+                    path: f4se
+            - uses: actions/checkout@v2
+                with:
+                    path: common
+                    repository: ianpatt/common
+            - run: cmake -B common/build -S common -DCMAKE_INSTALL_PREFIX=extern common
+            - run: cmake --build common/build --config Release --target install
+            - run: cmake -B f4se/build -S f4se -DCMAKE_INSTALL_PREFIX=extern f4se
+            - run: cmake --build f4se/build --config Release
