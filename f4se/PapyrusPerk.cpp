@@ -8,12 +8,12 @@ namespace papyrusPerk
 {
 	bool IsPlayable(BGSPerk* thisPerk)
 	{
-		return thisPerk ? (thisPerk->playable >= 0) : false;
+		return thisPerk ? (thisPerk->playable != 0) : false;
 	}
 
 	bool IsHidden(BGSPerk* thisPerk)
 	{
-		return thisPerk ? (thisPerk->hidden >= 0) : false;
+		return thisPerk ? (thisPerk->hidden != 0) : false;
 	}
 
 	UInt32 GetLevel(BGSPerk* thisPerk)
