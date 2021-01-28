@@ -21,6 +21,8 @@ endif()
 
 # ---- Build options ----
 
+option(F4SE_STATIC_LIB OFF "Choose static linkage for f4se's add_library command. Useful for downstream targets.")
+
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON CACHE BOOL "")
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_DEBUG OFF CACHE BOOL "")
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STRING "")
@@ -316,9 +318,15 @@ source_group(
 
 # ---- Create library ----
 
+if (F4SE_STATIC_LIB)
+	set(F4SE_LINKAGE "STATIC")
+else()
+	set(F4SE_LINKAGE "SHARED")
+endif()
+
 add_library(
 	${PROJECT_NAME}
-	SHARED
+	${F4SE_LINKAGE}
 	${headers}
 	${sources}
 	exports.def
