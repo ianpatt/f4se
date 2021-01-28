@@ -428,6 +428,8 @@ public:
 	}
 };
 
+extern RelocPtr <BSReadWriteLock> g_menuTableLock;
+
 // 250 ?
 class UI
 {
@@ -451,9 +453,8 @@ public:
 	template<typename T>
 	void ForEachMenu(T & menuFunc)
 	{
-		g_menuTableLock->LockForReadAndWrite();
+		const BSWriteLocker l(g_menuTableLock.GetPtr());
 		menuTable.ForEach(menuFunc);
-		g_menuTableLock->Release();
 	}
 
 	bool UnregisterMenu(BSFixedString & name, bool force = false);
@@ -477,5 +478,4 @@ protected:
 	DEFINE_MEMBER_FN(IsMenuOpen, bool, 0x02042160, const BSFixedString & name);
 };
 
-extern RelocPtr <BSReadWriteLock> g_menuTableLock;
 extern RelocPtr <UI*> g_ui;

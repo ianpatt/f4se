@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include "f4se/GameTypes.h"
 #include "f4se/NiTypes.h"
 
@@ -201,24 +203,6 @@ public:
 	DEFINE_MEMBER_FN(SetScenegraphChange, void, 0x01BA47C0);
 
 	// Return true in the functor to halt traversal
-	template<typename T>
-	bool Visit(T & functor)
-	{
-		if (functor(this))
-			return true;
-
-		NiPointer<NiNode> node(GetAsNiNode());
-		if(node) {
-			for(UInt32 i = 0; i < node->m_children.m_emptyRunStart; i++) {
-				NiPointer<NiAVObject> object(node->m_children.m_data[i]);
-				if(object) {
-					if (object->Visit(functor))
-						return true;
-				}
-			}
-		}
-
-		return false;
-	}
+	bool Visit(const std::function<bool(NiAVObject*)>& functor);
 };
 STATIC_ASSERT(sizeof(NiAVObject) == 0x120);

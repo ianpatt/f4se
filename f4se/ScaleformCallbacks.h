@@ -4,6 +4,7 @@
 
 #include "f4se/ScaleformTypes.h"
 #include "f4se/ScaleformMovie.h"
+#include "f4se/ScaleformValue.h"
 
 #include <typeinfo>
 #include <map>

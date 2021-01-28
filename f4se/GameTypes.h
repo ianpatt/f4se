@@ -776,11 +776,6 @@ public:
 		return curIt;
 	}
 
-	const _Node* FindString(char* str, Iterator prev) const
-	{
-		return Find(StringFinder_CI(str), prev);
-	}
-
 	template <class Op>
 	UInt32 CountIf(Op& op) const
 	{
@@ -1202,7 +1197,7 @@ public:
 	}
 
 	template <typename T>
-	void ForEach(T& functor)
+	void ForEach(const T& functor)
 	{
 		if (!m_entries)
 			return;

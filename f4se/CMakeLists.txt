@@ -21,8 +21,11 @@ endif()
 
 # ---- Build options ----
 
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_DEBUG OFF)
+option(F4SE_STATIC_LIB OFF "Choose static linkage for f4se's add_library command. Useful for downstream targets.")
+
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON CACHE BOOL "")
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_DEBUG OFF CACHE BOOL "")
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STRING "")
 
 # ---- Dependencies ----
 
@@ -34,7 +37,9 @@ if (NOT TARGET xbyak)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../xbyak xbyak)	# bundled
 endif()
 
-find_package(common REQUIRED CONFIG)
+if (NOT TARGET common)
+	find_package(common REQUIRED CONFIG)
+endif()
 
 # ---- Add source files ----
 
@@ -313,9 +318,15 @@ source_group(
 
 # ---- Create library ----
 
+if (F4SE_STATIC_LIB)
+	set(F4SE_LINKAGE "STATIC")
+else()
+	set(F4SE_LINKAGE "SHARED")
+endif()
+
 add_library(
 	${PROJECT_NAME}
-	SHARED
+	${F4SE_LINKAGE}
 	${headers}
 	${sources}
 	exports.def
@@ -358,15 +369,6 @@ target_link_libraries(
 		f4se::f4se_common
 		Xbyak::xbyak
 		xse::common
-)
-
-# ---- Configure all targets ----
-
-set_target_properties(
-	${PROJECT_NAME}
-	f4se_common
-	PROPERTIES
-		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
 )
 
 # ---- Create an installable target ----
