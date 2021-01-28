@@ -21,7 +21,9 @@ endif()
 
 # ---- Dependencies ----
 
-find_package(common REQUIRED CONFIG)
+if (NOT TARGET common)
+	find_package(common REQUIRED CONFIG)
+endif()
 
 # ---- Add source files ----
 

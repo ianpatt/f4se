@@ -21,8 +21,9 @@ endif()
 
 # ---- Build options ----
 
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_DEBUG OFF)
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON CACHE BOOL "")
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_DEBUG OFF CACHE BOOL "")
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STRING "")
 
 # ---- Dependencies ----
 
@@ -34,7 +35,9 @@ if (NOT TARGET xbyak)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../xbyak xbyak)	# bundled
 endif()
 
-find_package(common REQUIRED CONFIG)
+if (NOT TARGET common)
+	find_package(common REQUIRED CONFIG)
+endif()
 
 # ---- Add source files ----
 
@@ -358,15 +361,6 @@ target_link_libraries(
 		f4se::f4se_common
 		Xbyak::xbyak
 		xse::common
-)
-
-# ---- Configure all targets ----
-
-set_target_properties(
-	${PROJECT_NAME}
-	f4se_common
-	PROPERTIES
-		MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>"
 )
 
 # ---- Create an installable target ----
