@@ -228,6 +228,7 @@ public:
 template <typename K, typename D = NullParameters>
 class RegistrationMapHolder : public SafeDataHolder<std::map<K,std::set<EventRegistration<D>>>>
 {
+	typedef SafeDataHolder<std::map<K, std::set<EventRegistration<D>>>>	Super;
 	typedef std::set<EventRegistration<D>>	RegSet;
 	typedef std::map<K,RegSet>				RegMap;
 
@@ -244,12 +245,12 @@ public:
 		if (params)
 			reg.params = *params;
 
-		Lock();
+		Super::Lock();
 
-		if (m_data[key].insert(reg).second)
+		if (Super::m_data[key].insert(reg).second)
 			policy->AddRef(handle);
 
-		Release();
+		Super::Release();
 	}
 	
 	void Unregister(K & key, UInt64 handle, BSFixedString scriptName)
@@ -261,12 +262,12 @@ public:
 		reg.handle = handle;
 		reg.scriptName = scriptName;
 
-		Lock();
+		Super::Lock();
 
-		if (m_data[key].erase(reg))
+		if (Super::m_data[key].erase(reg))
 			policy->Release(handle);
 
-		Release();
+		Super::Release();
 	}
 
 	void UnregisterAll(UInt64 handle, BSFixedString scriptName)
@@ -278,43 +279,43 @@ public:
 		reg.handle = handle;
 		reg.scriptName = scriptName;
 
-		Lock();
+		Super::Lock();
 
-		for (RegMap::iterator iter = m_data.begin(); iter != m_data.end(); ++iter)
+		for (typename RegMap::iterator iter = Super::m_data.begin(); iter != Super::m_data.end(); ++iter)
 			if (iter->second.erase(reg))
 				policy->Release(handle);
 
-		Release();
+		Super::Release();
 	}
 	
 	template <typename F>
 	void ForEach(K & key, F & functor)
 	{
-		Lock();
+		Super::Lock();
 
-		RegMap::iterator handles = m_data.find(key);
+		typename RegMap::iterator handles = Super::m_data.find(key);
 
-		if (handles != m_data.end())
-			for (RegSet::iterator iter = handles->second.begin(); iter != handles->second.end(); ++iter)
+		if (handles != Super::m_data.end())
+			for (typename RegSet::iterator iter = handles->second.begin(); iter != handles->second.end(); ++iter)
 				functor(*iter);
 
-		Release();
+		Super::Release();
 	}
 
 	void Clear(void)
 	{
-		Lock();
-		m_data.clear();
-		Release();
+		Super::Lock();
+		Super::m_data.clear();
+		Super::Release();
 	}
 
 	bool Save(const F4SESerializationInterface * intfc, UInt32 type, UInt32 version)
 	{
 		intfc->OpenRecord(type, version);
 
-		Lock();
+		Super::Lock();
 
-		for (RegMap::iterator iter = m_data.begin(); iter != m_data.end(); ++iter)
+		for (typename RegMap::iterator iter = Super::m_data.begin(); iter != Super::m_data.end(); ++iter)
 		{
 			UInt32 numRegs = iter->second.size();
 
@@ -328,13 +329,13 @@ public:
 			// Reg count
 			intfc->WriteRecordData(&numRegs, sizeof(numRegs));
 			// Regs
-			for (RegSet::iterator elems = iter->second.begin(); elems != iter->second.end(); ++elems)
+			for (typename RegSet::iterator elems = iter->second.begin(); elems != iter->second.end(); ++elems)
 				elems->Save(intfc, version);
 		}
 
 		intfc->OpenRecord('REGE', version);
 
-		Release();
+		Super::Release();
 
 		return true;
 	}
@@ -390,12 +391,12 @@ public:
 
 							reg.handle = newHandle;
 
-							Lock();
+							Super::Lock();
 
-							if (m_data[curKey].insert(reg).second)
+							if (Super::m_data[curKey].insert(reg).second)
 								policy->AddRef(reg.handle);
 
-							Release();
+							Super::Release();
 
 						}
 						else
@@ -427,6 +428,7 @@ public:
 template <typename D = NullParameters>
 class RegistrationSetHolder : public SafeDataHolder<std::set<EventRegistration<D>>>
 {
+	typedef SafeDataHolder<std::set<EventRegistration<D>>>	Super;
 	typedef std::set<EventRegistration<D>>	RegSet;
 
 public:
@@ -442,12 +444,12 @@ public:
 		if (params)
 			reg.params = *params;
 
-		Lock();
+		Super::Lock();
 
-		if (m_data.insert(reg).second)
+		if (Super::m_data.insert(reg).second)
 			policy->AddRef(handle);
 
-		Release();
+		Super::Release();
 	}
 
 	void Unregister(UInt64 handle, BSFixedString scriptName)
@@ -459,48 +461,48 @@ public:
 		reg.handle = handle;
 		reg.scriptName = scriptName;
 
-		Lock();
+		Super::Lock();
 
-		if (m_data.erase(reg))
+		if (Super::m_data.erase(reg))
 			policy->Release(handle);
 
-		Release();
+		Super::Release();
 	}
 
 	template <typename F>
 	void ForEach(F & functor)
 	{
-		Lock();
+		Super::Lock();
 
-		for (RegSet::iterator iter = m_data.begin(); iter != m_data.end(); ++iter)
+		for (typename RegSet::iterator iter = Super::m_data.begin(); iter != Super::m_data.end(); ++iter)
 			functor(*iter);
 
-		Release();
+		Super::Release();
 	}
 
 	void Clear(void)
 	{
-		Lock();
-		m_data.clear();
-		Release();
+		Super::Lock();
+		Super::m_data.clear();
+		Super::Release();
 	}
 
 	bool Save(const F4SESerializationInterface * intfc, UInt32 type, UInt32 version)
 	{
 		intfc->OpenRecord(type, version);
 
-		Lock();
+		Super::Lock();
 
-		UInt32 numRegs = m_data.size();
+		UInt32 numRegs = Super::m_data.size();
 
 		// Reg count
 		intfc->WriteRecordData(&numRegs, sizeof(numRegs));
 
 		// Regs
-		for (RegSet::iterator iter = m_data.begin(); iter != m_data.end(); ++iter)
+		for (typename RegSet::iterator iter = Super::m_data.begin(); iter != Super::m_data.end(); ++iter)
 			iter->Save(intfc, version);
 
-		Release();
+		Super::Release();
 
 		return true;
 	}
@@ -540,12 +542,12 @@ public:
 
 				reg.handle = newHandle;
 
-				Lock();
+				Super::Lock();
 
-				if (m_data.insert(reg).second)
+				if (Super::m_data.insert(reg).second)
 					policy->AddRef(reg.handle);
 
-				Release();
+				Super::Release();
 
 			}
 			else

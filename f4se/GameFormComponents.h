@@ -1497,7 +1497,7 @@ struct BGSInventoryItem
 		void Dump();
 #endif
 		template<typename T>
-		bool Visit(T & f)
+		bool Visit(const T & f)
 		{
 			if(f(this) && next)
 				return next->Visit(f);
