@@ -4,7 +4,9 @@
 #include "f4se_common/BranchTrampoline.h"
 #include "f4se_common/SafeWrite.h"
 #include <cassert>
+#include <cstring>
 #include <shlobj.h>
+#include <vector>
 #include "common/IFileStream.h"
 #include "Hooks_ObScript.h"
 #include "Hooks_Papyrus.h"
@@ -33,6 +35,32 @@ void WaitForDebugger(void)
 	Sleep(1000 * 2);
 }
 
+bool ShouldWaitForDebugger()
+{
+	const char* env = "F4SE_WAITFORDEBUGGER";
+	const auto printErr = [=]()
+	{
+		const DWORD err = GetLastError();
+		if (err != ERROR_ENVVAR_NOT_FOUND)
+			_ERROR("failed to get %s with error code %u", env, err);
+	};
+
+	std::vector<char> buf;
+	const DWORD len = GetEnvironmentVariableA(env, buf.data(), 0);
+	if (len == 0) 	{
+		printErr();
+		return false;
+	}
+
+	buf.resize(len, '\0');
+	if (GetEnvironmentVariableA(env, buf.data(), buf.size()) == 0) 	{
+		printErr();
+		return false;
+	}
+
+	return std::strcmp(buf.data(), "1") == 0;
+}
+
 static bool isInit = false;
 
 void F4SE_Initialize(void)
@@ -56,11 +84,11 @@ void F4SE_Initialize(void)
 		_MESSAGE("imagebase = %016I64X", GetModuleHandle(NULL));
 		_MESSAGE("reloc mgr imagebase = %016I64X", RelocationManager::s_baseAddr);
 
-#ifdef _DEBUG
-		SetPriorityClass(GetCurrentProcess(), IDLE_PRIORITY_CLASS);
-
-		WaitForDebugger();
-#endif
+		if (ShouldWaitForDebugger())
+		{
+			SetPriorityClass(GetCurrentProcess(), IDLE_PRIORITY_CLASS);
+			WaitForDebugger();
+		}
 
 		const size_t poolSize = 1024 * 64;
 		const size_t reserveSize = 512;

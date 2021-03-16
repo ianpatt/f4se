@@ -15,6 +15,7 @@ Options::Options()
 	,m_launchSteam(false)
 	,m_noTimeout(false)
 	,m_forceSteamLoader(false)
+	,m_waitForDebugger(false)
 	,m_affinity(0)
 {
 	//
@@ -181,6 +182,10 @@ bool Options::Read(int argc, char ** argv)
 				{
 					m_forceSteamLoader = true;
 				}
+				else if (!_stricmp(arg, "waitfordebugger"))
+				{
+					m_waitForDebugger = true;
+				}
 				else
 				{
 					_ERROR("unknown switch (%s)", arg);
@@ -234,6 +239,7 @@ void Options::PrintUsage(void)
 	_MESSAGE("  -notimeout - don't automatically terminate the process if the proxy takes too long");
 	_MESSAGE("  -affinity <mask> - set the processor affinity mask");
 	_MESSAGE("  -forcesteamloader - override exe type detection and use steam loader");
+	_MESSAGE("  -waitfordebugger - wait for a debugger to attach before beginning execution");
 }
 
 bool Options::Verify(void)

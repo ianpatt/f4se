@@ -18,6 +18,21 @@ IDebugLog gLog;
 static void PrintModuleInfo(UInt32 procID);
 static void PrintProcessInfo();
 
+void AugmentEnvironment(const std::string& procPath)
+{
+	{
+		std::vector<char> runtime(procPath.length() + 1, '\0');
+		std::copy(procPath.cbegin(), procPath.cend(), runtime.begin());
+		PathStripPathA(runtime.data());
+		SetEnvironmentVariableA("F4SE_RUNTIME", runtime.data());
+	}
+
+	if (g_options.m_waitForDebugger)
+	{
+		SetEnvironmentVariableA("F4SE_WAITFORDEBUGGER", "1");
+	}
+}
+
 int main(int argc, char ** argv)
 {
 	gLog.OpenRelative(CSIDL_MYDOCUMENTS, "\\My Games\\Fallout4\\F4SE\\f4se_loader.log");
@@ -220,13 +235,7 @@ int main(int argc, char ** argv)
 
 	startupInfo.cb = sizeof(startupInfo);
 
-	// augment environment
-	{
-		std::vector<char> runtime(procPath.length() + 1, '\0');
-		std::copy(procPath.cbegin(), procPath.cend(), runtime.begin());
-		PathStripPathA(runtime.data());
-		SetEnvironmentVariableA("F4SE_RUNTIME", runtime.data());
-	}
+	AugmentEnvironment(procPath);
 
 	if(!CreateProcess(
 		procPath.c_str(),
