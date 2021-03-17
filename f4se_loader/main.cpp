@@ -34,11 +34,7 @@ void AugmentEnvironment(const std::string& procPath, const std::string& dllPath)
 
 	SetEnvironmentVariableA("F4SE_DLL", getFilename(dllPath).c_str());
 	SetEnvironmentVariableA("F4SE_RUNTIME", getFilename(procPath).c_str());
-
-	if (g_options.m_waitForDebugger)
-	{
-		SetEnvironmentVariableA("F4SE_WAITFORDEBUGGER", "1");
-	}
+	SetEnvironmentVariableA("F4SE_WAITFORDEBUGGER", (g_options.m_waitForDebugger ? "1" : "0"));
 }
 
 int main(int argc, char ** argv)
