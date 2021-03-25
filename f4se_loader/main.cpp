@@ -7,6 +7,7 @@
 #include "f4se_loader_common/Inject.h"
 #include <algorithm>
 #include <string>
+#include <type_traits>
 #include <vector>
 #include "common/IFileStream.h"
 #include <Shlwapi.h>
@@ -17,6 +18,24 @@ IDebugLog gLog;
 
 static void PrintModuleInfo(UInt32 procID);
 static void PrintProcessInfo();
+
+void AugmentEnvironment(const std::string& procPath, const std::string& dllPath)
+{
+	const auto getFilename = [](const std::string& fullPath) {
+		char runtime[MAX_PATH] = { '\0' };
+		if (fullPath.length() < std::extent<decltype(runtime)>::value)
+		{
+			std::copy(fullPath.begin(), fullPath.end(), runtime);
+			PathStripPathA(runtime);
+		}
+
+		return std::string(runtime);
+	};
+
+	SetEnvironmentVariableA("F4SE_DLL", getFilename(dllPath).c_str());
+	SetEnvironmentVariableA("F4SE_RUNTIME", getFilename(procPath).c_str());
+	SetEnvironmentVariableA("F4SE_WAITFORDEBUGGER", (g_options.m_waitForDebugger ? "1" : "0"));
+}
 
 int main(int argc, char ** argv)
 {
@@ -220,13 +239,7 @@ int main(int argc, char ** argv)
 
 	startupInfo.cb = sizeof(startupInfo);
 
-	// augment environment
-	{
-		std::vector<char> runtime(procPath.length() + 1, '\0');
-		std::copy(procPath.cbegin(), procPath.cend(), runtime.begin());
-		PathStripPathA(runtime.data());
-		SetEnvironmentVariableA("F4SE_RUNTIME", runtime.data());
-	}
+	AugmentEnvironment(procPath, dllPath);
 
 	if(!CreateProcess(
 		procPath.c_str(),
