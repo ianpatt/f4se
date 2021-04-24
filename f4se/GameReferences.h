@@ -455,7 +455,10 @@ public:
 	TESRace			* race;				// 418
 	UInt64			unk420;				// 420
 	ActorEquipData	* equipData;		// 428
-	UInt64	unk430[(0x490-0x430)/8];	// 430
+	UInt64	unk430;						// 430
+	UInt32	unk438;						// 438
+	UInt32	uiFlags;					// 43C
+	UInt64	unk440[(0x490-0x440)/8];	// 440
 
 	bool IsPlayerTeammate()
 	{
@@ -469,7 +472,9 @@ public:
 	DEFINE_MEMBER_FN(UpdateEquipment, void, 0x00408270); // TESObjectREFR::ReplaceModel
 };
 STATIC_ASSERT(offsetof(Actor, equipData) == 0x428);
+STATIC_ASSERT(offsetof(Actor, uiFlags) == 0x43C);
 STATIC_ASSERT(offsetof(Actor::MiddleProcess::Data08, equipData) == 0x288);
+STATIC_ASSERT(sizeof(Actor) == 0x490);
 
 // E10
 class PlayerCharacter : public Actor

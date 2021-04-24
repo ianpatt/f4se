@@ -29,3 +29,6 @@ Function QueueUpdate(bool bDoEquipment = false, int flags = 0) native
 
 ; Returns the current furniture reference
 ObjectReference Function GetFurnitureReference() native
+
+; Obtains whether this actor is flagged as protected or not
+bool Function IsProtected() native
