@@ -122,6 +122,11 @@ namespace papyrusActor
 		LookupREFRByHandle(furnitureHandle, refr);
 		return refr;
 	}
+
+	bool IsProtected(Actor * actor)
+	{
+		return actor && (actor->uiFlags & 0x80000) != 0;
+	}
 }
 
 void papyrusActor::RegisterFuncs(VirtualMachine* vm)
@@ -137,4 +142,7 @@ void papyrusActor::RegisterFuncs(VirtualMachine* vm)
 
 	vm->RegisterFunction(
 		new NativeFunction0<Actor, TESObjectREFR*>("GetFurnitureReference", "Actor", papyrusActor::GetFurnitureReference, vm));
+
+	vm->RegisterFunction(
+		new NativeFunction0<Actor, bool>("IsProtected", "Actor", papyrusActor::IsProtected, vm));
 }
