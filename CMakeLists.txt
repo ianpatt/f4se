@@ -29,7 +29,9 @@ find_package(
 		Interpreter
 )
 
-if (Python3_Interpreter_FOUND AND DEFINED Fallout4Path)
+if(Python3_Interpreter_FOUND AND DEFINED Fallout4Path)
+	# ---- Papyrus ----
+
 	include(cmake/modified_scripts.cmake)
 	include(cmake/vanilla_scripts.cmake)
 
@@ -151,6 +153,48 @@ if (Python3_Interpreter_FOUND AND DEFINED Fallout4Path)
 			${COMPILE_OUT}
 		OUTPUT
 			${SANITIZE_OUT}
+	)
+
+	# ---- Archive ----
+
+	set(SCRIPT "scripts/archive_artifacts.py")
+
+	set(FILES
+		"$<TARGET_FILE:f4se>"
+		"$<TARGET_FILE:f4se_loader>"
+		"$<TARGET_FILE:f4se_steam_loader>"
+		"${CMAKE_CURRENT_SOURCE_DIR}/CustomControlMap.txt"
+		"${CMAKE_CURRENT_SOURCE_DIR}/f4se_readme.txt"
+		"${CMAKE_CURRENT_SOURCE_DIR}/f4se_whatsnew.txt"
+	)
+
+	set(PDBS
+		"$<TARGET_PDB_FILE:f4se>"
+		"$<TARGET_PDB_FILE:f4se_loader>"
+		"$<TARGET_PDB_FILE:f4se_steam_loader>"
+	)
+
+	add_custom_target(
+		archive_artifacts
+		COMMAND
+			"${Python3_EXECUTABLE}"
+			"${CMAKE_CURRENT_SOURCE_DIR}/${SCRIPT}"
+			"--files" ${FILES}
+			"--major=${F4SE_VERSION_MAJOR}"
+			"--minor=${F4SE_VERSION_MINOR}"
+			"--patch=${F4SE_VERSION_PATCH}"
+			"--pdbs" ${PDBS}
+			"--src-dir=${CMAKE_CURRENT_SOURCE_DIR}"
+		WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+		VERBATIM
+	)
+
+	add_dependencies(
+		archive_artifacts
+		f4se
+		f4se_loader
+		f4se_steam_loader
+		papyrus_sanitize
 	)
 else()
 	if(NOT Python3_Interpreter_FOUND)
