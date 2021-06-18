@@ -1,3 +1,3 @@
-set(sources
+set(SOURCES
 	main.cpp
 )

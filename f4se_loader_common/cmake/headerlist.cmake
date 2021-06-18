@@ -1,4 +1,4 @@
-set(headers
+set(HEADERS
 	IdentifyEXE.h
 	Inject.h
 	LoaderError.h

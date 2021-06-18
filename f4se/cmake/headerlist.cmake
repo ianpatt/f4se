@@ -1,4 +1,4 @@
-set(headers
+set(HEADERS
 	BSCollision.h
 	BSGeometry.h
 	BSGraphics.h

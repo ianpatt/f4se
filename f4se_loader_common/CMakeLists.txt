@@ -31,8 +31,8 @@ include(cmake/sourcelist.cmake)
 source_group(
 	${PROJECT_NAME}
 	FILES
-		${headers}
-		${sources}
+		${HEADERS}
+		${SOURCES}
 )
 
 # ---- Create library ----
@@ -40,8 +40,8 @@ source_group(
 add_library(
 	${PROJECT_NAME}
 	STATIC
-	${headers}
-	${sources}
+	${HEADERS}
+	${SOURCES}
 )
 
 add_library(f4se::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
@@ -78,7 +78,7 @@ install(
 
 install(
 	FILES
-		${headers}
+		${HEADERS}
 	DESTINATION
 		${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
 )

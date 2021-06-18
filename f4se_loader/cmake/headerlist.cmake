@@ -1,3 +1,3 @@
-set(headers
+set(HEADERS
 	Options.h
 )

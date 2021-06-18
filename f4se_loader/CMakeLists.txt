@@ -44,16 +44,16 @@ include(cmake/sourcelist.cmake)
 source_group(
 	${PROJECT_NAME}
 	FILES
-		${headers}
-		${sources}
+		${HEADERS}
+		${SOURCES}
 )
 
 # ---- Create library ----
 
 add_executable(
 	${PROJECT_NAME}
-	${headers}
-	${sources}
+	${HEADERS}
+	${SOURCES}
 	${f4se_common_SOURCE_DIR}/f4se_version.rc
 )
 

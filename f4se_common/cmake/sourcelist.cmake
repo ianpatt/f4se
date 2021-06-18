@@ -1,4 +1,4 @@
-set(sources
+set(SOURCES
 	BranchTrampoline.cpp
 	Relocation.cpp
 	SafeWrite.cpp

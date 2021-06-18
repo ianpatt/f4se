@@ -34,8 +34,8 @@ def make_cmake(a_directories):
 
 				out.write(")\n")
 
-		do_make("headerlist", "headers", headers)
-		do_make("sourcelist", "sources", sources)
+		do_make("headerlist", "HEADERS", headers)
+		do_make("sourcelist", "SOURCES", sources)
 
 		os.chdir("..")
 

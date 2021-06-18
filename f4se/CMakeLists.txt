@@ -327,8 +327,8 @@ endif()
 add_library(
 	${PROJECT_NAME}
 	${F4SE_LINKAGE}
-	${headers}
-	${sources}
+	${HEADERS}
+	${SOURCES}
 	exports.def
 	${f4se_common_SOURCE_DIR}/f4se_version.rc
 )
@@ -384,7 +384,7 @@ install(
 
 install(
 	FILES
-		${headers}
+		${HEADERS}
 	DESTINATION
 		${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
 )

@@ -1,4 +1,4 @@
-set(sources
+set(SOURCES
 	BSCollision.cpp
 	BSGeometry.cpp
 	BSGraphics.cpp

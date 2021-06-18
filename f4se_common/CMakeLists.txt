@@ -33,8 +33,8 @@ include(cmake/sourcelist.cmake)
 source_group(
 	${PROJECT_NAME}
 	FILES
-		${headers}
-		${sources}
+		${HEADERS}
+		${SOURCES}
 		f4se_version.rc
 )
 
@@ -43,8 +43,8 @@ source_group(
 add_library(
 	${PROJECT_NAME}
 	STATIC
-	${headers}
-	${sources}
+	${HEADERS}
+	${SOURCES}
 	f4se_version.rc
 )
 
@@ -82,7 +82,7 @@ install(
 
 install(
 	FILES
-		${headers}
+		${HEADERS}
 	DESTINATION
 		${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
 )

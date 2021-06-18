@@ -1,4 +1,4 @@
-set(sources
+set(SOURCES
 	IdentifyEXE.cpp
 	Inject.cpp
 	LoaderError.cpp

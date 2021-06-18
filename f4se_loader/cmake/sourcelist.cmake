@@ -1,4 +1,4 @@
-set(sources
+set(SOURCES
 	Options.cpp
 	main.cpp
 )

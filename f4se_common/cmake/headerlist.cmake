@@ -1,4 +1,4 @@
-set(headers
+set(HEADERS
 	BranchTrampoline.h
 	Relocation.h
 	SafeWrite.h
