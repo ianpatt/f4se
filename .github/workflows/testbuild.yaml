@@ -11,7 +11,7 @@ jobs:
               with:
                 path: common
                 repository: ianpatt/common
-            - run: cmake -B common/build -S common -DCMAKE_INSTALL_PREFIX=extern common
-            - run: cmake --build common/build --config Release --target install
-            - run: cmake -B f4se/build -S f4se -DCMAKE_INSTALL_PREFIX=extern f4se
-            - run: cmake --build f4se/build --config Release
+            - run: cmake -B common/build -S common -DCMAKE_INSTALL_PREFIX=extern -DCMAKE_BUILD_TYPE=Release common
+            - run: cmake --build common/build --target install
+            - run: cmake -B f4se/build -S f4se -DCMAKE_INSTALL_PREFIX=extern -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON f4se
+            - run: cmake --build f4se/build
