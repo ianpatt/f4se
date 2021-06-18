@@ -1,6 +1,6 @@
 set(SOURCES
-	IdentifyEXE.cpp
-	Inject.cpp
-	LoaderError.cpp
-	Steam.cpp
+	"IdentifyEXE.cpp"
+	"Inject.cpp"
+	"LoaderError.cpp"
+	"Steam.cpp"
 )

@@ -30,7 +30,7 @@ def make_cmake(a_directories):
 				out.write("set({}\n".format(a_varname))
 
 				for file in a_files:
-					out.write("\t{}\n".format(file))
+					out.write('\t"{}"\n'.format(file))
 
 				out.write(")\n")
 
@@ -56,7 +56,7 @@ def make_papyrus(a_directories):
 			out.write("set({}_SCRIPTS\n".format(directory.upper()))
 
 			for file in files:
-				out.write("\t{}\n".format(file))
+				out.write('\t"{}"\n'.format(file))
 
 			out.write(")\n")
 

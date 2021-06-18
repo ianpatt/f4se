@@ -1,3 +1,3 @@
 set(SOURCES
-	main.cpp
+	"main.cpp"
 )

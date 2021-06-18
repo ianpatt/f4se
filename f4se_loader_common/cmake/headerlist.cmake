@@ -1,6 +1,6 @@
 set(HEADERS
-	IdentifyEXE.h
-	Inject.h
-	LoaderError.h
-	Steam.h
+	"IdentifyEXE.h"
+	"Inject.h"
+	"LoaderError.h"
+	"Steam.h"
 )

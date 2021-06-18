@@ -1,6 +1,6 @@
 set(SOURCES
-	BranchTrampoline.cpp
-	Relocation.cpp
-	SafeWrite.cpp
-	Utilities.cpp
+	"BranchTrampoline.cpp"
+	"Relocation.cpp"
+	"SafeWrite.cpp"
+	"Utilities.cpp"
 )

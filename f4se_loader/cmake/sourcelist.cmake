@@ -1,4 +1,4 @@
 set(SOURCES
-	Options.cpp
-	main.cpp
+	"Options.cpp"
+	"main.cpp"
 )
