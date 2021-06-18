@@ -2639,15 +2639,18 @@ endFunction
 ; trigger story manager attack
 function TriggerAttack(WorkshopScript workshopRef, int attackStrength)
 	wsTrace("   TriggerAttack on " + workshopRef)
-	if !WorkshopEventAttack.SendStoryEventAndWait(akLoc = workshopRef.myLocation, aiValue1 = attackStrength, akRef1 = workshopRef)
-		; Removed - now that we have an attack message, don't do fake attacks
-		;/
-		wsTrace(" 	no attack quest started - resolve if player is not nearby")
-		; no quest started - resolve if player is not at this location
-		if workshopRef.Is3DLoaded() == false && Game.Getplayer().GetDistance(workshopRef) > 4000
-			ResolveAttack(workshopRef, attackStrength, RaiderFaction)
+	;#102677 - Don't throw workshop attacks for vassal locations
+	if workshopRef.HasKeyword(WorkshopType02Vassal) == false
+		if !WorkshopEventAttack.SendStoryEventAndWait(akLoc = workshopRef.myLocation, aiValue1 = attackStrength, akRef1 = workshopRef)
+			; Removed - now that we have an attack message, don't do fake attacks
+			;/
+			wsTrace(" 	no attack quest started - resolve if player is not nearby")
+			; no quest started - resolve if player is not at this location
+			if workshopRef.Is3DLoaded() == false && Game.Getplayer().GetDistance(workshopRef) > 4000
+				ResolveAttack(workshopRef, attackStrength, RaiderFaction)
+			endif
+			/;
 		endif
-		/;
 	endif
 	wsTrace("   TriggerAttack DONE")
 endFunction
@@ -3842,3 +3845,36 @@ function ToggleOnAllWorkshops()
 
 	PlayerOwnsAWorkshop = true
 endFunction
+
+bool Function PermanentActorsAliveAndPresent(WorkshopScript workshopRef)
+	int i = 0
+	int iCount = PermanentActorAliases.GetCount()
+
+	;If there are permanent actors...
+	if iCount > 0
+
+		int iClearedWorkshopID = workshopRef.GetWorkshopID()
+
+		;Then loop through all the permanent actors and get their workshop ID...
+		while i < iCount
+			Actor act = (PermanentActorAliases.GetAt(i) as Actor)
+			wsTrace("PermanentActorsAliveAndPresent: Checking permanent actor: " + act)
+			int iActorWorkshopID = (act as WorkshopNPCScript).GetWorkshopID()
+
+			;If the selected Permanent Actor is assigned to a workshop location and isn't dead...
+			if iActorWorkshopID > -1 && !act.IsDead()
+				wsTrace("PermanentActorsAliveAndPresent: Comparing actor's workshop ID: " + iActorWorkshopID + "  and cleared workshop ID: " + iClearedWorkshopID)
+
+				;And they're assigned to the cleared location, return true
+				if iActorWorkshopID == iClearedWorkshopID
+					return true
+				endif
+
+			endif
+
+			i += 1
+		endwhile
+	endif
+
+	return false
+EndFunction

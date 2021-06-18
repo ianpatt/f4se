@@ -363,7 +363,7 @@ EndEvent
 ; called by OnActivate and workbench scripts to check if player ownership should change
 function CheckOwnership()
 		; if location is cleared, automatically count this as owned by player
-		if myLocation.IsCleared() && !OwnedByPlayer && EnableAutomaticPlayerOwnership
+		if myLocation.IsCleared() && !OwnedByPlayer && EnableAutomaticPlayerOwnership && !WorkshopParent.PermanentActorsAliveAndPresent(self)
 			SetOwnedByPlayer(true)
 			; go into workshop mode
 ;			StartWorkshop()
