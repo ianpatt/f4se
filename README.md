@@ -13,7 +13,7 @@ cmake --build f4se/build
 
 ## Build Options
 
-* `BUILD_SHARED_LIBS`: Set to `ON` to build f4se as a dll, or `OFF` to build is as a static lib. See [cmake documentation](https://cmake.org/cmake/help/latest/variable/BUILD_SHARED_LIBS.html) for more info.
+* `BUILD_SHARED_LIBS`: Set to `ON` to build f4se as a dll, or `OFF` to build as a static lib. See [cmake documentation](https://cmake.org/cmake/help/latest/variable/BUILD_SHARED_LIBS.html) for more info.
 * `CMAKE_MSVC_RUNTIME_LIBRARY`: See [cmake documentation](https://cmake.org/cmake/help/latest/variable/CMAKE_MSVC_RUNTIME_LIBRARY.html) for more info.
 * `F4SE_COPY_OUTPUT`: Set to `ON` to copy built files to the Fallout 4 directory as a post-build step.
 * `Fallout4Path`: Set to the directory containing `Fallout4.exe`. Needed for `F4SE_COPY_OUTPUT` / papyrus compilation targets.
