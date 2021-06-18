@@ -1,0 +1,31 @@
+set(MODIFIED_SCRIPTS
+	Actor
+	ActorBase
+	Armor
+	ArmorAddon
+	Cell
+	Component
+	ConstructibleObject
+	DefaultObject
+	EncounterZone
+	EquipSlot
+	F4SE
+	FavoritesManager
+	Form
+	Game
+	HeadPart
+	Input
+	InstanceData
+	Location
+	MatSwap
+	Math
+	MiscObject
+	ObjectMod
+	ObjectReference
+	Perk
+	ScriptObject
+	UI
+	Utility
+	WaterType
+	Weapon
+)
