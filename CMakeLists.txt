@@ -205,5 +205,5 @@ else()
 		set(REASON "¯\\_(ツ)_/¯")
 	endif()
 
-	message(WARNING "${REASON}. Skipping papyrus target.")
+	message(WARNING "${REASON}. Skipping papyrus targets.")
 endif()
