@@ -40,28 +40,21 @@ def make_cmake(a_directories):
 		os.chdir("..")
 
 def make_papyrus(a_directories):
-	root = os.getcwd()
-	os.chdir("scripts")
 	for directory in a_directories:
-		os.chdir(directory)
-
 		files = []
-		with os.scandir() as it:
+		with os.scandir(os.path.join("scripts", directory)) as it:
 			for entry in it:
 				if entry.is_file() and entry.name.endswith(".psc"):
 					files.append(entry.name.rpartition(".")[0])
 
 		files.sort()
-		with open("{}/cmake/{}_scripts.cmake".format(root, directory), "w", encoding="utf-8") as out:
+		with open("cmake/{}_scripts.cmake".format(directory), "w", encoding="utf-8") as out:
 			out.write("set({}_SCRIPTS\n".format(directory.upper()))
 
 			for file in files:
 				out.write('\t"{}"\n'.format(file))
 
 			out.write(")\n")
-
-		os.chdir("..")
-	os.chdir("..")
 
 def main():
 	cur = os.path.dirname(os.path.realpath(__file__))
