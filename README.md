@@ -5,10 +5,10 @@
 ```
 git clone https://github.com/ianpatt/common
 git clone https://github.com/ianpatt/f4se
-cmake -B common/build -S common -DCMAKE_INSTALL_PREFIX=extern common
-cmake --build common/build --config Release --target install
-cmake -B f4se/build -S f4se -DCMAKE_INSTALL_PREFIX=extern -DBUILD_SHARED_LIBS=ON f4se
-cmake --build f4se/build --config Release
+cmake -B common/build -S common -DCMAKE_INSTALL_PREFIX=extern -DCMAKE_BUILD_TYPE=Release common
+cmake --build common/build --target install
+cmake -B f4se/build -S f4se -DCMAKE_INSTALL_PREFIX=extern -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON f4se
+cmake --build f4se/build
 ```
 
 ## Build Options
