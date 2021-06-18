@@ -1,50 +1,26 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.20)
 
-# ---- Project ----
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/versioning.cmake)
-
-project(
-	f4se
-	VERSION ${F4SE_VERSION_MAJOR}.${F4SE_VERSION_MINOR}.${F4SE_VERSION_PATCH}
-	LANGUAGES CXX
-)
-
-# ---- Include guards ----
-
-if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
-	message(
-		FATAL_ERROR
-			"In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there."
-)
-endif()
-
-# ---- Build options ----
-
-option(F4SE_STATIC_LIB OFF "Choose static linkage for f4se's add_library command. Useful for downstream targets.")
+include(../cmake/common.cmake)
+include(cmake/headerlist.cmake)
+include(cmake/sourcelist.cmake)
 
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON CACHE BOOL "")
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_DEBUG OFF CACHE BOOL "")
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STRING "")
 
-# ---- Dependencies ----
+add_project(
+	PROJECT f4se
+	TARGET_TYPE LIBRARY
+	MISC_FILES
+		${HEADERS}
+		${SOURCES}
+		exports.def
+)
 
-if (NOT TARGET f4se_common)
-	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../f4se_common f4se_common)	# bundled
-endif()
+maybe_add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../f4se_common f4se_common)	# bundled
+maybe_add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../xbyak xbyak)	# bundled
 
-if (NOT TARGET xbyak)
-	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../xbyak xbyak)	# bundled
-endif()
-
-if (NOT TARGET common)
-	find_package(common REQUIRED CONFIG)
-endif()
-
-# ---- Add source files ----
-
-include(cmake/headerlist.cmake)
-include(cmake/sourcelist.cmake)
+find_package(common REQUIRED CONFIG)
 
 source_group(
 	${PROJECT_NAME}
@@ -316,27 +292,6 @@ source_group(
 		ScaleformValue.h
 )
 
-# ---- Create library ----
-
-if (F4SE_STATIC_LIB)
-	set(F4SE_LINKAGE "STATIC")
-else()
-	set(F4SE_LINKAGE "SHARED")
-endif()
-
-add_library(
-	${PROJECT_NAME}
-	${F4SE_LINKAGE}
-	${HEADERS}
-	${SOURCES}
-	exports.def
-	${f4se_common_SOURCE_DIR}/f4se_version.rc
-)
-
-add_library(f4se::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/configuration.cmake)
-
 set_target_properties(
 	${PROJECT_NAME}
 	PROPERTIES
@@ -350,65 +305,19 @@ target_compile_definitions(
 		RUNTIME_VERSION=${F4_VERSION_PACKED}
 )
 
-target_compile_features(
-	${PROJECT_NAME}
-	PUBLIC
-		cxx_std_11
-)
-
-target_include_directories(
-	${PROJECT_NAME}
-	PUBLIC
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
-		$<INSTALL_INTERFACE:include>
-)
-
 target_link_libraries(
 	${PROJECT_NAME}
 	PUBLIC
 		f4se::f4se_common
-		Xbyak::xbyak
+		xbyak::xbyak
 		xse::common
 )
 
-# ---- Create an installable target ----
-
-include(GNUInstallDirs)
-
-install(
-	TARGETS
-		${PROJECT_NAME}
-	EXPORT
-		${PROJECT_NAME}-targets
+target_sources(
+	${PROJECT_NAME}
+	PRIVATE
+		${f4se_common_SOURCE_DIR}/f4se_version.rc
 )
 
-install(
-	FILES
-		${HEADERS}
-	DESTINATION
-		${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}
-)
-
-configure_file(
-	cmake/config.cmake.in
-	${PROJECT_NAME}-config.cmake
-	@ONLY
-)
-
-install(
-	FILES
-		${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
-	DESTINATION
-		${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-)
-
-install(
-	EXPORT
-		${PROJECT_NAME}-targets
-	NAMESPACE
-		f4se::
-	DESTINATION
-		${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-)
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/installation.cmake)
+copy_files()
+install_project()
