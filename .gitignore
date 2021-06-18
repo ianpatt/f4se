@@ -32,4 +32,4 @@ scripts/build_bin
 scripts/build_src
 
 # cmake
-build/*
+/build*
