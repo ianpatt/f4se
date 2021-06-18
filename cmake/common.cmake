@@ -187,8 +187,8 @@ macro(add_project)
 			PRIVATE
 				/W3	# Warning level
 
-				"$<$<CONFIG:Debug>:${COMPILE_OPTIONS_DEBUG}>"
-				"$<$<CONFIG:Release>:${COMPILE_OPTIONS_RELEASE}>"
+				"$<$<CONFIG:Debug>:${_COMPILE_OPTIONS_DEBUG}>"
+				"$<$<CONFIG:Release>:${_COMPILE_OPTIONS_RELEASE}>"
 		)
 
 		set(_LINK_OPTIONS_DEBUG
@@ -207,8 +207,8 @@ macro(add_project)
 		target_link_options(
 			${PROJECT_NAME}
 			PRIVATE
-				"$<$<CONFIG:Debug>:${LINK_OPTIONS_DEBUG}>"
-				"$<$<CONFIG:Release>:${LINK_OPTIONS_RELEASE}>"
+				"$<$<CONFIG:Debug>:${_LINK_OPTIONS_DEBUG}>"
+				"$<$<CONFIG:Release>:${_LINK_OPTIONS_RELEASE}>"
 		)
 
 		if(NOT CMAKE_GENERATOR STREQUAL "Ninja")
