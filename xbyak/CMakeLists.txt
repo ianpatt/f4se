@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.20)
 
 # ---- Project ----
 
@@ -13,7 +13,7 @@ project(
 if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
 	message(
 		FATAL_ERROR
-			"In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there."
+		"In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there."
 )
 endif()
 
@@ -22,13 +22,13 @@ endif()
 include(GNUInstallDirs)
 
 add_library(${PROJECT_NAME} INTERFACE)
-add_library(Xbyak::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 target_include_directories(
 	${PROJECT_NAME}
 	INTERFACE
-		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
-		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+		"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>"
+		"$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
 install(
@@ -56,7 +56,7 @@ configure_package_config_file(
 install(
 	EXPORT ${PROJECT_NAME}_Targets
 	FILE ${PROJECT_NAME}Targets.cmake
-	NAMESPACE Xbyak::
+	NAMESPACE ${PROJECT_NAME}::
 	DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake
 )
 
