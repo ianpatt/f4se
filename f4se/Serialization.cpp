@@ -305,7 +305,7 @@ namespace Serialization
 
 	bool ResolveHandle(UInt64 handle, UInt64 * handleOut)
 	{
-		UInt8	modID = handle >> 24;
+		UInt32	modID = (handle & 0xFF000000) >> 24;
 
 		if (modID == 0xFF)
 		{
