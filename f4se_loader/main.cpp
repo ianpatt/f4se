@@ -240,14 +240,18 @@ int main(int argc, char ** argv)
 	startupInfo.cb = sizeof(startupInfo);
 
 	AugmentEnvironment(procPath, dllPath);
-
+	
+	DWORD createFlags = CREATE_SUSPENDED;
+	if(g_options.m_setPriority)
+		createFlags |= g_options.m_priority;
+	
 	if(!CreateProcess(
 		procPath.c_str(),
 		NULL,	// no args
 		NULL,	// default process security
 		NULL,	// default thread security
 		FALSE,	// don't inherit handles
-		CREATE_SUSPENDED,
+		createFlags,
 		NULL,	// no new environment
 		NULL,	// no new cwd
 		&startupInfo, &procInfo))

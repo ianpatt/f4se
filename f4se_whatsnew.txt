@@ -4,6 +4,7 @@
 - new interface for plugins to allocate from F4SE's branch-accessable pools
 - add new command line option "waitfordebugger" to explicitly wait for a debugger to attach regardless of build config
 - add Actor.IsProtected
+- fix setting process priority in f4se_loader
 
 0.6.21
 - fix Game.GetInstalledLightPlugins when more than 255 plugins are installed
