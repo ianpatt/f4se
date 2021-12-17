@@ -142,6 +142,20 @@ void HandleButtonEvent(ButtonEvent * inputEvent)
 			SendPapyrusEvent1<BSFixedString>(reg.handle, reg.scriptName, "OnControlDown", control);
 		}
 		);
+
+		if (deviceType == InputEvent::kDeviceType_Gamepad)
+		{
+			g_inputKeyEventRegs.ForEach(
+				keyMask,
+				[&keyMask](const EventRegistration<NullParameters>& reg)
+				{
+					SendPapyrusEvent1<UInt32>(reg.handle, reg.scriptName, "OnGamepadButtonDown", keyMask);
+				}
+			);
+		}
+
+
+
 	}
 	else if (isUp)
 	{
@@ -159,6 +173,21 @@ void HandleButtonEvent(ButtonEvent * inputEvent)
 			SendPapyrusEvent2<BSFixedString, float>(reg.handle, reg.scriptName, "OnControlUp", control, timer);
 		}
 		);
+
+		if (deviceType == InputEvent::kDeviceType_Gamepad)
+		{
+			g_inputGamepadButtonEventRegs.ForEach(
+				keyMask,
+				[&keyMask, &timer](const EventRegistration<NullParameters>& reg)
+				{
+					SendPapyrusEvent2<UInt32, float>(reg.handle, reg.scriptName, "OnGamepadButtonUp", keyMask, timer);
+				}
+			);
+
+		}
+
+
+
 	}
 }
 

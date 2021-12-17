@@ -562,6 +562,7 @@ public:
 };
 
 extern RegistrationMapHolder<UInt32>									g_inputKeyEventRegs;
+extern RegistrationMapHolder<UInt32>									g_inputGamepadButtonEventRegs;
 extern RegistrationMapHolder<BSFixedString>								g_inputControlEventRegs;
 extern RegistrationMapHolder<BSFixedString, ExternalEventParameters>	g_externalEventRegs;
 extern RegistrationSetHolder<NullParameters>							g_cameraEventRegs;

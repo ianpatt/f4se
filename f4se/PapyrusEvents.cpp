@@ -8,6 +8,7 @@ RelocAddr <_CallFunctionNoWait> CallFunctionNoWait_Internal(0x013D69D0);
 RelocAddr <_CallGlobalFunctionNoWait> CallGlobalFunctionNoWait_Internal(0x01451A80);
 
 RegistrationMapHolder<UInt32>									g_inputKeyEventRegs;
+RegistrationMapHolder<UInt32>									g_inputGamepadButtonEventRegs;
 RegistrationMapHolder<BSFixedString>							g_inputControlEventRegs;
 RegistrationMapHolder<BSFixedString, ExternalEventParameters>	g_externalEventRegs;
 RegistrationSetHolder<NullParameters>							g_cameraEventRegs;
