@@ -2,9 +2,12 @@
 - fix ConstructibleComponent.object type
 - add a basic diagnosis for the dreaded error code 126
 - new interface for plugins to allocate from F4SE's branch-accessable pools
+- new interface for plugins to query other plugins PluginInfo struct
 - add new command line option "waitfordebugger" to explicitly wait for a debugger to attach regardless of build config
 - add Actor.IsProtected
+- fix Perk.IsPlayable, Perk.IsHidden
 - fix setting process priority in f4se_loader
+- fix resolving handles referring to ESL plugins
 
 0.6.21
 - fix Game.GetInstalledLightPlugins when more than 255 plugins are installed
