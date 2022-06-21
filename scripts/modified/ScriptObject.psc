@@ -60,3 +60,13 @@ Function UnregisterForFurnitureEvent(Var filter = None) native
 
 Event OnFurnitureEvent(Actor akActor, ObjectReference akFurniture, bool isGettingUp)
 EndEvent
+
+; gamepad buttons using xinput button codes
+Function RegisterForGamepadButton(int key) native
+Function UnregisterForGamepadButton(int key) native
+
+Event OnGamepadButtonDown(int keyCode)
+EndEvent
+
+Event OnGamepadButtonUp(int keyCode, float time)
+EndEvent
