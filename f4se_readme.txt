@@ -1,4 +1,4 @@
-Fallout 4 Script Extender v0.6.22
+Fallout 4 Script Extender v0.6.23
 by Ian Patterson, Stephen Abel, and Brendan Borthwick (ianpatt, behippo, and plb)
 
 The Fallout 4 Script Extender, or F4SE for short, is a modder's resource that expands the scripting capabilities of Fallout 4. It does so without modifying the executable files on disk, so there are no permanent side effects.
