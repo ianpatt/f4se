@@ -59,6 +59,8 @@ private:
 
 	static LoadedPlugin		* s_currentLoadingPlugin;
 	static PluginHandle		s_currentPluginHandle;
+
+	static bool s_hideTrampolineInterface;
 };
 
 // a non-owning, thread-safe allocator for a block of memory
