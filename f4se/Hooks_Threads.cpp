@@ -51,6 +51,13 @@ void TaskInterface::AddTask(ITaskDelegate * task)
 	s_taskQueueLock.Leave();
 }
 
+void TaskInterface::AddTaskPermanent(ITaskDelegate* task)
+{
+	s_taskQueueLock.Enter();
+	s_tasksPermanent.push_back(task);
+	s_taskQueueLock.Leave();
+}
+
 void ProcessEventQueue_Hook(void * unk1)
 {
 	s_uiQueueLock.Enter();
