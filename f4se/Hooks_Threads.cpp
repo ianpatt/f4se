@@ -9,6 +9,7 @@
 
 ICriticalSection		s_taskQueueLock;
 std::queue<ITaskDelegate*>	s_tasks;
+std::vector<ITaskDelegate*>	s_tasksPermanent;
 
 ICriticalSection		s_uiQueueLock;
 std::queue<ITaskDelegate*>	s_uiQueue;
@@ -26,6 +27,11 @@ bool MessageQueueProcessTask_Hook(void * messageQueue, float timeout, UInt32 unk
 	bool result = MessageQueueProcessTask_Original(messageQueue, timeout, unk1);
 
 	s_taskQueueLock.Enter();
+	
+	for (auto it = s_tasksPermanent.begin(); it != s_tasksPermanent.end(); it++) {
+		(*it)->Run();
+	}
+	
 	while (!s_tasks.empty())
 	{
 		ITaskDelegate * cmd = s_tasks.front();
