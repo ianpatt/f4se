@@ -5,6 +5,9 @@ string Function GetName() native
 ; sets the name of the form
 Function SetName(string name) native
 
+; returns the editor ID of the form if possible (not all types store editor IDs at runtime)
+string Function GetEditorID() native
+
 ; returns the description of the form
 string Function GetDescription() native
 

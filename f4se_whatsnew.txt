@@ -1,5 +1,6 @@
 0.6.24
 - ScriptObject.RegisterForGamepadButton and related
+- Form.GetEditorID
 
 0.6.23
 - workaround for bug in High FPS Physics Fix
