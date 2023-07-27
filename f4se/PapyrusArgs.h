@@ -217,6 +217,11 @@ public:
 
 	void UnpackVariable(VMValue * value)
 	{
+		if (!value->data.var)
+		{
+			return;
+		}
+		
 		m_var = value->data.var;
 		m_value = *m_var;
 	}
