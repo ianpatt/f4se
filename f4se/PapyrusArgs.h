@@ -217,8 +217,16 @@ public:
 
 	void UnpackVariable(VMValue * value)
 	{
-		m_var = value->data.var;
-		m_value = *m_var;
+		if (value->data.var)
+		{
+			m_var = value->data.var;
+			m_value = *m_var;
+		}
+		else
+		{
+			m_var = nullptr;
+			m_value.SetNone();
+		}
 	}
 
 	bool IsNone()
