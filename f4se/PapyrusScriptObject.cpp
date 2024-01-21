@@ -108,7 +108,7 @@ namespace papyrusScriptObject
 			params = const_cast<FormParameters*>(&it->params);
 		}
 		
-		if(var.IsNone())
+		if(!var.IsNone())
 		{
 			// ObjectReference
 			TESObjectREFR* refr = nullptr;
