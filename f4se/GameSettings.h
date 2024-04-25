@@ -72,7 +72,7 @@ public:
 	{
 	public:
 		MEMBER_FN_PREFIX(CollectionMap);
-		DEFINE_MEMBER_FN(GetSetting, void, 0x0001E290, BSFixedString * name, Setting *** setting);
+		DEFINE_MEMBER_FN(GetSetting, void, 0x00375510, BSFixedString * name, Setting *** setting);
 	};
 
 	void	* unk118;	// 118

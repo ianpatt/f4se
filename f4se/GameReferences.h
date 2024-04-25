@@ -240,12 +240,12 @@ public:
 	void DecRef() { handleRefObject.DecRef(); }
 
 	MEMBER_FN_PREFIX(TESObjectREFR);
-	DEFINE_MEMBER_FN(GetReferenceName, const char *, 0x0040B760);
-	DEFINE_MEMBER_FN(GetWorldspace, TESWorldSpace*, 0x0040F290);
-	DEFINE_MEMBER_FN(GetInventoryWeight, float, 0x00400470);
-	DEFINE_MEMBER_FN(GetCarryWeight, float, 0x00D871F0);
-	// 7055D6CB4B64E11E63908512704F8871CEC025D3+11E
-	DEFINE_MEMBER_FN_1(ForEachAlias, void, 0x003F7960, IAliasFunctor * functor);
+	DEFINE_MEMBER_FN(GetReferenceName, const char *, 0x004BF350);
+	DEFINE_MEMBER_FN(GetWorldspace, TESWorldSpace*, 0x004C3000);
+	DEFINE_MEMBER_FN(GetInventoryWeight, float, 0x004B3B20);
+	DEFINE_MEMBER_FN(GetCarryWeight, float, 0x00BEACF0);
+	// 
+	DEFINE_MEMBER_FN_1(ForEachAlias, void, 0x004AA910, IAliasFunctor * functor);
 };
 STATIC_ASSERT(offsetof(TESObjectREFR, parentCell) == 0xB8);
 STATIC_ASSERT(offsetof(TESObjectREFR, baseForm) == 0xE0);
@@ -430,7 +430,7 @@ public:
 		Data08 * unk08;	// 08
 
 		MEMBER_FN_PREFIX(MiddleProcess);
-		DEFINE_MEMBER_FN(UpdateEquipment, void, 0x00E60860, Actor * actor, UInt32 flags); 
+		DEFINE_MEMBER_FN(UpdateEquipment, void, 0x00CA0F30, Actor * actor, UInt32 flags); 
 	};
 	MiddleProcess * middleProcess;					// 300
 	UInt64	unk308[(0x338-0x308)/8];
@@ -467,9 +467,9 @@ public:
 	bool GetEquippedExtraData(UInt32 slotIndex, ExtraDataList ** extraData);
 
 	MEMBER_FN_PREFIX(Actor);
-	DEFINE_MEMBER_FN(QueueUpdate, void, 0x00D8A1F0, bool bDoFaceGen, UInt32 unk2, bool DoQueue, UInt32 flags); // 0, 0, 1, 0
-	DEFINE_MEMBER_FN(IsHostileToActor, bool, 0x00D91080, Actor * actor);
-	DEFINE_MEMBER_FN(UpdateEquipment, void, 0x00408270); // TESObjectREFR::ReplaceModel
+	DEFINE_MEMBER_FN(QueueUpdate, void, 0x00BEDF90, bool bDoFaceGen, UInt32 unk2, bool DoQueue, UInt32 flags); // 0, 0, 1, 0
+	DEFINE_MEMBER_FN(IsHostileToActor, bool, 0x00BF5840, Actor * actor);
+	DEFINE_MEMBER_FN(UpdateEquipment, void, 0x004BBEA0); // TESObjectREFR::ReplaceModel
 };
 STATIC_ASSERT(offsetof(Actor, equipData) == 0x428);
 STATIC_ASSERT(offsetof(Actor, uiFlags) == 0x43C);

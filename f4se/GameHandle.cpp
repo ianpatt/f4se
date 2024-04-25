@@ -1,10 +1,10 @@
 #include "f4se/GameHandle.h"
 
-// 0BE70664D4DF11A3F88748D9CB45B23D0B4FD50C+2F
-RelocAddr <_LookupREFRByHandle> LookupREFRByHandle(0x0000AB60);
+// 
+RelocAddr <_LookupREFRByHandle> LookupREFRByHandle(0x0024C210);
 
-// 4369DFCC9BCC88536EEB89E5A107B60941016295+26
-RelocAddr <_CreateHandleByREFR> CreateHandleByREFR(0x0000A8A0);
+// 
+RelocAddr <_CreateHandleByREFR> CreateHandleByREFR(0x001D5050);
 
-// 3A53807E195FFAEA7AA0EF7FD42D84E4EA0B755A+D0
-RelocPtr <UInt32> g_invalidRefHandle(0x038CCE04);
+// 
+RelocPtr <UInt32> g_invalidRefHandle(0x02E61E04);

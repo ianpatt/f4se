@@ -1,7 +1,8 @@
 #include "f4se/GameAPI.h"
+#include <cstdio>
 
-// B53CEF7AA7FC153E48CDE9DBD36CD8242577E27F+11D
-RelocPtr <Heap> g_mainHeap(0x038CC980);
+// 
+RelocPtr <Heap> g_mainHeap(0x02E61980);
 
 void * Heap_Allocate(size_t size)
 {
@@ -13,11 +14,11 @@ void Heap_Free(void * ptr)
 	CALL_MEMBER_FN(g_mainHeap, Free)(ptr, false);
 }
 
-// CF40EA3DCB94FC3927A17CCA60198108D4742CA7+68
-RelocPtr <ConsoleManager *> g_console(0x058E0AE0);
+// 
+RelocPtr <ConsoleManager *> g_console(0x02E74E78);
 
-// 1C0F98B1DC3F82F9BD55E938765C22AD25B75571+15
-RelocAddr <UInt32 *> g_consoleHandle(0x05ADB4A8);
+// 
+RelocAddr <UInt32 *> g_consoleHandle(0x0306EEA0);
 
 void Console_Print(const char * fmt, ...)
 {
@@ -27,7 +28,20 @@ void Console_Print(const char * fmt, ...)
 		va_list args;
 		va_start(args, fmt);
 
-		CALL_MEMBER_FN(mgr, VPrint)(fmt, args);
+		char buf[4096];
+
+		int len = vsprintf_s(buf, sizeof(buf), fmt, args);
+		if(len > 0)
+		{
+			// add newline and terminator, truncate if not enough room
+			if(len > (sizeof(buf) - 2))
+				len = sizeof(buf) - 2;
+
+			buf[len] = '\n';
+			buf[len + 1] = 0;
+
+			CALL_MEMBER_FN(mgr, Print)(buf);
+		}
 
 		va_end(args);
 	}

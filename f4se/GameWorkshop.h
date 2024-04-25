@@ -64,7 +64,7 @@ public:
 	TESObjectCELL	* cell;			// 20
 	TESWorldSpace	* worldspace;	// 28
 
-	DEFINE_MEMBER_FN_1(ctor, ContextData*, 0x001F8830, Actor * refr);
+	DEFINE_MEMBER_FN_1(ctor, ContextData*, 0x00335080, Actor * refr);
 };
 
 // 08
@@ -84,8 +84,8 @@ public:
 	SInt32									powerRating;
 	bool									offGridItems;
 
-	DEFINE_MEMBER_FN_1(AddItem, void, 0x001F6890, TESObjectREFR* akRef);
-	DEFINE_MEMBER_FN_3(AddConnection, void, 0x001F6E20, TESObjectREFR* akRef1, TESObjectREFR* akRef2, TESObjectREFR* akWireRef);
+	DEFINE_MEMBER_FN_1(AddItem, void, 0x00332920, TESObjectREFR* akRef);
+	DEFINE_MEMBER_FN_3(AddConnection, void, 0x00332F60, TESObjectREFR* akRef1, TESObjectREFR* akRef2, TESObjectREFR* akWireRef);
 };
 
 extern RelocPtr<BSPointerHandle<TESObjectREFR>> hCurrentWorkshop;

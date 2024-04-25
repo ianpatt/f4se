@@ -38,9 +38,9 @@ class UIMessageManager
 {
 public:
 	MEMBER_FN_PREFIX(UIMessageManager);
-	DEFINE_MEMBER_FN(SendUIMessage, void, 0x0204CB90, BSFixedString& menuName, UInt32 type);
-	// 325A22C9C57B8175C01F1E071B4E272401994375+CB
-	DEFINE_MEMBER_FN(SendUIMessageEx, void, 0x012BAA10, BSFixedString& menuName, UInt32 type, UIMessage * pExtraData);
+	DEFINE_MEMBER_FN(SendUIMessage, void, 0x0196DE60, BSFixedString& menuName, UInt32 type);
+	// 
+	DEFINE_MEMBER_FN(SendUIMessageEx, void, 0x00FFCAD0, BSFixedString& menuName, UInt32 type, UIMessage * pExtraData);
 };
 extern RelocPtr<UIMessageManager*>	g_uiMessageManager;
 
@@ -193,21 +193,21 @@ public:
 private:
 	// ??_7GameMenuBase@@6B@
 
-	DEFINE_MEMBER_FN_0(Impl_ctor, void *, 0x00B324E0);
-	DEFINE_MEMBER_FN_0(Impl_dtor, void *, 0x00B325A0);
-	DEFINE_MEMBER_FN_2(Impl_AdvanceMovie, void, 0x0210EED0, float unk0, void * unk1);
-	DEFINE_MEMBER_FN_1(Impl_ProcessMessage, UInt32, 0x0210EE50, UIMessage * msg);
-	DEFINE_MEMBER_FN_2(Impl_PassesRenderConditionText, bool, 0x0210F310, UInt32 unk0, const BSFixedString& unk1);
-	DEFINE_MEMBER_FN_1(Impl_SetIsTopButtonBar, void, 0x00B32A50, UInt8 unk0);
-	DEFINE_MEMBER_FN_2(Impl_OnMenuStackChanged, void, 0x0210F550, BSFixedString & menuName, bool unk1);
-	DEFINE_MEMBER_FN_0(Impl_OnMenuDisplayStateChanged, void, 0x00B32AC0);
-	DEFINE_MEMBER_FN_0(Impl_OnAddedToMenuStack, void, 0x00B32B80);
-	DEFINE_MEMBER_FN_0(Impl_OnRemovedFromMenuStack, void, 0x00B32BC0)
-	DEFINE_MEMBER_FN_1(Impl_CanAdvanceMovie, bool, 0x0210F6A0, bool unk0);
-	DEFINE_MEMBER_FN_0(Impl_CacheShaderFXQuadsForRenderer, bool, 0x00B32870);
-	DEFINE_MEMBER_FN_1(Impl_TransferCachedShaderFXQuadsForRenderer, void, 0x00B32900, const BSFixedString& unk1);
-	DEFINE_MEMBER_FN_1(Impl_SetViewportRect, void, 0x00B32970, const NiRect<float>& unk0);
-	DEFINE_MEMBER_FN_2(Impl_AppendShaderFXInfos, void, 0x00B329C0, BSTArray<UIShaderFXInfo>* colorFX, BSTArray<UIShaderFXInfo>* backgroundFX);
+	DEFINE_MEMBER_FN_0(Impl_ctor, void *, 0x00A1E6F0);
+	DEFINE_MEMBER_FN_0(Impl_dtor, void *, 0x00A1E7B0);
+	DEFINE_MEMBER_FN_2(Impl_AdvanceMovie, void, 0x019FDC20, float unk0, void * unk1);
+	DEFINE_MEMBER_FN_1(Impl_ProcessMessage, UInt32, 0x019FDAF0, UIMessage * msg);
+	DEFINE_MEMBER_FN_2(Impl_PassesRenderConditionText, bool, 0x019FE060, UInt32 unk0, const BSFixedString& unk1);
+	DEFINE_MEMBER_FN_1(Impl_SetIsTopButtonBar, void, 0x00A1ECE0, UInt8 unk0);
+	DEFINE_MEMBER_FN_2(Impl_OnMenuStackChanged, void, 0x019FE2A0, BSFixedString & menuName, bool unk1);
+	DEFINE_MEMBER_FN_0(Impl_OnMenuDisplayStateChanged, void, 0x00A1ED50);
+	DEFINE_MEMBER_FN_0(Impl_OnAddedToMenuStack, void, 0x00A1EE10);
+	DEFINE_MEMBER_FN_0(Impl_OnRemovedFromMenuStack, void, 0x00A1EE50);
+	DEFINE_MEMBER_FN_1(Impl_CanAdvanceMovie, bool, 0x019FE3F0, bool unk0);
+	DEFINE_MEMBER_FN_0(Impl_CacheShaderFXQuadsForRenderer, bool, 0x00A1EAF0);
+	DEFINE_MEMBER_FN_1(Impl_TransferCachedShaderFXQuadsForRenderer, void, 0x00A1EB80, const BSFixedString& unk1);
+	DEFINE_MEMBER_FN_1(Impl_SetViewportRect, void, 0x00A1EBF0, const NiRect<float>& unk0);
+	DEFINE_MEMBER_FN_2(Impl_AppendShaderFXInfos, void, 0x00A1EC40, BSTArray<UIShaderFXInfo>* colorFX, BSTArray<UIShaderFXInfo>* backgroundFX);
 };
 STATIC_ASSERT(offsetof(GameMenuBase, filterHolder) == 0x88);
 STATIC_ASSERT(sizeof(GameMenuBase) == 0xE0);
@@ -227,8 +227,8 @@ public:
 	UInt32	unk1E4;				// 1E4
 	UInt64	unk1E8[(0x218-0x1E8)/8];
 
-	DEFINE_MEMBER_FN_0(LoadCharacterParameters, void, 0x00B41580); // This function updates all the internals from the current character
-																 // It's followed by a call to onCommitCharacterPresetChange
+	DEFINE_MEMBER_FN_0(LoadCharacterParameters, void, 0x00A2BD40);	// This function updates all the internals from the current character
+																	// It's followed by a call to onCommitCharacterPresetChange
 };
 STATIC_ASSERT(offsetof(LooksMenu, nextBoneID) == 0x150);
 
@@ -287,10 +287,9 @@ public:
 	UInt8							padF3[5];					// F3
 
 	MEMBER_FN_PREFIX(HUDComponentBase);
-	DEFINE_MEMBER_FN_3(Impl_ctor, HUDComponentBase *, 0x00A22A70, GFxValue * parent, const char * componentName, const HUDModeInitParams* initParams);
-	DEFINE_MEMBER_FN_0(Impl_IsVisible, bool, 0x00A22DB0);
-	DEFINE_MEMBER_FN_0(Impl_UpdateComponent, void, 0x00A22B10);
-	
+	DEFINE_MEMBER_FN_3(Impl_ctor, HUDComponentBase *, 0x00968A00, GFxValue * parent, const char * componentName, const HUDModeInitParams* initParams);
+	DEFINE_MEMBER_FN_0(Impl_IsVisible, bool, 0x00968D20);
+	DEFINE_MEMBER_FN_0(Impl_UpdateComponent, void, 0x00968AA0);
 };
 STATIC_ASSERT(offsetof(HUDComponentBase, hudModes) == 0xC8);
 STATIC_ASSERT(offsetof(HUDComponentBase, fadePerSecond) == 0xE8);
@@ -392,7 +391,6 @@ public:
 		}
 	};
 
-
 	virtual ~PipboyObject();
 
 	tHashSet<PipboyTableItem, BSFixedString>	table;	// 18
@@ -474,8 +472,8 @@ public:
 
 protected:
 	MEMBER_FN_PREFIX(UI);
-	DEFINE_MEMBER_FN(RegisterMenu, void, 0x02043CF0, const char * name, CreateFunc creator, UInt64 unk1);
-	DEFINE_MEMBER_FN(IsMenuOpen, bool, 0x02042160, const BSFixedString & name);
+	DEFINE_MEMBER_FN(RegisterMenu, void, 0x01967030, const char * name, CreateFunc creator, UInt64 unk1);
+	DEFINE_MEMBER_FN(IsMenuOpen, bool, 0x01964C80, const BSFixedString & name);
 };
 
 extern RelocPtr <UI*> g_ui;
