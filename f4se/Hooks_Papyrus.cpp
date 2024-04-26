@@ -40,19 +40,19 @@
 
 #include "xbyak/xbyak.h"
 
-RelocAddr <uintptr_t> RegisterPapyrusFunctions_Start(0x013E6BC0 + 0x461);
-RelocAddr <uintptr_t> DelayFunctorQueue_Start(0x01377CD0 + 0x6A);
+RelocAddr <uintptr_t> RegisterPapyrusFunctions_Start(0x010B8960 + 0x461);
+RelocAddr <uintptr_t> DelayFunctorQueue_Start(0x0106A4F0 + 0x66);
 
 typedef bool (* _SaveRegistrationHandles)(void * unk1, void * vm, void * handleReaderWriter, void * saveStorageWrapper);
-RelocAddr <_SaveRegistrationHandles> SaveRegistrationHandles(0x01474AD0);
+RelocAddr <_SaveRegistrationHandles> SaveRegistrationHandles(0x0111AB90);
 _SaveRegistrationHandles SaveRegistrationHandles_Original = nullptr;
 
 typedef bool (* _LoadRegistrationHandles)(void * unk1, void * vm, void * handleReaderWriter, UInt16 version, void * loadStorageWrapper, void * unk2);
-RelocAddr <_LoadRegistrationHandles> LoadRegistrationHandles(0x01474B60);
+RelocAddr <_LoadRegistrationHandles> LoadRegistrationHandles(0x0111AD10);
 _LoadRegistrationHandles LoadRegistrationHandles_Original = nullptr;
 
 typedef void (* _RevertGlobalData)(void * vm);
-RelocAddr <_RevertGlobalData> RevertGlobalData(0x013762F0);
+RelocAddr <_RevertGlobalData> RevertGlobalData(0x01068730);
 _RevertGlobalData RevertGlobalData_Original = nullptr;
 
 typedef std::list <F4SEPapyrusInterface::RegisterFunctions> PapyrusPluginList;
@@ -238,12 +238,14 @@ void Hooks_Papyrus_Commit()
 			{
 				Xbyak::Label retnLabel;
 
-				mov(ptr [rsp+0x10], rbx);
+				mov(rax, rsp);
+				push(rdi);
+				push(r13);
 
 				jmp(ptr [rip + retnLabel]);
 
 				L(retnLabel);
-				dq(SaveRegistrationHandles.GetUIntPtr() + 5);
+				dq(SaveRegistrationHandles.GetUIntPtr() + 6);
 			}
 		};
 
@@ -253,7 +255,7 @@ void Hooks_Papyrus_Commit()
 
 		SaveRegistrationHandles_Original = (_SaveRegistrationHandles)codeBuf;
 
-		g_branchTrampoline.Write5Branch(SaveRegistrationHandles.GetUIntPtr(), (uintptr_t)SaveRegistrationHandles_Hook);
+		g_branchTrampoline.Write6Branch(SaveRegistrationHandles.GetUIntPtr(), (uintptr_t)SaveRegistrationHandles_Hook);
 	}
 
 
@@ -264,12 +266,14 @@ void Hooks_Papyrus_Commit()
 			{
 				Xbyak::Label retnLabel;
 
-				mov(ptr [rsp+0x10], rbx);
+				mov(rax, rsp);
+				push(rdi);
+				push(r13);
 
 				jmp(ptr [rip + retnLabel]);
 
 				L(retnLabel);
-				dq(LoadRegistrationHandles.GetUIntPtr() + 5);
+				dq(LoadRegistrationHandles.GetUIntPtr() + 6);
 			}
 		};
 
@@ -279,7 +283,7 @@ void Hooks_Papyrus_Commit()
 
 		LoadRegistrationHandles_Original = (_LoadRegistrationHandles)codeBuf;
 
-		g_branchTrampoline.Write5Branch(LoadRegistrationHandles.GetUIntPtr(), (uintptr_t)LoadRegistrationHandles_Hook);
+		g_branchTrampoline.Write6Branch(LoadRegistrationHandles.GetUIntPtr(), (uintptr_t)LoadRegistrationHandles_Hook);
 	}
 	
 	// revert global data hook
@@ -289,14 +293,12 @@ void Hooks_Papyrus_Commit()
 			{
 				Xbyak::Label retnLabel;
 
-				push(rdi);
-				push(r15);
-				sub(rsp, 0x38);
+				mov(ptr [rsp + 0x10], rbx);
 
 				jmp(ptr [rip + retnLabel]);
 
 				L(retnLabel);
-				dq(RevertGlobalData.GetUIntPtr() + 8);
+				dq(RevertGlobalData.GetUIntPtr() + 5);
 			}
 		};
 
@@ -306,7 +308,7 @@ void Hooks_Papyrus_Commit()
 
 		RevertGlobalData_Original = (_RevertGlobalData)codeBuf;
 
-		g_branchTrampoline.Write6Branch(RevertGlobalData.GetUIntPtr(), (uintptr_t)RevertGlobalData_Hook);
+		g_branchTrampoline.Write5Branch(RevertGlobalData.GetUIntPtr(), (uintptr_t)RevertGlobalData_Hook);
 	}
 
 	// hook ProcessVMTick

@@ -28,19 +28,19 @@
 class BSScaleformManager;
 
 typedef BSScaleformManager * (* _BSScaleformManager_Ctor)(BSScaleformManager * mem);
-RelocAddr <_BSScaleformManager_Ctor> BSScaleformManager_Ctor(0x02110430);
+RelocAddr <_BSScaleformManager_Ctor> BSScaleformManager_Ctor(0x019FF110);
 _BSScaleformManager_Ctor BSScaleformManager_Ctor_Original = nullptr;
 
 typedef UInt32 (* _BSScaleformTint)(BSGFxShaderFXTarget * value, float * colors, float multiplier);
-RelocAddr <_BSScaleformTint> BSScaleformTint(0x020F2990);
+RelocAddr <_BSScaleformTint> BSScaleformTint(0x019E9A30);
 _BSScaleformTint BSScaleformTint_Original = nullptr;
 
-RelocAddr <uintptr_t> ScaleformInitHook_Start(0x02110AD0 + 0x188);
+RelocAddr <uintptr_t> ScaleformInitHook_Start(0x019FF840 + 0x226);
 
-RelocAddr <uintptr_t> IMenuCreateHook_Start(0x02042430 + 0x90A);
+RelocAddr <uintptr_t> IMenuCreateHook_Start(0x01964F70 + 0xA0F);
 
-// D7C709A779249EBC0C50BB992E9FD088A33B282F+76
-RelocAddr <uintptr_t> SetMenuName(0x01B41ED0);
+// 
+RelocAddr <uintptr_t> SetMenuName(0x015618A0);
 
 //// plugin API
 struct ScaleformPluginInfo
@@ -671,7 +671,7 @@ void Hooks_Scaleform_Commit()
 				call(ptr [rip + funcLabel1]);
 
 				// Pull the IMenu off the stack and call our new function
-				mov(rcx, ptr[rsp+0x388-0x348]);
+				mov(rcx, ptr[rsp + 0x40]);
 				call(ptr [rip + funcLabel2]);
 
 				// Jump back to the original location

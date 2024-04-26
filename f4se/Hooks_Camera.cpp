@@ -13,7 +13,7 @@ void Hooks_Camera_Init()
 }
 
 typedef void (* _SetCameraState)(TESCamera * camera, TESCameraState * newState);
-RelocAddr <_SetCameraState> SetCameraState(0x0082E930);
+RelocAddr <_SetCameraState> SetCameraState(0x007D4310);	// TESCamera::SetCameraState
 _SetCameraState SetCameraState_Original = nullptr;
 
 void SetCameraState_Hook(TESCamera * camera, TESCameraState * newCameraState)
@@ -36,7 +36,7 @@ void SetCameraState_Hook(TESCamera * camera, TESCameraState * newCameraState)
 
 void Hooks_Camera_Commit()
 {
-	// hook global tinting of objects
+	// hook camera state changes
 	{
 		struct SetCameraState_Code : Xbyak::CodeGenerator {
 			SetCameraState_Code(void * buf) : Xbyak::CodeGenerator(4096, buf)

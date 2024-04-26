@@ -55,7 +55,7 @@ public:
 		virtual ~StaticTextureIndexed();
 
 		MEMBER_FN_PREFIX(StaticTextureIndexed);
-		DEFINE_MEMBER_FN(ctor, StaticTextureIndexed*, 0x01CE68C0, UInt32 unk1, int unk2, bool unk3);
+		DEFINE_MEMBER_FN(ctor, StaticTextureIndexed*, 0x016DAC10, UInt32 unk1, int unk2, bool unk3);
 
 		UInt64	unk48[(0x78 - 0x48) >> 3];
 	};
@@ -65,10 +65,10 @@ public:
 class BSTextureSet : public NiObject
 {
 public:
-	virtual BSFixedString GetTextureFilenameFS(UInt32 typeEnum);
-	virtual const char * GetTextureFilename(UInt32 typeEnum);
-	virtual void Unk_2A();
-	virtual void GetTexture(UInt32 typeEnum, NiPointer<NiTexture> & texture, bool unk1);
+	virtual BSFixedString	GetTextureFilenameFS(UInt32 typeEnum);
+	virtual const char *	GetTextureFilename(UInt32 typeEnum);
+	virtual void	Unk_2A();
+	virtual void	GetTexture(UInt32 typeEnum, NiPointer<NiTexture> & texture, bool unk1);
 	virtual void	SetTextureFilename(UInt32 typeEnum, const char * path);
 };
 
@@ -79,7 +79,7 @@ public:
 	BSFixedString	textures[10];	// 10
 
 	MEMBER_FN_PREFIX(BSShaderTextureSet);
-	DEFINE_MEMBER_FN(Copy, BSShaderTextureSet*, 0x004C36B0);
+	DEFINE_MEMBER_FN(Copy, BSShaderTextureSet*, 0x00542F10);
 };
 STATIC_ASSERT(sizeof(BSShaderTextureSet) == 0x60);
 

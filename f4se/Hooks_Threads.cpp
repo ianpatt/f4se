@@ -15,12 +15,12 @@ ICriticalSection		s_uiQueueLock;
 std::queue<ITaskDelegate*>	s_uiQueue;
 
 typedef bool (* _MessageQueueProcessTask)(void * messageQueue, float timeout, UInt32 unk1);
-RelocAddr <_MessageQueueProcessTask> MessageQueueProcessTask(0x00D57FA0);
+RelocAddr <_MessageQueueProcessTask> MessageQueueProcessTask(0x00BBEDC0);
 _MessageQueueProcessTask MessageQueueProcessTask_Original = nullptr;
 
-RelocAddr <uintptr_t> ProcessEventQueue_HookTarget(0x02042430 + 0xE90);
+RelocAddr <uintptr_t> ProcessEventQueue_HookTarget(0x01964F70 + 0xFA5);
 typedef void (* _ProcessEventQueue_Internal)(void * unk1);
-RelocAddr <_ProcessEventQueue_Internal> ProcessEventQueue_Internal(0x0211CF80);
+RelocAddr <_ProcessEventQueue_Internal> ProcessEventQueue_Internal(0x01A098E0);
 
 bool MessageQueueProcessTask_Hook(void * messageQueue, float timeout, UInt32 unk1)
 {
@@ -94,12 +94,13 @@ void Hooks_Threads_Commit(void)
 			{
 				Xbyak::Label retnLabel;
 
-				mov(ptr[rsp+0x10], rbx);
+				mov(rax, rsp);
+				mov(ptr[rax + 8], rbx);
 
 				jmp(ptr [rip + retnLabel]);
 
 				L(retnLabel);
-				dq(MessageQueueProcessTask.GetUIntPtr() + 5);
+				dq(MessageQueueProcessTask.GetUIntPtr() + 7);
 			}
 		};
 
@@ -109,7 +110,7 @@ void Hooks_Threads_Commit(void)
 
 		MessageQueueProcessTask_Original = (_MessageQueueProcessTask)codeBuf;
 
-		g_branchTrampoline.Write5Branch(MessageQueueProcessTask.GetUIntPtr(), (uintptr_t)MessageQueueProcessTask_Hook);
+		g_branchTrampoline.Write6Branch(MessageQueueProcessTask.GetUIntPtr(), (uintptr_t)MessageQueueProcessTask_Hook);
 	}
 
 	g_branchTrampoline.Write5Call(ProcessEventQueue_HookTarget.GetUIntPtr(), (uintptr_t)ProcessEventQueue_Hook);

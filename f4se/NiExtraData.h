@@ -31,10 +31,10 @@ public:
 	BSFixedString	m_name;	// 10
 
 	MEMBER_FN_PREFIX(NiObject);
-	// 834C1A014705796BD4E62721AE5EFA5F72AE14DB+15
-	DEFINE_MEMBER_FN(Internal_LoadBinary, void, 0x01B96400, void * stream);
-	// 99E296799A58456B4597D53A5954CD9AFFA441FB+1A
-	DEFINE_MEMBER_FN(Internal_SaveBinary, void, 0x01B964A0, void * stream);
+	// 
+	DEFINE_MEMBER_FN(Internal_LoadBinary, void, 0x015A0960, void * stream);
+	// 
+	DEFINE_MEMBER_FN(Internal_SaveBinary, void, 0x015A0A00, void * stream);
 };
 
 // 20
@@ -82,7 +82,7 @@ public:
 protected:
 	// Fills the vertex data from the original object's vertex data in NiPoint3 layout
 	MEMBER_FN_PREFIX(BSFaceGenBaseMorphExtraData);
-	DEFINE_MEMBER_FN(ctor, BSFaceGenBaseMorphExtraData*, 0x00684440, BSTriShape * shape);
+	DEFINE_MEMBER_FN(ctor, BSFaceGenBaseMorphExtraData*, 0x006936E0, BSTriShape * shape);
 };
 
 extern RelocAddr<uintptr_t> s_BSFaceGenBaseMorphExtraDataVtbl;
