@@ -290,7 +290,7 @@ void Hooks_Input_Commit()
 			{
 				Xbyak::Label retnLabel;
 
-				mov(ptr[rsp+0x08], rbx);
+				mov(ptr[rsp+0x10], rbx);
 
 				jmp(ptr [rip + retnLabel]);
 
