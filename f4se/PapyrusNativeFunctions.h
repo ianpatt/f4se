@@ -79,7 +79,6 @@ public:
 		UInt32		pad0C;
 
 		MEMBER_FN_PREFIX(ParameterInfo);
-		DEFINE_MEMBER_FN(GetParam, UInt64, 0x0270DE00, UInt32 idx, BSFixedString * outName, UInt64 * outType);
 	};
 
 	virtual BSFixedString *	GetName()							{ return &m_fnName; }
@@ -88,7 +87,7 @@ public:
 	virtual UInt64 *		GetReturnType(UInt64 * dst)			{ *dst = m_retnType; return dst; }
 	virtual UInt64			GetNumParams()						{ return m_params.realNumParams; }
 	virtual UInt64			GetParam(UInt32 idx, BSFixedString * outName, UInt64 * outType)
-																{ return CALL_MEMBER_FN(&m_params, GetParam)(idx, outName, outType); }
+																{ return CALL_MEMBER_FN(this, Impl_GetParam)(idx, outName, outType); }
 	virtual UInt64			GetNumParams2()						{ return m_params.numParams; }
 	virtual bool			IsNative()							{ return true; }
 	virtual bool			IsStatic()							{ return m_isStatic; }
@@ -109,6 +108,7 @@ public:
 	virtual bool			Run(VMValue * baseValue, VirtualMachine * vm, UInt32 arg2, VMValue * resultValue, VMState * state) = 0;
 
 	MEMBER_FN_PREFIX(NativeFunctionBase);
+	DEFINE_MEMBER_FN(Impl_GetParam, UInt64, 0x0200A920, UInt32 idx, BSFixedString * outName, UInt64 * outType);	// inlined from ParameterInfo::GetParam
 	DEFINE_MEMBER_FN(Impl_Invoke, UInt32, 0x01FA3990, void * arg0, void * arg1, VirtualMachine * arg2, VMState * arg3);
 	DEFINE_MEMBER_FN(Impl_GetSourceFile, BSFixedString *, 0x01FA38F0);
 	DEFINE_MEMBER_FN(Impl_GetParamName, bool, 0x01FA3910, UInt32 idx, BSFixedString * out);
