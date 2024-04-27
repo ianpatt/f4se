@@ -170,7 +170,7 @@ void RegisterPapyrusFunctions_Hook(VirtualMachine ** vmPtr)
 	// Armor
 	papyrusArmor::RegisterFuncs(vm);
 
-	GetEventDispatcher<TESFurnitureEvent>()->AddEventSink(&g_furnitureEventSink);
+	//GetEventDispatcher<TESFurnitureEvent>()->AddEventSink(&g_furnitureEventSink);
 
 	// Plugins
 	for(PapyrusPluginList::iterator iter = s_pap_plugins.begin(); iter != s_pap_plugins.end(); ++iter)

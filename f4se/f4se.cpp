@@ -37,6 +37,8 @@ void WaitForDebugger(void)
 
 bool ShouldWaitForDebugger()
 {
+//	return 1;
+
 	const char* env = "F4SE_WAITFORDEBUGGER";
 	const auto printErr = [=]()
 	{
@@ -124,7 +126,7 @@ void F4SE_Initialize(void)
 		Hooks_Threads_Init();
 		Hooks_Camera_Init();
 
-		g_pluginManager.Init();
+//		g_pluginManager.Init();
 
 		Hooks_Debug_Commit();
 		Hooks_ObScript_Commit();
