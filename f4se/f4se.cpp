@@ -37,8 +37,6 @@ void WaitForDebugger(void)
 
 bool ShouldWaitForDebugger()
 {
-//	return 1;
-
 	const char* env = "F4SE_WAITFORDEBUGGER";
 	const auto printErr = [=]()
 	{
