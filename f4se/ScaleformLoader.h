@@ -26,8 +26,8 @@ public:
 	virtual void Unk_06(void);
 
 	MEMBER_FN_PREFIX(BSScaleformImageLoader);
-	DEFINE_MEMBER_FN_1(MountImage, bool, 0x022E5AD0, NiTexture **);
-	DEFINE_MEMBER_FN_1(UnmountImage, bool, 0x022E5DE0, NiTexture **);
+	DEFINE_MEMBER_FN_1(MountImage, bool, 0x01B7FEE0, NiTexture **);
+	DEFINE_MEMBER_FN_1(UnmountImage, bool, 0x01B80180, NiTexture **);
 };
 
 class BSScaleformManager
@@ -43,7 +43,7 @@ public:
 	BSScaleformImageLoader	* imageLoader;	// 28
 
 	MEMBER_FN_PREFIX(BSScaleformManager);
-	DEFINE_MEMBER_FN(LoadMovie, bool, 0x02110AD0, IMenu * menu, GFxMovieView *&, const char * name, const char * stagePath, UInt32 flags);
+	DEFINE_MEMBER_FN(LoadMovie, bool, 0x019FF840, IMenu * menu, GFxMovieView *&, const char * name, const char * stagePath, UInt32 flags);
 };
 
 extern RelocPtr <BSScaleformManager *> g_scaleformManager;
