@@ -244,39 +244,89 @@ struct PluginInfo
 	UInt32			version;
 };
 
-typedef bool (* _F4SEPlugin_Query)(const F4SEInterface * f4se, PluginInfo * info);
 typedef bool (* _F4SEPlugin_Load)(const F4SEInterface * f4se);
+
+/**** plugin versioning ********************************************************
+ *
+ *	The NG version of Fallout 4 broke plugin versioning as many were written
+ *	with the assumption that the Address Library would always be valid.
+ *	These always report that they are compatible, then exit on startup because
+ *	they cannot find their address library file.
+ *	
+ *	To work around this problem, version checking has been reimplemented and
+ *	no longer calls any code. Plugins declare their compatibility, and F4SE
+ *	determines whether to load the plugin. Setting this up is simple, just
+ *	add something like this to your project:
+ *	
+
+extern "C" {
+__declspec(dllexport) F4SEPluginVersionData F4SEPlugin_Version =
+{
+	SKSEPluginVersionData::kVersion,
+	
+	1,
+	"my awesome plugin",
+
+	"my name",
+	"support@example.com",
+
+	0,	// not version independent
+	0,	// not version independent (extended field)
+	{ RUNTIME_VERSION_1_10_980, 0 },	// compatible with 1.10.980
+
+	0,	// works with any version of the script extender. you probably do not need to put anything here
+};
+};
+
+ *	
+ ******************************************************************************/
+
+struct F4SEPluginVersionData
+{
+	enum
+	{
+		kVersion = 1,
+	};
+
+	enum
+	{
+		// set this if you are using a post-1.10.980 version of the Address Library
+		kVersionIndependent_AddressLibraryPost1_10_980 = 1 << 0,
+		// set this if you exclusively use signature matching to find your addresses and have NO HARDCODED ADDRESSES
+		kVersionIndependent_Signatures = 1 << 1,
+	};
+	
+	enum
+	{
+		// set this if your plugin doesn't use any game structures
+		kVersionIndependentEx_NoStructUse = 1 << 0,
+	};
+
+	UInt32	dataVersion;			// set to kVersion
+
+	UInt32	pluginVersion;			// version number of your plugin
+	char	name[256];				// null-terminated ASCII plugin name
+
+	char	author[256];			// null-terminated ASCII plugin author name (can be empty)
+	char	supportEmail[252];		// null-terminated ASCII support email address (can be empty)
+									// this is not for showing to users, it's in case I need to contact you about
+									// a compatibility problem with your plugin
+
+	// version compatibility
+	UInt32	versionIndependence;	// set to one of the kVersionIndependent_ enums or zero
+	UInt32	versionIndependenceEx;	// set to one of the kVersionIndependentEx_ enums or zero
+	UInt32	compatibleVersions[16];	// zero-terminated list of RUNTIME_VERSION_ defines your plugin is compatible with
+
+	UInt32	seVersionRequired;		// minimum version of the script extender required, compared against PACKED_SKSE_VERSION
+									// you probably should just set this to 0 unless you know what you are doing
+	
+	UInt8	reserved[512];			// set to 0
+};
 
 /**** plugin API docs **********************************************************
  *	
- *	The base API is pretty simple. Create a project based on the
- *	f4se_plugin_example project included with the F4SE source code, then define
- *	and export these functions:
- *	
- *	bool F4SEPlugin_Query(const F4SEInterface * f4se, PluginInfo * info)
- *	
- *	This primary purposes of this function are to fill out the PluginInfo
- *	structure, and to perform basic version checks based on the info in the
- *	F4SEInterface structure. Return false if your plugin is incompatible with
- *	the version of F4SE or the runtime passed in, otherwise return true. In
- *	either case, fill out the PluginInfo structure.
- *	
- *	Do not do anything other than fill out the PluginInfo structure and return
- *	true/false in this callback.
- *	
- *	If the plugin is being loaded in the context of the editor, isEditor will be
- *	non-zero, editorVersion will contain the current editor version, and
- *	runtimeVersion will be zero. In this case you can probably just return
- *	true, however if you have multiple DLLs implementing the same behavior, for
- *	example one for each version of ther runtime, only one of them should return
- *	true.
- *	
- *	The PluginInfo fields should be filled out as follows:
- *	- infoVersion should be set to PluginInfo::kInfoVersion
- *	- name should be a pointer to a null-terminated string uniquely identifying
- *	  your plugin, it will be used in the plugin querying API
- *	- version is only used by the plugin query API, and will be returned to
- *	  scripts requesting the current version of your plugin
+ *	The base API is pretty simple. Add version data as shown in the
+ *	F4SEPluginVersionData docs above, and export this function:
  *	
  *	bool F4SEPlugin_Load(const F4SEInterface * f4se)
  *	
