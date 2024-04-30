@@ -652,22 +652,23 @@ const char * PluginManager::CheckPluginCompatibility(const F4SEPluginVersionData
 		}
 
 		// version compatibility
-		
-		const UInt32 kKnownVersionIndependent =
-			F4SEPluginVersionData::kVersionIndependent_AddressLibraryPost1_10_980 |
-			F4SEPluginVersionData::kVersionIndependent_Signatures;
-		
-		// bail out on unknown flags, handles future breaking API changes in the runtime
-		if(version.versionIndependence & ~kKnownVersionIndependent)
-		{
-			return "disabled, unsupported version independence method";
-		}
+		const UInt32 kCurrentAddressLibrary = F4SEPluginVersionData::kAddressIndependence_AddressLibrary_1_10_980;
 
-		// any claim of version independence?
-		bool versionIndependent = version.versionIndependence & (F4SEPluginVersionData::kVersionIndependent_AddressLibraryPost1_10_980 | F4SEPluginVersionData::kVersionIndependent_Signatures);
+		bool hasAddressIndependence = version.addressIndependence &
+			(F4SEPluginVersionData::kAddressIndependence_Signatures |
+			kCurrentAddressLibrary);
+		bool hasStructureIndependence = version.structureIndependence &
+			(F4SEPluginVersionData::kStructureIndependence_NoStructs |
+			F4SEPluginVersionData::kStructureIndependence_1_10_980Layout);
+		
+		bool versionIndependent = hasAddressIndependence && hasStructureIndependence;
+
+		// currently anything in the "breaking change" field means that compatibility has been broken by an update
+		if(version.reservedBreaking)
+			versionIndependent = false;
 
 		// verify the address library is there to centralize error message
-		if(version.versionIndependence & F4SEPluginVersionData::kVersionIndependent_AddressLibraryPost1_10_980)
+		if(version.addressIndependence & kCurrentAddressLibrary)
 		{
 			const char * result = CheckAddressLibrary();
 			if(result) return result;

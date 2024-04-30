@@ -288,16 +288,20 @@ struct F4SEPluginVersionData
 
 	enum
 	{
-		// set this if you are using a post-1.10.980 version of the Address Library
-		kVersionIndependent_AddressLibraryPost1_10_980 = 1 << 0,
 		// set this if you exclusively use signature matching to find your addresses and have NO HARDCODED ADDRESSES
-		kVersionIndependent_Signatures = 1 << 1,
+		kAddressIndependence_Signatures = 1 << 0,
+
+		// set this if you are using a 1.10.980+ version of the Address Library
+		kAddressIndependence_AddressLibrary_1_10_980 = 1 << 1,
 	};
 	
 	enum
 	{
 		// set this if your plugin doesn't use any game structures
-		kVersionIndependentEx_NoStructUse = 1 << 0,
+		kStructureIndependence_NoStructs = 1 << 0,
+
+		// works with the structure layout in 1.10.980+
+		kStructureIndependence_1_10_980Layout = 1 << 1,
 	};
 
 	UInt32	dataVersion;			// set to kVersion
@@ -307,13 +311,15 @@ struct F4SEPluginVersionData
 	char	author[256];			// null-terminated ASCII plugin author name (can be empty)
 
 	// version compatibility
-	UInt32	versionIndependence;	// set to one of the kVersionIndependent_ enums or zero
-	UInt32	versionIndependenceEx;	// set to one of the kVersionIndependentEx_ enums or zero
+	UInt32	addressIndependence;	// bitfield. describe how you find your addresses using the kAddressIndependence_ enums
+	UInt32	structureIndependence;	// bitfield. describe how you handle structure layout using the kStructureIndependence_ enums
 	UInt32	compatibleVersions[16];	// zero-terminated list of RUNTIME_VERSION_ defines your plugin is compatible with
 
 	UInt32	seVersionRequired;		// minimum version of the script extender required, compared against PACKED_SKSE_VERSION
 									// you probably should just set this to 0 unless you know what you are doing
 	
+	UInt32	reservedNonBreaking;	// bitfield. set to 0
+	UInt32	reservedBreaking;		// bitfield. set to 0
 	UInt8	reserved[512];			// set to 0
 };
 
@@ -338,5 +344,12 @@ struct F4SEPluginVersionData
  *	to check against the latest version that you need. New fields will be only
  *	added to the end, and all old fields will remain compatible with their
  *	previous implementations.
+ *	
+ *	If your plugin needs to make modifications before global initializers, add
+ *	and export this:
+ *	
+ *	bool F4SEPlugin_Preload(const F4SEInterface * f4se)
+ *	
+ *	Game and F4SE functionality may be limited during preload.
  *	
  ******************************************************************************/
