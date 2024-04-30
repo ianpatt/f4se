@@ -31,6 +31,65 @@ void F4SE_Initialize();
 const size_t kPoolSize = 1024 * 64;
 const size_t kPoolReserveSize = 512;
 
+// api-ms-win-crt-runtime-l1-1-0.dll
+typedef int (*__initterm_e)(_PIFV *, _PIFV *);
+__initterm_e _initterm_e_Original = nullptr;
+
+typedef char * (*__get_narrow_winmain_command_line)();
+__get_narrow_winmain_command_line _get_narrow_winmain_command_line_Original = NULL;
+
+// runs before global initializers
+int __initterm_e_Hook(_PIFV * a, _PIFV * b)
+{
+	// could be used for plugin optional preload
+
+	F4SE_Preinit();
+
+	return _initterm_e_Original(a, b);
+}
+
+// runs after global initializers
+char * __get_narrow_winmain_command_line_Hook()
+{
+	// the usual load time
+
+	F4SE_Initialize();
+
+	return _get_narrow_winmain_command_line_Original();
+}
+
+void InstallBaseHooks()
+{
+	gLog.OpenRelative(CSIDL_MYDOCUMENTS, "\\My Games\\Fallout4\\F4SE\\f4se.log");
+
+	HANDLE exe = GetModuleHandle(nullptr);
+
+	// fetch functions to hook
+	auto * initterm = (__initterm_e *)GetIATAddr(exe, "api-ms-win-crt-runtime-l1-1-0.dll", "_initterm_e");
+	auto * cmdline = (__get_narrow_winmain_command_line *)GetIATAddr(exe, "api-ms-win-crt-runtime-l1-1-0.dll", "_get_narrow_winmain_command_line");
+
+	// hook them
+	if(initterm)
+	{
+		_initterm_e_Original = *initterm;
+		SafeWrite64(uintptr_t(initterm), UInt64(__initterm_e_Hook));
+	}
+	else
+	{
+		_ERROR("couldn't find _initterm_e");
+	}
+
+	if(cmdline)
+	{
+		_get_narrow_winmain_command_line_Original = *cmdline;
+		SafeWrite64(uintptr_t(cmdline), UInt64(__get_narrow_winmain_command_line_Hook));
+	}
+	else
+	{
+		_ERROR("couldn't find _get_narrow_winmain_command_line");
+	}
+}
+
 void WaitForDebugger(void)
 {
 	while(!IsDebuggerPresent())
@@ -65,16 +124,6 @@ bool ShouldWaitForDebugger()
 	}
 
 	return std::strcmp(buf.data(), "1") == 0;
-}
-
-void InstallBaseHooks()
-{
-	gLog.OpenRelative(CSIDL_MYDOCUMENTS, "\\My Games\\Fallout4\\F4SE\\f4se.log");
-
-	// just getting these in the right place for newer style init
-
-	F4SE_Preinit();
-	F4SE_Initialize();
 }
 
 void F4SE_Preinit()
@@ -147,7 +196,6 @@ void F4SE_Initialize(void)
 	Hooks_Threads_Init();
 	Hooks_Camera_Init();
 
-	g_pluginManager.Init();
 	g_pluginManager.InstallPlugins(PluginManager::kPhase_Load);
 	g_pluginManager.LoadComplete();
 
@@ -190,7 +238,6 @@ extern "C" {
 		{
 		case DLL_PROCESS_ATTACH:
 			g_moduleHandle = (void *)hDllHandle;
-			InstallBaseHooks();
 			break;
 
 		case DLL_PROCESS_DETACH:

@@ -4,6 +4,9 @@ enum
 {
 	kProcType_Steam,
 	kProcType_Normal,
+	kProcType_GOG,
+	kProcType_Epic,
+	kProcType_WinStore,
 
 	kProcType_Packed,
 

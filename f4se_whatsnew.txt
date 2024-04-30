@@ -2,6 +2,7 @@
 - support for runtime 1.10.980 "next generation" update
 - plugin manager uses declarative versions similar to skse64 after the AE update
 - plugin manager supports preloading
+- f4se_steam_loader.dll no longer needed
 - ScriptObject.RegisterForGamepadButton and related (thanks TommInfinite)
 - Form.GetEditorID
 - handle 'None' as an array member when passed to custom papyrus functions (thanks TommInfinite)

@@ -102,6 +102,50 @@ const IMAGE_SECTION_HEADER * GetImageSection(const UInt8 * base, const char * na
 	return NULL;
 }
 
+// non-relocated image
+bool HasImportedLibrary(const UInt8 * base, const char * name)
+{
+	auto * dosHeader = (const IMAGE_DOS_HEADER *)base;
+	auto * ntHeader = (const IMAGE_NT_HEADERS *)(base + dosHeader->e_lfanew);
+	auto * importDir = (const IMAGE_DATA_DIRECTORY *)&ntHeader->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT];
+
+	if(!importDir->Size || !importDir->VirtualAddress) return false;
+
+	// resolve RVA -> file offset
+	const auto * sectionHeader = IMAGE_FIRST_SECTION(ntHeader);
+
+	auto LookupRVA = [ntHeader, sectionHeader, base](UInt32 rva) -> const UInt8 *
+	{
+		for(UInt32 i = 0; i < ntHeader->FileHeader.NumberOfSections; i++)
+		{
+			const auto * section = &sectionHeader[i];
+
+			if(	(rva >= section->VirtualAddress) &&
+				(rva < section->VirtualAddress + section->SizeOfRawData))
+			{
+				return base + rva - section->VirtualAddress + section->PointerToRawData;
+			}
+		}
+
+		return nullptr;
+	};
+
+	if(const auto * importTable = (const IMAGE_IMPORT_DESCRIPTOR *)LookupRVA(importDir->VirtualAddress))
+	{
+		for(; importTable->Characteristics; ++importTable)
+		{
+			auto * dllName = (const char *)LookupRVA(importTable->Name);
+
+			if(dllName && !_stricmp(dllName, name))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 // steam EXE will have the .bind section
 bool IsSteamImage(const UInt8 * base)
 {
@@ -111,6 +155,24 @@ bool IsSteamImage(const UInt8 * base)
 bool IsUPXImage(const UInt8 * base)
 {
 	return GetImageSection(base, "UPX0") != NULL;
+}
+
+static bool IsWinStoreImage(const UInt8 * base)
+{
+	// haven't seen this either, but if it imports this then it's a unique build
+	return HasImportedLibrary(base, "api-ms-win-core-psm-appnotify-l1-1-0.dll");
+}
+
+static bool IsGOGImage(const UInt8 * base)
+{
+	// haven't seen it but they may have a unique build for achievements
+	return HasImportedLibrary(base, "Galaxy64.dll");
+}
+
+static bool IsEpicImage(const UInt8 * base)
+{
+	// haven't seen it but let's assume they have a unique build for achievements
+	return HasImportedLibrary(base, "eossdk-win64-shipping.dll");
 }
 
 bool ScanEXE(const char * path, ProcHookInfo * hookInfo)
@@ -132,16 +194,25 @@ bool ScanEXE(const char * path, ProcHookInfo * hookInfo)
 		if(fileBase)
 		{
 			// scan for packing type
-			bool	isSteam = IsSteamImage(fileBase);
-			bool	isUPX = IsUPXImage(fileBase);
-
-			if(isUPX)
+			if(IsUPXImage(fileBase))
 			{
 				hookInfo->procType = kProcType_Packed;
 			}
-			else if(isSteam)
+			else if(IsSteamImage(fileBase))
 			{
 				hookInfo->procType = kProcType_Steam;
+			}
+			else if(IsWinStoreImage(fileBase))
+			{
+				hookInfo->procType = kProcType_WinStore;
+			}
+			else if(IsGOGImage(fileBase))
+			{
+				hookInfo->procType = kProcType_GOG;
+			}
+			else if(IsEpicImage(fileBase))
+			{
+				hookInfo->procType = kProcType_Epic;
 			}
 			else
 			{
@@ -205,11 +276,26 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 
 	switch(hookInfo->procType)
 	{
-	case kProcType_Steam:	_MESSAGE("steam exe"); break;
-	case kProcType_Normal:	_MESSAGE("normal exe"); break;
-	case kProcType_Packed:	_MESSAGE("packed exe"); break;
+	case kProcType_Steam:		_MESSAGE("steam exe"); break;
+	case kProcType_Normal:		_MESSAGE("normal exe"); break;
+	case kProcType_Packed:		_MESSAGE("packed exe"); break;
+	case kProcType_WinStore:	_MESSAGE("winstore exe"); break;
+	case kProcType_GOG:			_MESSAGE("gog exe"); break;
+	case kProcType_Epic:		_MESSAGE("epic exe"); break;
 	case kProcType_Unknown:
-	default:				_MESSAGE("unknown exe type"); break;
+	default:					_MESSAGE("unknown exe type"); break;
+	}
+
+	if(hookInfo->procType == kProcType_WinStore)
+	{
+		PrintLoaderError("The Windows Store (gamepass) version of Starfield is not supported.");
+		return false;
+	}
+
+	if(hookInfo->procType == kProcType_Epic)
+	{
+		PrintLoaderError("The Epic Store version of Starfield is not supported.");
+		return false;
 	}
 
 	bool result = false;
@@ -267,14 +353,19 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 	}
 	else
 	{
+		*dllSuffix = "1_10_980";
+
 		switch(hookInfo->procType)
 		{
 		case kProcType_Steam:
 		case kProcType_Normal:
-			*dllSuffix = "1_10_980";
+			result = true;
+			break;
+
+		case kProcType_GOG:
+			*dllSuffix += "_gog";
 
 			result = true;
-
 			break;
 
 		case kProcType_Packed:
