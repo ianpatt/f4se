@@ -1,7 +1,10 @@
-0.6.24
-- ScriptObject.RegisterForGamepadButton and related
+0.7.0
+- support for runtime 1.10.980 "next generation" update
+- plugin manager uses declarative versions similar to skse64 after the AE update
+- plugin manager supports preloading
+- ScriptObject.RegisterForGamepadButton and related (thanks TommInfinite)
 - Form.GetEditorID
-- handle 'None' as an array member when passed to custom papyrus functions
+- handle 'None' as an array member when passed to custom papyrus functions (thanks TommInfinite)
 - fix ScriptObject.RegisterForFurnitureEvent filters
 
 0.6.23

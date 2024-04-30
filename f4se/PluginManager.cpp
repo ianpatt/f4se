@@ -5,6 +5,12 @@
 #include "f4se_common/Utilities.h"
 #include "f4se_common/f4se_version.h"
 #include "f4se_common/BranchTrampoline.h"
+#include "Hooks_Scaleform.h"
+#include "Hooks_Papyrus.h"
+#include "f4se/Serialization.h"
+#include "Hooks_Threads.h"
+#include "f4se/PapyrusDelayFunctors.h"
+#include "f4se/PapyrusObjects.h"
 
 #include <cassert>
 #include <cstdint>
@@ -136,15 +142,9 @@ static const F4SEInterface g_F4SEInterface =
 {
 	PACKED_F4SE_VERSION,
 
-#ifdef RUNTIME
 	RUNTIME_VERSION,
 	0,
 	0,
-#else
-	0,
-	0,
-	1,
-#endif
 
 	PluginManager::QueryInterface,
 	PluginManager::GetPluginHandle,
@@ -159,15 +159,11 @@ static const F4SEMessagingInterface g_F4SEMessagingInterface =
 	PluginManager::Dispatch_Message,
 };
 
-#include "Hooks_Scaleform.h"
-
 static const F4SEScaleformInterface g_F4SEScaleformInterface =
 {
 	F4SEScaleformInterface::kInterfaceVersion,
 	RegisterScaleformPlugin
 };
-
-#include "Hooks_Papyrus.h"
 
 static const F4SEPapyrusInterface g_F4SEPapyrusInterface =
 {
@@ -175,8 +171,6 @@ static const F4SEPapyrusInterface g_F4SEPapyrusInterface =
 	RegisterPapyrusPlugin,
 	GetExternalEventRegistrations
 };
-
-#include "f4se/Serialization.h"
 
 static const F4SESerializationInterface	g_F4SESerializationInterface =
 {
@@ -199,8 +193,6 @@ static const F4SESerializationInterface	g_F4SESerializationInterface =
 	Serialization::ResolveFormId
 };
 
-#include "Hooks_Threads.h"
-
 static const F4SETaskInterface	g_F4SETaskInterface =
 {
 	F4SETaskInterface::kInterfaceVersion,
@@ -209,9 +201,6 @@ static const F4SETaskInterface	g_F4SETaskInterface =
 	TaskInterface::AddUITask,
 	TaskInterface::AddTaskPermanent
 };
-
-#include "f4se/PapyrusDelayFunctors.h"
-#include "f4se/PapyrusObjects.h"
 
 static const F4SEObjectInterface g_F4SEObjectInterface =
 {
@@ -239,14 +228,12 @@ PluginManager::~PluginManager()
 }
 
 PluginManager::LoadedPlugin::LoadedPlugin()
-	:handle(0)
-	,load(nullptr)
 {
 	memset(&info, 0, sizeof(info));
 	memset(&version, 0, sizeof(version));
 }
 
-bool PluginManager::Init(void)
+void PluginManager::Init(void)
 {
 	bool	result = false;
 
@@ -260,7 +247,6 @@ bool PluginManager::Init(void)
 		__try
 		{
 			ScanPlugins();
-			InstallPlugins();
 
 			result = true;
 		}
@@ -270,10 +256,113 @@ bool PluginManager::Init(void)
 			_ERROR("exception occurred while loading plugins");
 		}
 	}
+}
+
+void PluginManager::InstallPlugins(UInt32 phase)
+{
+	for(size_t i = 0; i < m_plugins.size(); i++)
+	{
+		auto & plugin = m_plugins[i];
+
+		// skip plugins that don't care about this phase
+		if(phase == kPhase_Preload)
+		{
+			if(!plugin.hasPreload)
+				continue;
+		}
+		else
+		{
+			if(!plugin.hasLoad)
+				continue;
+		}
+
+		_MESSAGE("%sloading plugin \"%s\"", (phase == kPhase_Preload) ? "pre" : "", plugin.version.name);
+
+		s_currentLoadingPlugin = &plugin;
+		s_currentPluginHandle = plugin.internalHandle;
+
+		std::string pluginPath = m_pluginDirectory + plugin.dllName;
+
+		if(!plugin.handle)
+		{
+			plugin.handle = (HMODULE)LoadLibrary(pluginPath.c_str());
+			if(!plugin.handle)
+				LogPluginLoadError(plugin, "couldn't load plugin", GetLastError());
+		}
+
+		bool	success = false;
+
+		if(plugin.handle)
+		{
+			plugin.load[phase] = (_F4SEPlugin_Load)GetProcAddress(plugin.handle, (phase == kPhase_Preload) ? "F4SEPlugin_Preload" : "F4SEPlugin_Load");
+			if(plugin.load)
+			{
+				const char * loadStatus = nullptr;
+
+				loadStatus = SafeCallLoadPlugin(&plugin, &g_F4SEInterface, phase);
+
+				if(!loadStatus)
+				{
+					success = true;
+				}
+				else
+				{
+					LogPluginLoadError(plugin, loadStatus);
+				}
+			}
+			else
+			{
+				LogPluginLoadError(plugin, "does not appear to be an F4SE plugin");
+			}
+		}
+
+		if(!success)
+		{
+			// failed, unload the library
+			if(plugin.handle) FreeLibrary(plugin.handle);
+
+			// and remove from plugins list
+			m_plugins.erase(m_plugins.begin() + i);
+
+			// fix iterator
+			i--;
+		}
+
+	}
+
+	s_currentLoadingPlugin = nullptr;
+	s_currentPluginHandle = 0;
+}
+
+void PluginManager::LoadComplete()
+{
+	for(size_t i = 0; i < m_plugins.size(); i++)
+	{
+		auto & plugin = m_plugins[i];
+
+		_MESSAGE("plugin %s (%08X %s %08X) %s (handle %d)",
+			plugin.dllName.c_str(),
+			plugin.version.dataVersion,
+			plugin.version.name,
+			plugin.version.pluginVersion,
+			"loaded correctly",
+			plugin.internalHandle);
+	}
 
 	ReportPluginErrors();
 
-	return result;
+	// make fake PluginInfo structs after m_plugins is locked
+	for(auto & plugin : m_plugins)
+	{
+		plugin.info.infoVersion = PluginInfo::kInfoVersion;
+		plugin.info.name = plugin.version.name;
+		plugin.info.version = plugin.version.pluginVersion;
+	}
+
+	// alert any listeners that plugin load has finished
+	Dispatch_Message(0, F4SEMessagingInterface::kMessage_PostLoad, NULL, 0, NULL);
+	// second post-load dispatch
+	Dispatch_Message(0, F4SEMessagingInterface::kMessage_PostPostLoad, NULL, 0, NULL);
 }
 
 void PluginManager::DeInit(void)
@@ -420,6 +509,9 @@ void PluginManager::ScanPlugins(void)
 						plugin.internalHandle = handleIdx;
 						handleIdx++;
 
+						plugin.hasLoad = GetResourceLibraryProcAddress(resourceHandle, "F4SEPlugin_Load") != nullptr;
+						plugin.hasPreload = GetResourceLibraryProcAddress(resourceHandle, "F4SEPlugin_Preload") != nullptr;
+
 						m_plugins.push_back(plugin);
 					}
 					else
@@ -434,7 +526,7 @@ void PluginManager::ScanPlugins(void)
 			}
 			else
 			{
-				LogPluginLoadError(plugin, "plugin cannot be used with 1.10.980+");
+				LogPluginLoadError(plugin, "32-bit plugins can never work");
 			}
 
 			FreeLibrary(resourceHandle);
@@ -475,99 +567,11 @@ const char * PluginManager::CheckAddressLibrary(void)
 	return s_status;
 }
 
-void PluginManager::InstallPlugins(void)
-{
-	for(size_t i = 0; i < m_plugins.size(); i++)
-	{
-		auto & plugin = m_plugins[i];
-
-		_MESSAGE("loading plugin \"%s\"", plugin.version.name);
-
-		s_currentLoadingPlugin = &plugin;
-		s_currentPluginHandle = plugin.internalHandle;
-
-		std::string pluginPath = m_pluginDirectory + plugin.dllName;
-
-		plugin.handle = (HMODULE)LoadLibrary(pluginPath.c_str());
-		if(plugin.handle)
-		{
-			bool		success = false;
-
-			plugin.load = (_F4SEPlugin_Load)GetProcAddress(plugin.handle, "F4SEPlugin_Load");
-			if(plugin.load)
-			{
-				const char * loadStatus = NULL;
-
-				loadStatus = SafeCallLoadPlugin(&plugin, &g_F4SEInterface);
-
-				if(!loadStatus)
-				{
-					success = true;
-					loadStatus = "loaded correctly";
-				}
-
-				ASSERT(loadStatus);
-
-				if(success)
-				{
-					_MESSAGE("plugin %s (%08X %s %08X) %s (handle %d)",
-						plugin.dllName.c_str(),
-						plugin.version.dataVersion,
-						plugin.version.name,
-						plugin.version.pluginVersion,
-						loadStatus,
-						s_currentPluginHandle);
-				}
-				else
-				{
-					LogPluginLoadError(plugin, loadStatus);
-				}
-			}
-			else
-			{
-				LogPluginLoadError(plugin, "does not appear to be an F4SE plugin");
-			}
-
-			if(!success)
-			{
-				// failed, unload the library
-				FreeLibrary(plugin.handle);
-
-				// and remove from plugins list
-				m_plugins.erase(m_plugins.begin() + i);
-
-				// fix iterator
-				i--;
-			}
-		}
-		else
-		{
-			LogPluginLoadError(plugin, "couldn't load plugin", GetLastError());
-		}
-	}
-
-	s_currentLoadingPlugin = NULL;
-	s_currentPluginHandle = 0;
-
-	// make fake PluginInfo structs after m_plugins is locked
-	for(auto & plugin : m_plugins)
-	{
-		plugin.info.infoVersion = PluginInfo::kInfoVersion;
-		plugin.info.name = plugin.version.name;
-		plugin.info.version = plugin.version.pluginVersion;
-	}
-
-	// alert any listeners that plugin load has finished
-	Dispatch_Message(0, F4SEMessagingInterface::kMessage_PostLoad, NULL, 0, NULL);
-	// second post-load dispatch
-	Dispatch_Message(0, F4SEMessagingInterface::kMessage_PostPostLoad, NULL, 0, NULL);
-}
-
-const char * PluginManager::SafeCallLoadPlugin(LoadedPlugin * plugin, const F4SEInterface * f4se)
+const char * PluginManager::SafeCallLoadPlugin(LoadedPlugin * plugin, const F4SEInterface * f4se, UInt32 phase)
 {
 	__try
 	{
-		if(!plugin->load(f4se))
+		if(!plugin->load[phase](f4se))
 		{
 			return "reported as incompatible during load";
 		}
@@ -585,7 +589,6 @@ void PluginManager::Sanitize(F4SEPluginVersionData * version)
 {
 	version->name[sizeof(version->name) - 1] = 0;
 	version->author[sizeof(version->author) - 1] = 0;
-	version->supportEmail[sizeof(version->supportEmail) - 1] = 0;
 }
 
 enum

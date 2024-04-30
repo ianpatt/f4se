@@ -14,7 +14,17 @@ public:
 	PluginManager();
 	~PluginManager();
 
-	bool	Init(void);
+	enum
+	{
+		kPhase_Preload = 0,
+		kPhase_Load,
+
+		kPhase_Num,
+	};
+
+	void	Init(void);
+	void	InstallPlugins(UInt32 phase);
+	void	LoadComplete();
 	void	DeInit(void);
 
 	PluginInfo *	GetInfoByName(const char * name);
@@ -45,17 +55,19 @@ private:
 
 		F4SEPluginVersionData	version;
 
-		_F4SEPlugin_Load	load = nullptr;
+		_F4SEPlugin_Load	load[kPhase_Num] = { nullptr };
 
 		const char			* errorState = nullptr;
 		UInt32				errorCode = 0;
+
+		bool	hasLoad = false;
+		bool	hasPreload = false;
 	};
 
 	bool	FindPluginDirectory(void);
 	void	ScanPlugins(void);
-	void	InstallPlugins(void);
 
-	const char *	SafeCallLoadPlugin(LoadedPlugin * plugin, const F4SEInterface * f4se);
+	const char *	SafeCallLoadPlugin(LoadedPlugin * plugin, const F4SEInterface * f4se, UInt32 phase);
 
 	void			Sanitize(F4SEPluginVersionData * version);
 	const char *	CheckPluginCompatibility(const F4SEPluginVersionData & version);

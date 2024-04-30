@@ -266,9 +266,7 @@ __declspec(dllexport) F4SEPluginVersionData F4SEPlugin_Version =
 	
 	1,
 	"my awesome plugin",
-
 	"my name",
-	"support@example.com",
 
 	0,	// not version independent
 	0,	// not version independent (extended field)
@@ -306,11 +304,7 @@ struct F4SEPluginVersionData
 
 	UInt32	pluginVersion;			// version number of your plugin
 	char	name[256];				// null-terminated ASCII plugin name
-
 	char	author[256];			// null-terminated ASCII plugin author name (can be empty)
-	char	supportEmail[252];		// null-terminated ASCII support email address (can be empty)
-									// this is not for showing to users, it's in case I need to contact you about
-									// a compatibility problem with your plugin
 
 	// version compatibility
 	UInt32	versionIndependence;	// set to one of the kVersionIndependent_ enums or zero
