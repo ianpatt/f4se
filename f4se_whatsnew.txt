@@ -8,6 +8,12 @@
 - handle 'None' as an array member when passed to custom papyrus functions (thanks TommInfinite)
 - fix ScriptObject.RegisterForFurnitureEvent filters
 
+Functions with issues:
+	The workshop connection functions were heavy victims of inlining changes due to the updated compiler. Specifically:
+		ObjectReference.AttachWireLatent needs rework, disabled
+		ObjectReference.GetConnectPointsLatent does not return object
+		ObjectReference.TransmitConnectedPowerLatent does not work
+
 0.6.23
 - workaround for bug in High FPS Physics Fix
 
