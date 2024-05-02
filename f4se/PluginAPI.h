@@ -262,7 +262,7 @@ typedef bool (* _F4SEPlugin_Load)(const F4SEInterface * f4se);
 extern "C" {
 __declspec(dllexport) F4SEPluginVersionData F4SEPlugin_Version =
 {
-	SKSEPluginVersionData::kVersion,
+	F4SEPluginVersionData::kVersion,
 	
 	1,
 	"my awesome plugin",
