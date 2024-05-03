@@ -549,7 +549,7 @@ const char * PluginManager::CheckAddressLibrary(void)
 	}
 
 	char fileName[256];
-	_snprintf_s(fileName, 256, "Data\\SKSE\\Plugins\\versionlib-%d-%d-%d-%d.bin",
+	_snprintf_s(fileName, sizeof(fileName), "Data\\SKSE\\Plugins\\version-%d-%d-%d-%d.bin",
 		GET_EXE_VERSION_MAJOR(RUNTIME_VERSION),
 		GET_EXE_VERSION_MINOR(RUNTIME_VERSION),
 		GET_EXE_VERSION_BUILD(RUNTIME_VERSION),
