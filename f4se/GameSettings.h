@@ -68,20 +68,24 @@ class SettingCollectionMap : public SettingCollection
 public:
 	virtual ~SettingCollectionMap();
 
+	// 18
 	class CollectionMap
 	{
 	public:
+		void	* unk00;
+		UInt32	unk08;
+		UInt32	unk0C;
+		void	* unk10;
+
 		MEMBER_FN_PREFIX(CollectionMap);
-		DEFINE_MEMBER_FN(GetSetting, void, 0x00375510, BSFixedString * name, Setting *** setting);
+		DEFINE_MEMBER_FN(GetSetting, void, 0x00375510, BSFixedString * name, Setting ** setting);
 	};
 
-	void	* unk118;	// 118
-	void	* unk120;	// 120
-	CollectionMap * collectionMap;	// 128
+	CollectionMap	collectionMap;	// 118
 
-	void Get(BSFixedString * name, Setting *** setting)
+	void Get(BSFixedString * name, Setting ** setting)
 	{
-		CALL_MEMBER_FN(collectionMap, GetSetting)(name, setting);
+		CALL_MEMBER_FN(&collectionMap, GetSetting)(name, setting);
 	}
 };
 

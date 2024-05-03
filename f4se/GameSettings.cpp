@@ -110,9 +110,8 @@ Setting * GetINISetting(const char * name)
 Setting * GetGameSetting(const char * name)
 {
 	Setting * setting = nullptr;
-	Setting ** setting2 = &setting;
 	BSAutoFixedString searchName(name);
-	(*g_gameSettings)->Get(&searchName, &setting2);
+	(*g_gameSettings)->Get(&searchName, &setting);
 	return setting;
 }
 

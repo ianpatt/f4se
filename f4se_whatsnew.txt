@@ -1,3 +1,6 @@
+0.7.1
+- fix GetGameSetting and related functions
+
 0.7.0
 - support for runtime 1.10.980 "next generation" update
 - plugin manager uses declarative versions similar to skse64 after the AE update
