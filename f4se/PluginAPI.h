@@ -46,6 +46,10 @@ struct F4SEInterface
 	// Minimum F4SE version 0.6.22
 	// returns the plugin info structure for a plugin by name, only valid to be called after PostLoad message
 	const PluginInfo*	(*GetPluginInfo)(const char* name);
+
+	// Minimum F4SE version 0.7.1
+	// returns the folder name the game is using in the My Games folder
+	const char *	(* GetSaveFolderName)(void);
 };
 
 

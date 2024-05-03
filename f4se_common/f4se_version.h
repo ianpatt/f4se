@@ -17,6 +17,10 @@
 #define GET_EXE_VERSION_BUILD(a)	(((a) & 0x0000FFF0) >> 4)
 #define GET_EXE_VERSION_SUB(a)		(((a) & 0x0000000F) >> 0)
 
+#define RUNTIME_TYPE_BETHESDA	0
+#define RUNTIME_TYPE_GOG		1
+#define RUNTIME_TYPE_EPIC		2
+
 #define RUNTIME_VERSION_1_1_29	MAKE_EXE_VERSION(1, 1, 29)	// 0x010101D0	initial version released on steam
 #define RUNTIME_VERSION_1_1_30	MAKE_EXE_VERSION(1, 1, 30)	// 0x010101E0	day1 patch to fix xaudio problem
 #define RUNTIME_VERSION_1_2		MAKE_EXE_VERSION(1, 2, 33)	// 0x01020210	beta, removed mini-mod-manager from the launcher
@@ -75,5 +79,17 @@
 #define F4SE_TARGETING_BETA_VERSION	0
 #define CURRENT_RELEASE_RUNTIME		RUNTIME_VERSION_1_10_980
 #define CURRENT_RELEASE_F4SE_STR	"0.7.0"
+
+#if GET_EXE_VERSION_SUB(RUNTIME_VERSION) == RUNTIME_TYPE_BETHESDA
+#define SAVE_FOLDER_NAME "Fallout4"
+#elif GET_EXE_VERSION_SUB(RUNTIME_VERSION) == RUNTIME_TYPE_GOG
+// gog 1.10.980 doesn't exist at the time of this writing
+#define SAVE_FOLDER_NAME "Fallout4 GOG"
+#elif GET_EXE_VERSION_SUB(RUNTIME_VERSION) == RUNTIME_TYPE_EPIC
+// epic exists but I don't think anyone actually has it
+#define SAVE_FOLDER_NAME "Fallout4 EPIC"
+#else
+#error unknown runtime type
+#endif
 
 #endif /* __F4SE_VERSION_H__ */

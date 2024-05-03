@@ -131,6 +131,11 @@ namespace
 	}
 }
 
+static const char *	GetSaveFolderName(void)
+{
+	return SAVE_FOLDER_NAME;
+}
+
 PluginManager	g_pluginManager;
 PluginAllocator	g_branchPluginAllocator;
 PluginAllocator	g_localPluginAllocator;
@@ -149,7 +154,8 @@ static const F4SEInterface g_F4SEInterface =
 	PluginManager::QueryInterface,
 	PluginManager::GetPluginHandle,
 	PluginManager::GetReleaseIndex,
-	PluginManager::GetPluginInfo
+	PluginManager::GetPluginInfo,
+	GetSaveFolderName
 };
 
 static const F4SEMessagingInterface g_F4SEMessagingInterface =

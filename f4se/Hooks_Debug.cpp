@@ -3,6 +3,7 @@
 #include "common/IFileStream.h"
 #include "f4se_common/Utilities.h"
 #include "f4se_common/SafeWrite.h"
+#include "f4se_common/f4se_version.h"
 #include <dbghelp.h>
 #include <shlobj.h>
 
@@ -118,7 +119,7 @@ void Hooks_Debug_Init()
 			char	myDocumentsPath[MAX_PATH];
 			ASSERT(SUCCEEDED(SHGetFolderPath(NULL, CSIDL_MYDOCUMENTS, NULL, SHGFP_TYPE_CURRENT, myDocumentsPath)));
 
-			sprintf_s(s_crashDumpPath, sizeof(s_crashDumpPath), "%s\\My Games\\Fallout4\\F4SE\\Crashdumps\\%04d-%02d-%02d_%02d.%02d.%02d.dmp", myDocumentsPath,
+			sprintf_s(s_crashDumpPath, sizeof(s_crashDumpPath), "%s\\My Games\\" SAVE_FOLDER_NAME "\\F4SE\\Crashdumps\\%04d-%02d-%02d_%02d.%02d.%02d.dmp", myDocumentsPath,
 				s_launchTime.wYear, s_launchTime.wMonth, s_launchTime.wDay,
 				s_launchTime.wHour, s_launchTime.wMinute, s_launchTime.wSecond);
 

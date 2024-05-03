@@ -60,7 +60,7 @@ char * __get_narrow_winmain_command_line_Hook()
 
 void InstallBaseHooks()
 {
-	gLog.OpenRelative(CSIDL_MYDOCUMENTS, "\\My Games\\Fallout4\\F4SE\\f4se.log");
+	gLog.OpenRelative(CSIDL_MYDOCUMENTS, "\\My Games\\" SAVE_FOLDER_NAME "\\F4SE\\f4se.log");
 
 	HANDLE exe = GetModuleHandle(nullptr);
 
