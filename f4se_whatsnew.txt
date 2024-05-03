@@ -1,5 +1,8 @@
 0.7.1
 - fix GetGameSetting and related functions
+- fix accidental references to SKSE paths/names when transplanting code
+- fix guess at addresslib name
+- add API to retrieve save folder name (usable during preload). folder names are guessed because GOG doesn't exist yet and I don't have epic
 
 0.7.0
 - support for runtime 1.10.980 "next generation" update

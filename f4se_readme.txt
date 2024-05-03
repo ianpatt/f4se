@@ -1,13 +1,9 @@
-Fallout 4 Script Extender v0.7.0 TESTING ONLY
+Fallout 4 Script Extender v0.7.1 BETA
 by Ian Patterson, Stephen Abel, and Brendan Borthwick (ianpatt, behippo, and plb)
 
 The Fallout 4 Script Extender, or F4SE for short, is a modder's resource that expands the scripting capabilities of Fallout 4. It does so without modifying the executable files on disk, so there are no permanent side effects.
 
 #####################################################################
-This version is intended for mod developer testing only.
-There are probably major issues.
-Please read the whatsnew for specific notes.
-
 All native code plugins (.dlls) need to be updated by their
 creators for 1.10.980.
 
