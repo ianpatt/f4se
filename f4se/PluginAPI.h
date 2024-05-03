@@ -315,7 +315,7 @@ struct F4SEPluginVersionData
 	UInt32	structureIndependence;	// bitfield. describe how you handle structure layout using the kStructureIndependence_ enums
 	UInt32	compatibleVersions[16];	// zero-terminated list of RUNTIME_VERSION_ defines your plugin is compatible with
 
-	UInt32	seVersionRequired;		// minimum version of the script extender required, compared against PACKED_SKSE_VERSION
+	UInt32	seVersionRequired;		// minimum version of the script extender required, compared against PACKED_F4SE_VERSION
 									// you probably should just set this to 0 unless you know what you are doing
 	
 	UInt32	reservedNonBreaking;	// bitfield. set to 0

@@ -238,10 +238,10 @@ void Core_SaveCallback(const F4SESerializationInterface * intfc)
 	_MESSAGE("Saving furniture event registrations...");
 	g_furnitureEventRegs.Save(intfc, 'FRNR', InternalEventVersion::kCurrentVersion);
 
-	_MESSAGE("Saving SKSEPersistentObjectStorage data...");
+	_MESSAGE("Saving F4SEPersistentObjectStorage data...");
 	SaveClassHelper(intfc, 'OBMG', F4SEObjectStorageInstance());
 
-	_MESSAGE("Saving SKSEDelayFunctorManager data...");
+	_MESSAGE("Saving F4SEDelayFunctorManager data...");
 	SaveClassHelper(intfc, 'DFMG', F4SEDelayFunctorManagerInstance());
 }
 
@@ -308,13 +308,13 @@ void Core_LoadCallback(const F4SESerializationInterface * intfc)
 			g_furnitureEventRegs.Load(intfc, InternalEventVersion::kCurrentVersion);
 			break;
 
-			// SKSEPersistentObjectStorage
+			// F4SEPersistentObjectStorage
 		case 'OBMG':
 			_MESSAGE("Loading F4SEPersistentObjectStorage data...");
 			F4SEObjectStorageInstance().Load(intfc, version);
 			break;
 
-			// SKSEDelayFunctorManager
+			// F4SEDelayFunctorManager
 		case 'DFMG':
 			_MESSAGE("Loading F4SEDelayFunctorManager data...");
 			F4SEDelayFunctorManagerInstance().Load(intfc, version);
