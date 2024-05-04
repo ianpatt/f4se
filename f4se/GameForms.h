@@ -1471,7 +1471,10 @@ public:
 	UInt32					unk128;
 	UInt32					unk12C;
 	UInt32					unk130;
-	UInt32					unk134;
+	UInt8					cleared;
+	UInt8					everCleared;
+	UInt8					unk136;
+	UInt8					unk137;
 	UInt32					unk138;
 	UInt32					unk13C;
 };
@@ -1503,12 +1506,12 @@ public:
 
 	struct MaxHeightData
 	{
-		UInt32	unk00;				// 00
-		UInt32	unk04;				// 04
+		UInt32	x;				// 00
+		UInt32	y;				// 04
 		UInt8	* maxHeightBlock;	// 08
 	};
 
-	MaxHeightData			* unk50;			// 50
+	MaxHeightData			* heightData;			// 50
 	TESObjectLAND			* land;				// 58
 	SInt32					unk60;				// 60
 	float					unk64;				// 64
