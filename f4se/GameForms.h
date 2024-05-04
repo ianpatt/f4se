@@ -1471,7 +1471,8 @@ public:
 	UInt32					unk128;
 	UInt32					unk12C;
 	UInt32					unk130;
-	UInt32					unk134;
+	bool					bCleared;
+	bool					bEverCleared;
 	UInt32					unk138;
 	UInt32					unk13C;
 };
