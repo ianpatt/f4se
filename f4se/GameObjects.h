@@ -269,10 +269,13 @@ public:
 	{
 	public:
 		// members
-		BGSProjectile* projectile;  // 00
-		std::uint32_t health;       // 08
-		std::int8_t flags;          // 0C
-		float damage;               // 10
+		BGSProjectile* projectile;	// 00
+		UInt32 health;				// 08
+		UInt8 flags;				// 0C
+		UInt8 unk0D;				// 0D
+		UInt8 unk0E;				// 0E
+		UInt8 unk0F;				// 0F
+		float damage;				// 10
 	};
 	static_assert(sizeof(AMMO_DATA) == 0x18);
 

@@ -1471,8 +1471,10 @@ public:
 	UInt32					unk128;
 	UInt32					unk12C;
 	UInt32					unk130;
-	bool					bCleared;
-	bool					bEverCleared;
+	UInt8					cleared;
+	UInt8					everCleared;
+	UInt8					unk136;
+	UInt8					unk137;
 	UInt32					unk138;
 	UInt32					unk13C;
 };
@@ -1504,8 +1506,8 @@ public:
 
 	struct MaxHeightData
 	{
-		UInt32	X;				// 00
-		UInt32	Y;				// 04
+		UInt32	x;				// 00
+		UInt32	y;				// 04
 		UInt8	* maxHeightBlock;	// 08
 	};
 
