@@ -1503,12 +1503,12 @@ public:
 
 	struct MaxHeightData
 	{
-		UInt32	unk00;				// 00
-		UInt32	unk04;				// 04
+		UInt32	X;				// 00
+		UInt32	Y;				// 04
 		UInt8	* maxHeightBlock;	// 08
 	};
 
-	MaxHeightData			* unk50;			// 50
+	MaxHeightData			* heightData;			// 50
 	TESObjectLAND			* land;				// 58
 	SInt32					unk60;				// 60
 	float					unk64;				// 64
