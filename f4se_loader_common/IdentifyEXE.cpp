@@ -288,13 +288,13 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 
 	if(hookInfo->procType == kProcType_WinStore)
 	{
-		PrintLoaderError("The Windows Store (gamepass) version of Starfield is not supported.");
+		PrintLoaderError("The Windows Store (gamepass) version of Fallout 4 is not supported.");
 		return false;
 	}
 
 	if(hookInfo->procType == kProcType_Epic)
 	{
-		PrintLoaderError("The Epic Store version of Starfield is not supported.");
+		PrintLoaderError("The Epic Store version of Fallout 4 is not supported.");
 		return false;
 	}
 
