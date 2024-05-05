@@ -4,8 +4,7 @@ RelocAddr <PowerUtils::_UpdateMovingWirelessItem> PowerUtils::UpdateMovingWirele
 // this was inlined everywhere
 //RelocAddr <_GetObjectAtConnectPoint> GetObjectAtConnectPoint(0x001FF360); // Acquires objects that are touching attach points
 RelocAddr <TerminalUtils::_EstablishTerminalLinks> TerminalUtils::EstablishTerminalLinks(0x0033B3D0);
-// also inlined in its single use
-//RelocAddr <SplineUtils::_ConnectSpline> SplineUtils::ConnectSpline(0x00200E50);
+RelocAddr <SplineUtils::_ConnectSpline> SplineUtils::ConnectSpline(0x00339870);
 RelocAddr <SplineUtils::_UpdateSpline> SplineUtils::UpdateSpline(0x003393E0);
 
 // 
