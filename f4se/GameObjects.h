@@ -277,7 +277,7 @@ public:
 		UInt8 unk0F;				// 0F
 		float damage;				// 10
 	};
-	static_assert(sizeof(AMMO_DATA) == 0x18);
+	STATIC_ASSERT(sizeof(AMMO_DATA) == 0x18);
 
 	AMMO_DATA data;                // 160
 	UInt64 shortDesc;  // 178
