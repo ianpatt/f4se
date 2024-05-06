@@ -20,7 +20,7 @@ namespace BSHash
 		UInt32 operator()(const Key& a_key) const
 		{
 			UInt32 crc32;
-			CalculateCRC32_SIZE(crc32, &a_key, sizeof(Key), 0);
+			CalculateCRC32_SIZE(&crc32, &a_key, sizeof(Key), 0);
 			return crc32;
 		}
 	};
