@@ -10,8 +10,8 @@
 // 
 RelocAddr <char *> g_gameVersion(0x022872F8);
 
-RelocAddr <uintptr_t> kHook_ShowVersion_Offset(0x00A8F570 + 0x50 + 3);
-RelocAddr <uintptr_t> kHook_ShowVersion_OffsetBase(0x00A8F570 + 0x50 + 7);
+RelocAddr <uintptr_t> kHook_ShowVersion_Offset(0x00A8F920 + 0x50 + 3);
+RelocAddr <uintptr_t> kHook_ShowVersion_OffsetBase(0x00A8F920 + 0x50 + 7);
 
 static char s_patchedGameVersion[256];
 
@@ -19,8 +19,8 @@ static void InitVersionHook()
 {
 	char * originalGameVersion = g_gameVersion;
 
-	sprintf_s(s_patchedGameVersion, sizeof(s_patchedGameVersion), "(F4SE %d.%d.%d rel %d) %s",
-		F4SE_VERSION_INTEGER, F4SE_VERSION_INTEGER_MINOR, F4SE_VERSION_INTEGER_BETA, F4SE_VERSION_RELEASEIDX, originalGameVersion);
+	sprintf_s(s_patchedGameVersion, sizeof(s_patchedGameVersion), "(F4SE %d.%d.%d) %s",
+		F4SE_VERSION_INTEGER, F4SE_VERSION_INTEGER_MINOR, F4SE_VERSION_INTEGER_BETA, originalGameVersion);
 }
 
 static void CommitVersionHook()
@@ -35,8 +35,8 @@ static void CommitVersionHook()
 
 static char * s_customControlMap = nullptr;
 
-RelocAddr <uintptr_t> kHook_CustomControlMap_Offset(0x01556910);
-RelocAddr <void *> kHook_CustomControlMap_Return(0x01556910 + 5);
+RelocAddr <uintptr_t> kHook_CustomControlMap_Offset(0x01556CE0);
+RelocAddr <void *> kHook_CustomControlMap_Return(0x01556CE0 + 5);
 
 static void InitControlMap()
 {

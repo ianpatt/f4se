@@ -3,25 +3,25 @@
 #include "f4se/GameObjects.h"
 
 // 
-RelocPtr <CharacterCreation*> g_characterCreation(0x02FF7180);	// array
+RelocPtr <CharacterCreation*> g_characterCreation(0x02FF8180);	// array
 // 
-RelocPtr <UInt32> g_characterIndex(0x02FF7158);
+RelocPtr <UInt32> g_characterIndex(0x02FF8158);
 
 // 
-RelocPtr <BSFaceGenManager*> g_faceGenManager(0x02E653F8);
+RelocPtr <BSFaceGenManager*> g_faceGenManager(0x02E663F8);
 
 // 
-RelocPtr <TESNPC*> g_customizationDummy1(0x02F6DD18);	// Either Nora or Nate's dummy actors
+RelocPtr <TESNPC*> g_customizationDummy1(0x02F6ED18);	// Either Nora or Nate's dummy actors
 // 
-RelocPtr <TESNPC*> g_customizationDummy2(0x02F6DCE0);	// Either Nora or Nate's dummy actors
+RelocPtr <TESNPC*> g_customizationDummy2(0x02F6ECE0);	// Either Nora or Nate's dummy actors
 
-RelocAddr<_CreateCharacterTintEntry> CreateCharacterTintEntry(0x003AB990);
-RelocAddr<_CopyCharacterTints> CopyCharacterTints(0x003AA640);
-RelocAddr<_ClearCharacterTints> ClearCharacterTints(0x003AEF60);
+RelocAddr<_CreateCharacterTintEntry> CreateCharacterTintEntry(0x003AB9C0);
+RelocAddr<_CopyCharacterTints> CopyCharacterTints(0x003AA670);
+RelocAddr<_ClearCharacterTints> ClearCharacterTints(0x003AEF90);
 
-RelocAddr <_FillTintTemplates> FillTintTemplates(0x003AA7F0); // For manipulating the tint lists, their signatures aren't quite right yet
-RelocAddr <_MergeTintTextures> MergeTintTextures(0x006985C0);
-RelocAddr <_CreateMergeTintTextures> CreateMergeTintTextures(0x006983C0);
+RelocAddr <_FillTintTemplates> FillTintTemplates(0x003AA820); // For manipulating the tint lists, their signatures aren't quite right yet
+RelocAddr <_MergeTintTextures> MergeTintTextures(0x006985F0);
+RelocAddr <_CreateMergeTintTextures> CreateMergeTintTextures(0x006983F0);
 
 // NG: seems to be handled differently? (see 1405FD2E0)
 // RelocPtr <tHashSet<CharacterCreation::MorphIntensity, TESNPC*>> g_morphIntensityMap(0x03715370 - 0x08);

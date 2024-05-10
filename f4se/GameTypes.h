@@ -54,11 +54,11 @@ class BSReadWriteLock
 public:
 	BSReadWriteLock() : threadID(0), lockValue(0) {}
 
-	DEFINE_MEMBER_FN_0(LockForRead, void, 0x0153EA20);
-	DEFINE_MEMBER_FN_0(LockForWrite, void, 0x0153EAA0);
+	DEFINE_MEMBER_FN_0(LockForRead, void, 0x0153EDF0);
+	DEFINE_MEMBER_FN_0(LockForWrite, void, 0x0153EE70);
 
-	DEFINE_MEMBER_FN_0(UnlockRead, void, 0x0153ECF0);
-	DEFINE_MEMBER_FN_0(UnlockWrite, void, 0x0153ED00);
+	DEFINE_MEMBER_FN_0(UnlockRead, void, 0x0153F0C0);
+	DEFINE_MEMBER_FN_0(UnlockWrite, void, 0x0153F0D0);
 };
 STATIC_ASSERT(sizeof(BSReadWriteLock) == 0x8);
 
@@ -143,14 +143,14 @@ public:
 
 		MEMBER_FN_PREFIX(Ref);
 		// 
-		DEFINE_MEMBER_FN(ctor, Ref *, 0x01561700, const char * buf);
+		DEFINE_MEMBER_FN(ctor, Ref *, 0x01561AD0, const char * buf);
 		// 
-		DEFINE_MEMBER_FN(ctor_w, Ref *, 0x015625D0, const wchar_t * buf);
+		DEFINE_MEMBER_FN(ctor_w, Ref *, 0x015629A0, const wchar_t * buf);
 		// 
-		DEFINE_MEMBER_FN(Set, Ref *, 0x01561840, const char * buf);
-		DEFINE_MEMBER_FN(Set_w, Ref *, 0x015637C0, const wchar_t * buf);
+		DEFINE_MEMBER_FN(Set, Ref *, 0x01561C10, const char * buf);
+		DEFINE_MEMBER_FN(Set_w, Ref *, 0x01563B90, const wchar_t * buf);
 
-		DEFINE_MEMBER_FN(Release, void, 0x015629C0);
+		DEFINE_MEMBER_FN(Release, void, 0x01562D90);
 
 		Ref();
 		Ref(const char * buf);

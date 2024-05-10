@@ -300,7 +300,7 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 
 	bool result = false;
 
-	const UInt64 kCurVersion = 0x0001000A03D40000;	// 1.10.980.0
+	const UInt64 kCurVersion = 0x0001000A03D80000;	// 1.10.984.0
 
 	// convert version resource to internal version format
 	UInt32 versionInternal = MAKE_EXE_VERSION(version >> 48, version >> 32, version >> 16);
@@ -353,7 +353,12 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 	}
 	else
 	{
-		*dllSuffix = "1_10_980";
+		char name[128];
+		sprintf_s(name, _countof(name), "%d_%d_%d",
+			int((kCurVersion >> 48) & 0xFFFF),
+			int((kCurVersion >> 32) & 0xFFFF),
+			int((kCurVersion >> 16) & 0xFFFF));
+		*dllSuffix = name;
 
 		switch(hookInfo->procType)
 		{

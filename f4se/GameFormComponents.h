@@ -220,8 +220,8 @@ public:
 	UInt64			unk30[7];		// 30
 
 	MEMBER_FN_PREFIX(TESActorBaseData);
-	DEFINE_MEMBER_FN(ModifyFlag, void, 0x002B5EE0, UInt32 flag, bool doSet, bool unk1); // unk1 = 1 (appears to select which actor flags to use)
-	DEFINE_MEMBER_FN(GetLevel, UInt16, 0x002B5FD0);
+	DEFINE_MEMBER_FN(ModifyFlag, void, 0x002B5F10, UInt32 flag, bool doSet, bool unk1); // unk1 = 1 (appears to select which actor flags to use)
+	DEFINE_MEMBER_FN(GetLevel, UInt16, 0x002B6000);
 };
 STATIC_ASSERT(sizeof(TESActorBaseData) == 0x68);
 
@@ -434,7 +434,7 @@ public:
 	void	* unk10;	// 10
 
 	MEMBER_FN_PREFIX(TESDescription);
-	DEFINE_MEMBER_FN(Get, void, 0x002BA200, BSString * out, TESForm * parent);
+	DEFINE_MEMBER_FN(Get, void, 0x002BA230, BSString * out, TESForm * parent);
 };
 
 // 10
@@ -1394,12 +1394,12 @@ public:
 		UInt64	unk10[(0x78 - 0x08) >> 3];
 
 		MEMBER_FN_PREFIX(Evaluator);
-		DEFINE_MEMBER_FN(ctor, void, 0x00714AF0, TESForm * a1, TESForm * a2, UInt64 unk1); // a1 might be player or subject, not sure yet
+		DEFINE_MEMBER_FN(ctor, void, 0x00714B20, TESForm * a1, TESForm * a2, UInt64 unk1); // a1 might be player or subject, not sure yet
 	};
 
 	MEMBER_FN_PREFIX(Condition);
 	// 
-	DEFINE_MEMBER_FN(Evaluate, bool, 0x00716630, Evaluator * eval); // Evaluates only a single condition
+	DEFINE_MEMBER_FN(Evaluate, bool, 0x00716660, Evaluator * eval); // Evaluates only a single condition
 };
 STATIC_ASSERT(offsetof(Condition, referenceType) == 0x31);
 STATIC_ASSERT(sizeof(Condition) == 0x38);
