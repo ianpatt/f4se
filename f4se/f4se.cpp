@@ -183,8 +183,6 @@ void F4SE_Initialize(void)
 	if(isInit) return;
 	isInit = true;
 
-	F4SE_Preinit();	// move after updating load timing
-
 	Hooks_Debug_Init();
 	Hooks_ObScript_Init();
 	Hooks_Papyrus_Init();
