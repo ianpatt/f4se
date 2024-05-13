@@ -1,9 +1,10 @@
 0.7.2
-- support for runtime 1.10.984 "next generation" hotfix
+- support for runtime 1.10.984
 - fix loading some plugins with additional exports
 - remove user-facing text referencing starfield
-- SplineUtils::ConnectSpline
+- SplineUtils::ConnectSpline (fixes ObjectReference.AttachWireLatent)
 - fix BSHash::operator() generic specialization
+- GetObjectAtConnectPoint, fixes ObjectReference.GetConnectPointsLatent, TransmitConnectedPowerLatent (thanks shad0wshayd3)
 
 0.7.1
 - fix GetGameSetting and related functions

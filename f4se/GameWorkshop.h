@@ -112,6 +112,4 @@ typedef void(*_EstablishTerminalLinks)(TESObjectREFR* akWireRef);
 extern RelocAddr <_EstablishTerminalLinks> EstablishTerminalLinks;
 }
 
-typedef TESObjectREFR * (*_GetObjectAtConnectPoint)(TESObjectREFR * source, NiPoint3 * connectPos, bhkWorld * world, float unk1);
-extern RelocAddr <_GetObjectAtConnectPoint> GetObjectAtConnectPoint;
-
+TESObjectREFR * GetObjectAtConnectPoint(const TESObjectREFR & source, NiPoint3 & connectPos, const bhkWorld & world, float radius);

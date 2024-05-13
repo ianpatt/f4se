@@ -63,8 +63,6 @@ namespace papyrusObjectReference {
 
 	TESObjectREFR* AttachWireLatent(UInt32 stackId, TESObjectREFR* refA, TESObjectREFR* refB, TESForm* splineForm)
 	{
-		// disabled, needs rework after 1.10.980
-#if 0
 		TESObjectREFR * wireRef = nullptr;
 		VirtualMachine* vm = (*g_gameVM)->m_virtualMachine;
 
@@ -190,8 +188,6 @@ namespace papyrusObjectReference {
 
 		*Workshop::hCurrentWorkshop = currentWorkshop;
 		return wireRef;
-#endif
-		return nullptr;
 	}
 
 	DECLARE_DELAY_FUNCTOR(F4SEAttachWireFunctor, 2, AttachWireLatent, TESObjectREFR, TESObjectREFR*, TESObjectREFR*, TESForm*);
@@ -443,13 +439,10 @@ namespace papyrusObjectReference {
 					if(parent != root && refr->parentCell) {
 						bhkWorld * world = CALL_MEMBER_FN(refr->parentCell, GetHavokWorld)();
 						if(world) {
-							// needs rework for 1.10.980
-#if 0
-							TESObjectREFR * connected = GetObjectAtConnectPoint(refr, &worldPos, world, 8.0f);
+							TESObjectREFR * connected = GetObjectAtConnectPoint(*refr, worldPos, *world, 8.0f);
 							if(connected) {
 								point.Set<TESObjectREFR*>("object", connected);
 							}
-#endif
 						}
 					}
 
@@ -540,9 +533,7 @@ namespace papyrusObjectReference {
 			if(parent != root && refr->parentCell) {
 				bhkWorld * world = CALL_MEMBER_FN(refr->parentCell, GetHavokWorld)();
 				if(world) {
-					// disabled for rework after 1.10.980
-#if 0
-					TESObjectREFR * connected = GetObjectAtConnectPoint(refr, &worldPos, world, 8.0f);
+					TESObjectREFR * connected = GetObjectAtConnectPoint(*refr, worldPos, *world, 8.0f);
 					if(connected) {
 						try // Probably wont make a difference but doesnt hurt to try
 						{
@@ -554,7 +545,6 @@ namespace papyrusObjectReference {
 							_MESSAGE("Power link error!");
 						}
 					}
-#endif
 				}
 			}
 		}
