@@ -1,3 +1,6 @@
+0.7.3
+- passing -- as a command line argument to f4se_loader ignores following arguments
+
 0.7.2
 - support for runtime 1.10.984
 - fix loading some plugins with additional exports
