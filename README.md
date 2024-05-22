@@ -10,3 +10,4 @@ cmake --build common/build --config Release --target install
 cmake -B f4se/build -S f4se -DCMAKE_INSTALL_PREFIX=extern f4se
 cmake --build f4se/build --config Release
 ```
+Solution will be generated at f4se/build/umbrella.sln.
