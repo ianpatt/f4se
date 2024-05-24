@@ -86,6 +86,15 @@ void BranchTrampoline::Destroy()
 	}
 }
 
+void BranchTrampoline::SetBase(size_t len, void* base)
+{
+	ASSERT(!m_base);
+	m_base = base;
+	m_len = len;
+	m_allocated = 0;
+	m_curAlloc = nullptr;
+}
+
 void * BranchTrampoline::StartAlloc()
 {
 	ASSERT(m_base);

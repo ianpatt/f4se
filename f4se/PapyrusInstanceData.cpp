@@ -79,19 +79,19 @@ namespace papyrusInstanceData
 				return nullptr;
 
 			// Invalid slot id
-			if(iSlotIndex >= ActorEquipData::kMaxSlots)
+			if(iSlotIndex >= BIPOBJECT::BIPED_OBJECT::kTotal)
 				return nullptr;
 
-			ActorEquipData * equipData = actor->equipData;
+			BipedAnim* equipData = actor->biped.get();
 			if(!equipData)
 				return nullptr;
 
 			// Make sure there is an item in this slot
-			auto item = equipData->slots[iSlotIndex].item;
+			auto item = equipData->object[iSlotIndex].parent.object;
 			if(!item)
 				return nullptr;
 
-			return equipData->slots[iSlotIndex].instanceData;
+			return equipData->object[iSlotIndex].parent.instanceData;
 		}
 
 		return nullptr;

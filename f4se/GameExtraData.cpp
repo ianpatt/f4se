@@ -139,7 +139,7 @@ ExtraInstanceData* ExtraInstanceData::Create(TESForm * baseForm, TBO_InstanceDat
 	pInstanceData->type = kExtraData_InstanceData;
 	pInstanceData->baseForm = baseForm;
 	pInstanceData->instanceData = instanceData;
-	InterlockedIncrement(&instanceData->m_refCount);
+	InterlockedIncrement(&instanceData->refCount);
 	return pInstanceData;
 }
 

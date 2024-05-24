@@ -15,6 +15,7 @@ class ExtraDataList;
 class TESWorldSpace;
 class BGSScene;
 class TESQuest;
+class BipedAnim;
 
 typedef bool (* _HasDetectionLOS)(Actor* source, TESObjectREFR* target, UInt8 * unk1);
 extern RelocAddr<_HasDetectionLOS> HasDetectionLOS;
@@ -145,8 +146,8 @@ public:
 	virtual void	Unk_9C();
 	virtual void	Unk_9D();
 	virtual void	Unk_9E();
-	virtual void	Unk_9F();
-	virtual ActorEquipData	** GetEquipData(bool bFirstPerson);
+	virtual const BSTSmartPointer<BipedAnim>& GetBiped();
+	virtual const BSTSmartPointer<BipedAnim>& GetBipedAnim(bool bFirstPerson); // BSTSmartPointer&
 	virtual void	Unk_A1();
 	virtual void	Unk_A2();
 	virtual void	Unk_A3();
@@ -454,7 +455,7 @@ public:
 	UInt64	unk368[(0x418-0x368)/8];
 	TESRace			* race;				// 418
 	UInt64			unk420;				// 420
-	ActorEquipData	* equipData;		// 428
+	BSTSmartPointer<BipedAnim> biped;	// 428 - BSTSmartPointer
 	UInt64	unk430;						// 430
 	UInt32	unk438;						// 438
 	UInt32	uiFlags;					// 43C
@@ -471,7 +472,7 @@ public:
 	DEFINE_MEMBER_FN(IsHostileToActor, bool, 0x00BF5BD0, Actor * actor);
 	DEFINE_MEMBER_FN(UpdateEquipment, void, 0x004BBED0); // TESObjectREFR::ReplaceModel
 };
-STATIC_ASSERT(offsetof(Actor, equipData) == 0x428);
+STATIC_ASSERT(offsetof(Actor, biped) == 0x428);
 STATIC_ASSERT(offsetof(Actor, uiFlags) == 0x43C);
 STATIC_ASSERT(offsetof(Actor::MiddleProcess::Data08, equipData) == 0x288);
 STATIC_ASSERT(sizeof(Actor) == 0x490);
@@ -512,7 +513,7 @@ public:
 
 	tArray<ObjectiveData> objData;	// 7D8
 	UInt64	unk458[(0xB70 - 0x7F0) / 8];	// 7F0
-	ActorEquipData	* playerEquipData;	// B70 - First person?
+	BSTSmartPointer<BipedAnim> playerEquipData;	// B70 - First person?
 	NiNode			* firstPersonSkeleton;	// B78
 	UInt64	unkB68[(0xD00-0xB80)/8];	// B78
 	tArray<BGSCharacterTint::Entry*> * tints;	// D00

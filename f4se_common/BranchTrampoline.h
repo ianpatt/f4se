@@ -8,6 +8,7 @@ public:
 
 	bool Create(size_t len, void * module = NULL);
 	void Destroy();
+	void SetBase(size_t len, void* base);
 
 	// allocate unsized 
 	void * StartAlloc();

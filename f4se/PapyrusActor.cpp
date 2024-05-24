@@ -32,25 +32,25 @@ namespace papyrusActor
 		result.Set<TESForm*>("materialSwap", nullptr);
 		result.Set<BGSTextureSet*>("texture", nullptr);
 
-		if(slotIndex >= ActorEquipData::kMaxSlots) {
+		if(slotIndex >= BIPOBJECT::BIPED_OBJECT::kTotal) {
 			result.SetNone(true);
 			return result;
 		}
 
-		ActorEquipData * equipData = actor->equipData;
+		BipedAnim* equipData = actor->biped.get();
 		PlayerCharacter * pPC = DYNAMIC_CAST(actor, Actor, PlayerCharacter);
 		if(pPC && bFirstPerson)
-			equipData = pPC->playerEquipData;
+			equipData = pPC->playerEquipData.get();
 
 		if(equipData) {
-			auto materialSwap = equipData->slots[slotIndex].modelMatSwap;
-			result.Set<TESForm*>("item", equipData->slots[slotIndex].item);
-			result.Set<TESForm*>("model", equipData->slots[slotIndex].model);
+			auto materialSwap = DYNAMIC_CAST(equipData->object[slotIndex].part, TESModel, BGSModelMaterialSwap);
+			result.Set<TESForm*>("item", equipData->object[slotIndex].parent.object);
+			result.Set<TESForm*>("model", equipData->object[slotIndex].armorAddon);
 			if(materialSwap) {
 				result.Set<BSFixedString>("modelName", materialSwap->GetModelName());
 				result.Set<TESForm*>("materialSwap", materialSwap->materialSwap);
 			}
-			result.Set<BGSTextureSet*>("texture", equipData->slots[slotIndex].textureSet);
+			result.Set<BGSTextureSet*>("texture", equipData->object[slotIndex].skinTexture);
 		}
 
 		return result;
@@ -62,7 +62,7 @@ namespace papyrusActor
 		result.SetNone(true);
 
 		// Invalid slot id
-		if(slotIndex >= ActorEquipData::kMaxSlots)
+		if(slotIndex >= BIPOBJECT::BIPED_OBJECT::kTotal)
 			return result;
 
 		ExtraDataList * stackDataList = nullptr;

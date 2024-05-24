@@ -472,5 +472,3 @@ extern RelocAddr <_CreateMergeTintTextures> CreateMergeTintTextures;
 extern RelocAddr<uintptr_t> s_BGSCharacterTint_Template_MaskVtbl;
 extern RelocAddr<uintptr_t> s_BGSCharacterTint_Template_PaletteVtbl;
 extern RelocAddr<uintptr_t> s_BGSCharacterTint_Template_TextureSetVtbl;
-
-extern RelocPtr <tHashSet<CharacterCreation::MorphIntensity, TESNPC*>> g_morphIntensityMap;

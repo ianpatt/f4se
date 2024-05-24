@@ -23,9 +23,6 @@ RelocAddr <_FillTintTemplates> FillTintTemplates(0x003AA820); // For manipulatin
 RelocAddr <_MergeTintTextures> MergeTintTextures(0x006985F0);
 RelocAddr <_CreateMergeTintTextures> CreateMergeTintTextures(0x006983F0);
 
-// NG: seems to be handled differently? (see 1405FD2E0)
-// RelocPtr <tHashSet<CharacterCreation::MorphIntensity, TESNPC*>> g_morphIntensityMap(0x03715370 - 0x08);
-
 // These are for creating new instances
 
 // ??_7Mask@Template@BGSCharacterTint@@6B@

@@ -10,7 +10,29 @@ class TESForm;
 struct BSIntrusiveRefCounted
 {
 public:
-	volatile SInt32	m_refCount;	// 00
+	mutable UInt32	refCount;	// 00
+};
+
+// Not actually implemented, just a wrapper
+template <typename T>
+class BSTSmartPointer
+{
+public:
+	operator bool() const noexcept { return static_cast<bool>(_ptr); }
+
+	T* get() const noexcept { return _ptr; }
+
+	T& operator*() const
+	{
+		return *_ptr;
+	}
+
+	T* operator->() const
+	{
+		return _ptr;
+	}
+
+	T* _ptr;
 };
 
 // 04
@@ -288,7 +310,7 @@ public:
 		Heap_Free(entries);																// Free the old block
 		entries = newBlock;																// Assign the new block
 		capacity = numEntries;															// Capacity is now the number of total entries in the block
-		count = min(capacity, count);													// Count stays the same, or is truncated to capacity
+		count = (std::min)(capacity, count);													// Count stays the same, or is truncated to capacity
 		return true;
 	}
 

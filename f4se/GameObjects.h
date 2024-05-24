@@ -236,6 +236,8 @@ public:
 	DEFINE_MEMBER_FN(ChangeHeadPartRemovePart, void, 0x006018D0, BGSHeadPart *, bool bRemoveExtraParts);
 	DEFINE_MEMBER_FN(ChangeHeadPart, void, 0x00605CE0, BGSHeadPart *);
 	DEFINE_MEMBER_FN(GetSkinColorFromTint, void, 0x00601C40, NiColorA * outColor, BGSCharacterTint::PaletteEntry* paletteEntry, bool allowCustomization); // This function alters the npc's Skin Color values
+	DEFINE_MEMBER_FN_0(GetFacialBoneMorphIntensity, float, 0x00601150);
+	DEFINE_MEMBER_FN_1(SetFacialBoneMorphIntensity, void, 0x006010F0, float intensity);
 
 	void ChangeHeadPart(BGSHeadPart * headPart, bool bRemovePart, bool bRemoveExtraParts);
 	BGSHeadPart * GetHeadPartByType(UInt32 type, bool bOverlays = false);

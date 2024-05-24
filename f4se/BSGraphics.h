@@ -20,12 +20,11 @@ public:
 	DEFINE_MEMBER_FN(CreateBSGeometryData, BSGeometryData*, 0x016FD950, UInt32 * blockSize, UInt8 * vertexData, UInt64 vertexDesc, BSGeometryData::TriangleData * triData); // Creates a block with a vertex copy in the resource pool with a reference to the supplied triblock (partial deep copy)
 };
 STATIC_ASSERT(offsetof(Renderer, m_renderLock) == 0x2590);
-}
 
-class BSShaderResourceManager
+class ShaderResourceManager
 {
 public:
-	virtual ~BSShaderResourceManager();
+	virtual ~ShaderResourceManager();
 
 	virtual void Unk_01();
 	virtual void Unk_02();
@@ -42,29 +41,33 @@ public:
 };
 
 // ??
-class BSRenderTargetManager
+class RenderTargetManager
 {
 public:
-	struct SharedTargetInfo
+	// 20
+	struct RenderTargetProperties
 	{
-		UInt32	width;		// 00 - 400
-		UInt32	height;		// 04 - 400
-		UInt32	unk08;		// 08 - 1C
-		UInt32	unk0C;		// 0C - 10000
-		UInt32	unk10;		// 10 - FFFFFFFF
-		UInt32	unk14;		// 14 - r13d
-		UInt32	unk18;		// 18 - r12b
+		UInt32	uiWidth;					// 00
+		UInt32	uiHeight;					// 04
+		UInt32	eFormat;					// 08
+		UInt32	uiMultiSample;				// 0C
+		bool	bCopyable;					// 10
+		bool	bSupportUnorderedAccess;	// 11
+		bool	bAllowMipGeneration;		// 12
+		bool	bForceLinear;				// 13
+		SInt32	iMipLevel;					// 14
+		UInt32	uiTextureTarget;			// 18
+		bool	bEnableFastClear;			// 1C
+		UInt8	pad[3];						// 1D
 	};
 
-	MEMBER_FN_PREFIX(BSRenderTargetManager);
-	// 
-	DEFINE_MEMBER_FN(LockTextureType, void, 0x0171F9B0, UInt32 type);
-	// 
-	DEFINE_MEMBER_FN(ReleaseTextureType, void, 0x0171FA40, UInt32 type);
-	DEFINE_MEMBER_FN(GetRenderData, BSRenderData *, 0x0171F910, UInt32 type, UInt64 unk1, UInt64 unk2, UInt32 unk3); // type, 0, 1, 0
-	// 
-	DEFINE_MEMBER_FN(Unk_01, void, 0x0171F960, UInt32 type, BSRenderData *, UInt8 unk3); // type, rendererData, 1
+	DEFINE_MEMBER_FN_1(LockTextureType, void, 0x0171F9B0, UInt32 type);
+	DEFINE_MEMBER_FN_1(ReleaseTextureType, void, 0x0171FA40, UInt32 type);
+	DEFINE_MEMBER_FN_4(GetRenderData, BSRenderData *, 0x0171F910, UInt32 type, UInt64 unk1, UInt64 unk2, UInt32 unk3); // type, 0, 1, 0
+	DEFINE_MEMBER_FN_3(Unk_01, void, 0x0171F960, UInt32 type, BSRenderData *, UInt8 unk3); // type, rendererData, 1
+	DEFINE_MEMBER_FN_4(CreateRenderTarget, void, 0x0171DE10, UInt32 aIndex, const RenderTargetProperties& properties, UInt8 aPersistent);
 };
+}
 
 // 1B8
 class ImageSpaceManager
@@ -76,9 +79,9 @@ public:
 struct ID3D11DeviceContext;
 struct ID3D11Device;
 
-extern RelocPtr <ImageSpaceManager>			g_imageSpaceManager;
-extern RelocPtr <BSGraphics::Renderer>		g_renderManager;
-extern RelocPtr <BSRenderTargetManager>		g_renderTargetManager;
-extern RelocPtr <BSShaderResourceManager>	g_shaderResourceManager;
-extern RelocPtr <ID3D11Device>				g_D3D11Device;
-extern RelocPtr <ID3D11DeviceContext>		g_D3D11DeviceContext;
+extern RelocPtr <ImageSpaceManager>						g_imageSpaceManager;
+extern RelocPtr <BSGraphics::Renderer>					g_renderManager;
+extern RelocPtr <BSGraphics::RenderTargetManager>		g_renderTargetManager;
+extern RelocPtr <BSGraphics::ShaderResourceManager>		g_shaderResourceManager;
+extern RelocPtr <ID3D11Device>							g_D3D11Device;
+extern RelocPtr <ID3D11DeviceContext>					g_D3D11DeviceContext;

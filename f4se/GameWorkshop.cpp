@@ -29,7 +29,7 @@ namespace BSConnectPoint
 
 		void Release()
 		{
-			if(!InterlockedDecrement(&m_refCount))
+			if(!InterlockedDecrement(&refCount))
 			{
 				this->~Parent();
 				Heap_Free(this);

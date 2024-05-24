@@ -16,15 +16,15 @@ RelocAddr <_MoveRefrToPosition> MoveRefrToPosition(0x010FB0F0);
 bool Actor::GetEquippedExtraData(UInt32 slotIndex, ExtraDataList ** extraData)
 {
 	// Invalid slot id
-	if (slotIndex >= ActorEquipData::kMaxSlots)
+	if (slotIndex >= BIPOBJECT::BIPED_OBJECT::kTotal)
 		return false;
 
 	// This should be possible but check anyway
-	if (!equipData)
+	if (!biped)
 		return false;
 
 	// Make sure there is an item in this slot
-	auto item = equipData->slots[slotIndex].item;
+	auto item = biped->object[slotIndex].parent.object;
 	if (!item)
 		return false;
 
