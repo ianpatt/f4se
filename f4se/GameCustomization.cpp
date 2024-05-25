@@ -32,6 +32,10 @@ RelocAddr <uintptr_t> s_BGSCharacterTint_Template_PaletteVtbl(0x022943C8);
 // ??_7TextureSet@Template@BGSCharacterTint@@6B@
 RelocAddr <uintptr_t> s_BGSCharacterTint_Template_TextureSetVtbl(0x022943F8);
 
+RelocAddr<BSFaceGenUtils::_PrepareHeadPartForShaders> BSFaceGenUtils::PrepareHeadPartForShaders(0x0069AFB0);
+
+RelocAddr<BSFaceGenUtils::_StartFaceCustomizationGenerationForNPC> BSFaceGenUtils::StartFaceCustomizationGenerationForNPC(0x006985F0);
+
 bool BGSCharacterTint::Entry::IsEqual(Entry * rhs)
 {
 	return GetType() == rhs->GetType() && tintIndex == rhs->tintIndex && percent == rhs->percent;

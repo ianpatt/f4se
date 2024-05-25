@@ -95,7 +95,7 @@ namespace papyrusActor
 	void QueueUpdate(Actor * actor, bool bDoEquipment, UInt32 flags)
 	{
 		if(actor) {
-			CALL_MEMBER_FN(actor, QueueUpdate)(bDoEquipment, 0, true, flags);
+			actor->Reset3D(bDoEquipment, 0, true, flags);
 		}
 	}
 

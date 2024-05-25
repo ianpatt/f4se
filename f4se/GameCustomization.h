@@ -15,6 +15,9 @@ class ActorValueInfo;
 class Condition;
 class NiAVObject;
 class BSTriShape;
+class BSFaceGenNiNode;
+struct BSFaceGenPendingHeadData;
+struct FaceGenData;
 
 class BGSCharacterTint
 {
@@ -472,3 +475,12 @@ extern RelocAddr <_CreateMergeTintTextures> CreateMergeTintTextures;
 extern RelocAddr<uintptr_t> s_BGSCharacterTint_Template_MaskVtbl;
 extern RelocAddr<uintptr_t> s_BGSCharacterTint_Template_PaletteVtbl;
 extern RelocAddr<uintptr_t> s_BGSCharacterTint_Template_TextureSetVtbl;
+
+namespace BSFaceGenUtils
+{
+	typedef void (*_PrepareHeadPartForShaders)(BSFaceGenNiNode* apNode, BGSHeadPart* apHeadPart, TESNPC* apNPC, BSFaceGenPendingHeadData* apPendingHeadData);
+	extern RelocAddr<_PrepareHeadPartForShaders> PrepareHeadPartForShaders;
+
+	typedef void (*_StartFaceCustomizationGenerationForNPC)(TESNPC* arNPC, const BSTArray<BGSCharacterTint::Entry*>& arData, FaceGenData* arFaceGenData, void* apCustomizationBuffer, UInt32 auiLoadingPriority, bool abForceMaxLayers);
+	extern RelocAddr<_StartFaceCustomizationGenerationForNPC> StartFaceCustomizationGenerationForNPC;
+}

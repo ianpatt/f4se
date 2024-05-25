@@ -35,7 +35,7 @@ BSDynPosData* BSDynPosData::Create(const BSFixedString & name, BSTriShape * shap
 	data->vertexData = (UInt8*)Heap_Allocate(shape->numVertices * dynamicBlock);
 	for(UInt32 i = 0; i < shape->numVertices; i++)
 	{
-		memcpy_s(&data->vertexData[i * dynamicBlock], dynamicBlock, &shape->geometryData->vertexData->vertexBlock[i * vertexSize], dynamicBlock);
+		memcpy_s(&data->vertexData[i * dynamicBlock], dynamicBlock, &static_cast<UInt8*>(static_cast<BSGraphics::TriShape*>(shape->pRendererData)->pVB->pData)[i * vertexSize], dynamicBlock);
 	}
 	return data;
 }

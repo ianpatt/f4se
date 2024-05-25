@@ -389,7 +389,7 @@ public:
 	UInt64	unk2D8[(0x300-0x2D8)/8];	// 2D8
 
 	// Lots of misc data goes here, equipping, perks, etc
-	struct MiddleProcess
+	struct AIProcess
 	{
 		void * unk00;	// 00
 
@@ -430,10 +430,27 @@ public:
 
 		Data08 * unk08;	// 08
 
-		MEMBER_FN_PREFIX(MiddleProcess);
-		DEFINE_MEMBER_FN(UpdateEquipment, void, 0x00CA12C0, Actor * actor, UInt32 flags); 
+		enum RESET_3D_FLAGS
+		{
+			RESET_MODEL = (1 << 0),
+			RESET_SKIN = (1 << 1),
+			RESET_HEAD = (1 << 2),
+			RESET_FACE = (1 << 3),
+			RESET_SCALE = (1 << 4),
+			RESET_SKELETON = (1 << 5),
+			RESET_INIT_DEFAULT = (1 << 6),
+			RESET_SKY_CELL_SKIN = (1 << 7),
+			RESET_HAVOK = (1 << 8),
+			RESET_DONT_ADD_OUTFIT = (1 << 9),
+			RESET_KEEP_HEAD = (1 << 10),
+			RESET_DISMEMBERMENT = (1 << 11),
+		};
+
+		DEFINE_MEMBER_FN_1(Set3DUpdateFlag, void, 0x00CB0400, UInt32 flags);
+		DEFINE_MEMBER_FN_2(DoUpdate3dModel, void, 0x00CA12C0, Actor * actor, UInt32 flags);
+		DEFINE_MEMBER_FN_2(Update3DModel, void, 0x00C7C640, Actor* apActor, bool abQueueUpdate);
 	};
-	MiddleProcess * middleProcess;					// 300
+	AIProcess * middleProcess;					// 300
 	UInt64	unk308[(0x338-0x308)/8];
 
 	struct ActorValueData
@@ -468,13 +485,13 @@ public:
 	bool GetEquippedExtraData(UInt32 slotIndex, ExtraDataList ** extraData);
 
 	MEMBER_FN_PREFIX(Actor);
-	DEFINE_MEMBER_FN(QueueUpdate, void, 0x00BEE320, bool bDoFaceGen, UInt32 unk2, bool DoQueue, UInt32 flags); // 0, 0, 1, 0
+	DEFINE_MEMBER_FN_4(Reset3D, void, 0x00BEE320, bool abReloadAll, UInt32 auiAdditionalFlags, bool abQueueReset, UInt32 auiExcludeFlags); // 0, 0, 1, 0
 	DEFINE_MEMBER_FN(IsHostileToActor, bool, 0x00BF5BD0, Actor * actor);
 	DEFINE_MEMBER_FN(UpdateEquipment, void, 0x004BBED0); // TESObjectREFR::ReplaceModel
 };
 STATIC_ASSERT(offsetof(Actor, biped) == 0x428);
 STATIC_ASSERT(offsetof(Actor, uiFlags) == 0x43C);
-STATIC_ASSERT(offsetof(Actor::MiddleProcess::Data08, equipData) == 0x288);
+STATIC_ASSERT(offsetof(Actor::AIProcess::Data08, equipData) == 0x288);
 STATIC_ASSERT(sizeof(Actor) == 0x490);
 
 // E10

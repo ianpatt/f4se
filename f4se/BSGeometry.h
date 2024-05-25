@@ -5,6 +5,9 @@
 
 class NiProperty;
 struct ID3D11Buffer;
+struct ID3D11ShaderResourceView;
+struct ID3D11UnorderedAccessView;
+struct ID3D11Texture2D;
 
 // 38
 struct BSGeometrySegmentFlagData
@@ -68,39 +71,83 @@ public:
 	bool						bIgnoreSegments;		// 3D
 };
 
-class BSGeometryData
+namespace BSGraphics
 {
-public:
-	UInt64	vertexDesc;
-
-	struct VertexData
-	{
-		ID3D11Buffer	* d3d11Buffer;	// 00 - const CLayeredObjectWithCLS<class CBuffer>::CContainedObject::`vftable'{for `CPrivateDataImpl<struct ID3D11Buffer>'}
-		UInt8			* vertexBlock;	// 08
-		UInt64			unk10;			// 10
-		UInt64			unk18;			// 18
-		UInt64			unk20;			// 20
-		UInt64			unk28;			// 28
-		UInt64			unk30;			// 30
-		volatile SInt32	refCount;		// 38
-	};
-
-	struct TriangleData
-	{
-		ID3D11Buffer	* d3d11Buffer;	// 00 - Same buffer as VertexData
-		UInt16			* triangles;	// 08
-		UInt64			unk10;			// 10
-		UInt64			unk18;			// 18
-		UInt64			unk20;			// 20
-		UInt64			unk28;			// 28
-		UInt64			unk30;			// 30
-		volatile SInt32	refCount;		// 38
-	};
-
-	VertexData			* vertexData;	// 08
-	TriangleData		* triangleData;	// 10
-	volatile SInt32		refCount;		// 18
+struct Buffer
+{
+  ID3D11Buffer* pBuffer;
+  void* pData;
+  Buffer* pNext;
+  ID3D11ShaderResourceView* pShaderResource;
+  ID3D11UnorderedAccessView* pUnorderedAccess;
+  void** pRequestEventToWait; // BSEventFlag
+  UInt32 uiMaxDataSize;
+  UInt32 uiDataSize;
+  UInt32 uiRefCount;
+  UInt32 SRAcquire; // Atomic
+  UInt32 UAVAcquire; // Atomic
+  UInt32 PendingRequests; // Atomic
+  UInt32 DataOffset;
+  bool InvalidCpuData;
+  bool HeapAllocated;
+  volatile bool PendingCopy;
 };
+struct VertexBuffer : public Buffer {};
+struct IndexBuffer : public Buffer {};
+struct ByteBuffer : public Buffer {};
+
+struct TriShape
+{
+	UInt64 uiVertexDesc;
+	BSGraphics::VertexBuffer* pVB;
+	BSGraphics::IndexBuffer* pIB;
+	UInt32 uiRefCount;
+};
+struct DynamicTriShape : public TriShape
+{
+	UInt32 uiDynamicBufferSize;
+};
+
+struct TextureStreamData
+{
+	UInt32 uiRefCount;
+	UInt8 ucDataFileIndex;
+	UInt8 ucChunkCount;
+	UInt16 usMinLOD;
+};
+struct TextureHeader
+{
+	union
+	{
+		UInt64 ui64;
+		struct
+		{
+			UInt16 uiHeight;
+			UInt16 uiWidth;
+			UInt8 uiMipCount;
+			UInt8 uiFormat;
+			UInt8 uiFlags;
+			UInt8 uiTilemode;
+		} __s1;
+	} __u0;
+};
+struct Texture
+{
+	ID3D11ShaderResourceView* pSRView;
+	ID3D11Texture2D* pTexture2D;
+	ID3D11UnorderedAccessView* pUAView;
+	BSGraphics::TextureStreamData* pStreamData;
+	void** pRequestEventToWait; // BSEventFlag
+	BSGraphics::TextureHeader Header;
+	UInt32 PendingRequests; // Atomic
+	UInt32 uiRefCount;
+	UInt32 uiCreationFrame;
+	UInt8 uiMinLOD;
+	UInt8 uiDegradeLevel;
+	UInt8 usDesiredDegradeLevel;
+	UInt8 usFlags;
+};
+}
 
 // 160
 class BSGeometry : public NiAVObject
@@ -160,7 +207,7 @@ public:
 		kFlag_Unk8			= (1ULL << 55),
 	};
 
-	BSGeometryData	* geometryData;			// 148
+	void*			pRendererData;			// 148
 	UInt64			vertexDesc;				// 150
 
 	UInt16 GetVertexSize() const { return (vertexDesc << 2) & 0x3C; } // 0x3C might be a compiler optimization, (vertexDesc & 0xF) << 2 makes more sense

@@ -6,7 +6,99 @@
 #include "f4se/BSGeometry.h"
 #include "f4se/NiTextures.h"
 
-class BSGeometryData;
+class BSLines;
+class BSDynamicLines;
+class NiDefaultAVObjectPalette;
+class BSMeshLODTriShape;
+class BSMultiStreamInstanceTriShape;
+class NiPick;
+class NiShadeProperty;
+class NiStream;
+
+class IShaderResourceManager
+{
+public:
+	virtual ~IShaderResourceManager();
+
+	struct FadeNodeSettings
+	{
+		const float* pFadeOutMultiplierAddr;
+		const float* pMeshLODLevel1FadeAddr;
+		const float* pMeshLODLevel2FadeAddr;
+		float fDistanceMultiplier;
+		float fMeshLODFadePercent;
+		float fMeshLODFadeTime;
+		float fFadeOutAlphaThreshold;
+		float fFadeInAlphaThreshold;
+		float fMaxFadeIncrement;
+		float fActorAlphaFadeSeconds;
+		float fFadeInTime;
+		float fFadeOutTime;
+		float fMeshLODFadeBound;
+		int iFadeCounter;
+		UInt32 uiFadeEnabled;
+		UInt32 uiDrawFadeEnabled;
+	};
+
+
+	virtual BSTriShape* CreateTriShape(UInt32 auiNumTriangles, UInt16* apIndices, UInt32 auiNumVertices, NiPoint3* apPositions, NiPoint2* apTexCoords0, NiColorA* apTexCoords1, NiPoint3* apNormals, NiPoint3* apBinormals, NiPoint3* apTangents, NiColorA* apColors, NiColorA* apSkinBoneWeights, UInt8* apSkinBoneIndices, NiColorA* apLandscapeData1, NiColorA* apLandscapeData2, float* apEyeData, bool aGeneratePositionData);
+	virtual BSTriShape* CreateTriShape(UInt32 auiNumTriangles, UInt32 auiNumVertices, NiPoint3* apPositions, NiPoint2* apTexCoords, NiColorA* apColors, UInt16* apIndices);
+	virtual void* CreateTriShape(NiStream* kStream, UInt64 auiVertexDesc, UInt32 auiVertexCount, UInt32 auiIndexCount, char** apDynData);
+	virtual void* CreateTriShapeRendererData(void* apVertexBuffer, UInt64 auiVertexDesc, UInt16* apIndices, UInt32 auiIndexCount);
+	virtual BSSubIndexTriShape* CreateSubIndexTriShape(UInt32 auiNumTriangles, UInt32 auiNumSegments, UInt16* apIndices, UInt32 auiNumVertices, NiPoint3* apPositions, NiPoint2* apTexCoords0, NiColorA* apTexCoords1, NiPoint3* apNormals, NiPoint3* apBinormals, NiPoint3* apTangents, NiColorA* apColors, NiColorA* apSkinBoneWeights, UInt8* apSkinBoneIndices, NiColorA* apLandscapeData1, NiColorA* apLandscapeData2, float* apEyeData);
+	virtual void IncRefTriShape(void* apRendererData);
+	virtual void DecRefTriShape(void* apRendererData);
+	virtual BSDynamicTriShape* CreateDynamicTriShape(UInt32 auiDynamicFlags, UInt32 auiNumTriangles, UInt16* apIndices, UInt32 auiNumVertices, NiPoint3* apPositions, NiPoint2* apTexCoords0, NiColorA* apTexCoords1, NiPoint3* apNormals, NiPoint3* apBinormals, NiPoint3* apTangents, NiColorA* apColors, NiColorA* apSkinBoneWeights, UInt8* apSkinBoneIndices, NiColorA* apLandscapeData1, NiColorA* apLandscapeData2, float* apEyeData);
+	virtual BSDynamicTriShape* CreateDynamicTriShape(UInt32, UInt32, UInt32, NiPoint3*, NiPoint2*, NiColorA*, UInt16*);
+	virtual void IncRefDynamicTriShape(void* apRendererData);
+	virtual void DecRefDynamicTriShape(void* apRendererData);
+	virtual void ConvertBSTriShapeToBSDynamicTriShape(NiNode* apRoot, NiDefaultAVObjectPalette* apObjectPal);
+	virtual void ApplyMaterials(NiAVObject* apRoot);
+	virtual void SetTriShapeStreamDynamicFlags(UInt32);
+	virtual void*  CreateParticleShape();
+	virtual void IncRefParticleShape(void* apRendererData);
+	virtual void DecRefParticleShape(void* apRendererData);
+	virtual BSLines*  CreateLineShape(UInt32, UInt16*, UInt32, NiPoint3*, NiPoint2*, NiColorA*, NiPoint3*, NiPoint3*, NiPoint3*, NiColorA*, NiColorA*, UInt8*, NiColorA*, NiColorA*, float*);
+	virtual BSDynamicLines* CreateDynamicLineShape(UInt32, UInt32, UInt32, NiPoint3*, NiPoint2*, NiColorA*, UInt16*);
+	virtual void* CreateDynamicLineShape(NiStream*, UInt64, UInt32, UInt32);
+	virtual BSDynamicLines* CreateDynamicLineShape(UInt32, UInt32, UInt16*, UInt32, NiPoint3*, NiPoint2*, NiColorA*, NiPoint3*, NiPoint3*, NiPoint3*, NiColorA*, NiColorA*, UInt8*, NiColorA*, NiColorA*, float*);
+	virtual void IncRefLines(void* apRendererData);
+	virtual void DecRefLines(void* apRendererData);
+	virtual void IncRefDynamicLines(void* apRendererData);
+	virtual void DecRefDynamicLines(void* apRendererData);
+	virtual void LoadTexture(NiTexture* apTexture);
+	virtual void CreateStreamingTexture(NiTexture* apTexture, const void* apUserDataIn, void* apUserDataOut);
+	virtual bool ReadStreamingTextureData(NiTexture* apTexture, void* apUserDataIn);
+	virtual bool CreateStreamingTextureArraySlice(NiTexture* apTexture, const void* apUserDataIn, void* apUserDataOut, UInt32 auiSlice);
+	virtual bool ReadStreamingTextureDataToArraySlice(NiTexture* apTexture, void* apUserDataIn, UInt32 auiSlice);
+	virtual void FinishStreamingTexture(NiTexture* apTexture);
+	virtual void IncRefTexture(BSGraphics::Texture* apRendererData);
+	virtual void DecRefTexture(BSGraphics::Texture* apRendererData);
+	virtual void GetTextureWidthHeight(NiTexture* apTexture, UInt32* auiWidth, UInt32* auiHeight);
+	virtual UInt32 GetTextureFormat(NiTexture* apTexture);
+	virtual bool UpdateTextureToDesiredMipLevel(NiTexture* apTexture, UInt32*);
+	virtual void LoadUpgradeTextureData(NiTexture* apTexture);
+	virtual bool UpdateStreamingTextureToDesiredMipLevel(NiTexture* apTexture, UInt32*, void*, void*);
+	virtual void FinishStreamingTextureUpgade(NiTexture* apTexture);
+	virtual void*  CreateVertexBuffer(UInt32* auiDataSize, void* apData, UInt32 auiStride, UInt64);
+	virtual void DecRefVertexBuffer(void* apRendererData);
+	virtual NiShadeProperty*  CreateDefaultEffectShaderProperty(bool abVertexColors, bool abSkinned);
+	virtual BSMeshLODTriShape*  CreateMeshLODTriShape(UInt32*, UInt32, UInt64, UInt32, UInt32, void*);
+	virtual BSMeshLODTriShape*  CreateMeshLODTriShape(BSTriShape*, UInt32*, UInt32);
+	virtual UInt32 UpdateIndexBufferForInstancing(BSMultiStreamInstanceTriShape*, UInt32);
+	virtual bool FindIntersectionsTriShapeFastPath(const NiPoint3*, const NiPoint3*, NiPick*, BSTriShape*);
+	virtual void CreateTangentSpace(UInt32, UInt16*, UInt32, NiPoint3*, NiPoint2*, NiPoint3*, NiPoint3*, NiPoint3*);
+	virtual float GetShaderFrameCount();
+	virtual float GetShaderTimerDelta();
+	virtual void GetFadeNodeSettings(FadeNodeSettings* abSkinned);
+	virtual void GetCameraVectors(NiPoint3* arUp, NiPoint3* arRight, NiPoint3* arDir);
+};
+
+class BSShaderResourceManager
+{
+public:
+	virtual ~BSShaderResourceManager();
+};
 
 namespace BSGraphics
 {
@@ -16,29 +108,11 @@ public:
 	UInt64				unk2588[0x2590 >> 3];	// 2588
 	CRITICAL_SECTION	m_renderLock;			// 2590
 
-	MEMBER_FN_PREFIX(Renderer);
-	DEFINE_MEMBER_FN(CreateBSGeometryData, BSGeometryData*, 0x016FD950, UInt32 * blockSize, UInt8 * vertexData, UInt64 vertexDesc, BSGeometryData::TriangleData * triData); // Creates a block with a vertex copy in the resource pool with a reference to the supplied triblock (partial deep copy)
+	DEFINE_MEMBER_FN_4(CreateTriShape, TriShape*, 0x016FD950, UInt32* arDataSize, void* apData, UInt64 auiVertexDesc, IndexBuffer* apIndexBuffer);
+	DEFINE_MEMBER_FN_3(CreateVertexBuffer, VertexBuffer*, 0x016FF1C0, UInt32* auiDataSize, SInt8* apData, UInt32 auiStride);
+	DEFINE_MEMBER_FN_2(CreateIndexBuffer, IndexBuffer*, 0x016FF4E0, UInt32 auiIndexCount, const UInt16* apIndices);
 };
 STATIC_ASSERT(offsetof(Renderer, m_renderLock) == 0x2590);
-
-class ShaderResourceManager
-{
-public:
-	virtual ~ShaderResourceManager();
-
-	virtual void Unk_01();
-	virtual void Unk_02();
-	virtual void Unk_03();
-	virtual void Unk_04();
-	virtual void Unk_05();
-	virtual void Unk_06();
-	virtual void Unk_07();
-	virtual void IncGeometryRef(BSGeometryData * geomData);
-	virtual void DefGeometryRef(BSGeometryData * geomData); // Will auto-destroy the block when it reaches zero
-	//... 
-
-	// Unk_21(BSRenderData * rendererData); // Release texture?
-};
 
 // ??
 class RenderTargetManager
@@ -69,6 +143,12 @@ public:
 };
 }
 
+namespace BSShaderutil
+{
+	typedef void (*_ClearRenderPasses)(NiAVObject* object);
+	extern RelocAddr< _ClearRenderPasses> ClearRenderPasses;
+}
+
 // 1B8
 class ImageSpaceManager
 {
@@ -82,6 +162,6 @@ struct ID3D11Device;
 extern RelocPtr <ImageSpaceManager>						g_imageSpaceManager;
 extern RelocPtr <BSGraphics::Renderer>					g_renderManager;
 extern RelocPtr <BSGraphics::RenderTargetManager>		g_renderTargetManager;
-extern RelocPtr <BSGraphics::ShaderResourceManager>		g_shaderResourceManager;
+extern RelocPtr <BSShaderResourceManager>				g_shaderResourceManager;
 extern RelocPtr <ID3D11Device>							g_D3D11Device;
 extern RelocPtr <ID3D11DeviceContext>					g_D3D11DeviceContext;
