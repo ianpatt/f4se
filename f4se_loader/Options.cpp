@@ -186,6 +186,11 @@ bool Options::Read(int argc, char ** argv)
 					// terminator for arguments
 					break;
 				}
+				else if((arg[0] == 'l') && (strlen(arg) == 3))
+				{
+					// language argument from the vanilla launcher
+					m_languageFromLoader = arg + 1;
+				}
 				else
 				{
 					_ERROR("unknown switch (%s)", arg);
@@ -239,6 +244,7 @@ void Options::PrintUsage(void)
 	_MESSAGE("  -affinity <mask> - set the processor affinity mask");
 	_MESSAGE("  -forcesteamloader - does nothing, ignored for backwards compatibility");
 	_MESSAGE("  -waitfordebugger - wait for a debugger to attach before beginning execution");
+	_MESSAGE("  -l** - language argument from the vanilla launcher (matches -l and then any two characters)");
 	_MESSAGE("  -- - ignore arguments after this marker");
 }
 

@@ -31,6 +31,8 @@ public:
 	std::string	m_altEXE;
 	std::string	m_altDLL;
 
+	std::string	m_languageFromLoader;
+
 private:
 	bool	Verify(void);
 };
