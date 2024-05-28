@@ -255,6 +255,9 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 	_MESSAGE("version = %016I64X", version);
 	_MESSAGE("product name = %s", productName.c_str());
 
+	hookInfo->version = version;
+	hookInfo->packedVersion = MAKE_EXE_VERSION(version >> 48, version >> 32, version >> 16);
+
 	if(productName == "F4SE")
 	{
 		_MESSAGE("found an F4SE component");

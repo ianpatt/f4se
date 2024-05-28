@@ -3,6 +3,7 @@
 #include "f4se_common/Relocation.h"
 #include "f4se_common/BranchTrampoline.h"
 #include "f4se_common/SafeWrite.h"
+#include "f4se_common/CoreInfo.h"
 #include <cassert>
 #include <cstring>
 #include <shlobj.h>
@@ -244,4 +245,11 @@ extern "C" {
 
 		return TRUE;
 	}
+
+	__declspec(dllexport) F4SECoreVersionData F4SECore_Version =
+	{
+		F4SECoreVersionData::kVersion,
+
+		RUNTIME_VERSION,
+	};
 };

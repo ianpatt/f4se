@@ -1,6 +1,7 @@
 #include <ShlObj.h>
 #include "f4se_common/f4se_version.h"
 #include "f4se_common/Utilities.h"
+#include "f4se_common/CoreInfo.h"
 #include "f4se_loader_common/LoaderError.h"
 #include "f4se_loader_common/IdentifyEXE.h"
 #include "f4se_loader_common/Steam.h"
@@ -220,6 +221,42 @@ int main(int argc, char ** argv)
 		if(!tempFile.Open(dllPath.c_str()))
 		{
 			PrintLoaderError("Couldn't find F4SE DLL (%s). Please make sure you have installed F4SE correctly and are running it from your Fallout 4 folder.", dllPath.c_str());
+			return 1;
+		}
+	}
+
+	// check to make sure the dll makes sense
+	{
+		bool dllOK = false;
+		UInt32 dllVersion = 0;
+
+		HMODULE resourceHandle = (HMODULE)LoadLibraryEx(dllPath.c_str(), nullptr, LOAD_LIBRARY_AS_IMAGE_RESOURCE);
+		if(resourceHandle)
+		{
+			if(Is64BitDLL(resourceHandle))
+			{
+				auto * version = (const F4SECoreVersionData *)GetResourceLibraryProcAddress(resourceHandle, "F4SECore_Version");
+				if(version)
+				{
+					dllVersion = version->runtimeVersion;
+
+					if(	(version->dataVersion == F4SECoreVersionData::kVersion) &&
+						(version->runtimeVersion == procHookInfo.packedVersion))
+					{
+						dllOK = true;
+					}
+				}
+			}
+
+			FreeLibrary(resourceHandle);
+		}
+
+		if(!dllOK)
+		{
+			PrintLoaderError(
+				"Bad F4SE DLL (%s).\n"
+				"Do not rename files; it will not magically make anything work.\n"
+				"%08X %08X", dllPath.c_str(), procHookInfo.packedVersion, dllVersion);
 			return 1;
 		}
 	}
