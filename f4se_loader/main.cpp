@@ -17,8 +17,46 @@
 
 IDebugLog gLog;
 
-static void PrintModuleInfo(UInt32 procID);
-static void PrintProcessInfo();
+class EarlyTerminationHandler
+{
+public:
+	void start(HANDLE proc)
+	{
+		if(m_proc == INVALID_HANDLE_VALUE)
+		{
+			m_proc = proc;
+
+			SetConsoleCtrlHandler(HandlerWrapper, true);
+		}
+	}
+
+	void stop()
+	{
+		if(m_proc != INVALID_HANDLE_VALUE)
+		{
+			SetConsoleCtrlHandler(HandlerWrapper, false);
+
+			m_proc = INVALID_HANDLE_VALUE;
+		}
+	}
+
+private:
+	HANDLE	m_proc = INVALID_HANDLE_VALUE;
+
+	static BOOL HandlerWrapper(DWORD type)
+	{
+		return gEarlyTerminationHandler.Handler(type);
+	}
+
+	BOOL Handler(DWORD type)
+	{
+		_MESSAGE("early termination %d", type);
+
+		TerminateProcess(m_proc, 0);
+		
+		return true;	// "no other handlers are called and the system terminates the process"
+	}
+} gEarlyTerminationHandler;
 
 void AugmentEnvironment(const std::string& procPath, const std::string& dllPath)
 {
@@ -325,6 +363,8 @@ int main(int argc, char ** argv)
 		return 1;
 	}
 
+	gEarlyTerminationHandler.start(procInfo.hProcess);
+
 	_MESSAGE("main thread id = %d", procInfo.dwThreadId);
 
 	// set affinity if requested
@@ -376,6 +416,8 @@ int main(int argc, char ** argv)
 		if(g_options.m_waitForClose)
 			WaitForSingleObject(procInfo.hProcess, INFINITE);
 	}
+
+	gEarlyTerminationHandler.stop();
 
 	// clean up
 	CloseHandle(procInfo.hProcess);
