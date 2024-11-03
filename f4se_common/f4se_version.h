@@ -4,8 +4,8 @@
 // these have to be macros so they can be used in the .rc
 #define F4SE_VERSION_INTEGER		0
 #define F4SE_VERSION_INTEGER_MINOR	7
-#define F4SE_VERSION_INTEGER_BETA	2
-#define F4SE_VERSION_VERSTRING		"0, 0, 7, 2"
+#define F4SE_VERSION_INTEGER_BETA	3
+#define F4SE_VERSION_VERSTRING		"0, 0, 7, 3"
 #define F4SE_VERSION_PADDEDSTRING	"0027"
 #define F4SE_VERSION_RELEASEIDX		27
 
@@ -80,7 +80,7 @@
 // information about the state of the game at the time of release
 #define F4SE_TARGETING_BETA_VERSION	0
 #define CURRENT_RELEASE_RUNTIME		RUNTIME_VERSION_1_10_984
-#define CURRENT_RELEASE_F4SE_STR	"0.7.2"
+#define CURRENT_RELEASE_F4SE_STR	"0.7.3"
 
 #if GET_EXE_VERSION_SUB(RUNTIME_VERSION) == RUNTIME_TYPE_BETHESDA
 #define SAVE_FOLDER_NAME "Fallout4"
