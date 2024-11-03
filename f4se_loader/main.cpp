@@ -14,6 +14,7 @@
 #include <Shlwapi.h>
 #include <tlhelp32.h>
 #include "Options.h"
+#include "SigCheck.h"
 
 IDebugLog gLog;
 
@@ -160,7 +161,7 @@ int main(int argc, char ** argv)
 	}
 
 	const std::string & runtimeDir = GetRuntimeDirectory();
-	std::string procPath = runtimeDir + "\\" + procName;
+	std::string procPath = runtimeDir + procName;
 
 	if(g_options.m_altEXE.size())
 	{
@@ -236,9 +237,6 @@ int main(int argc, char ** argv)
 		return 1;
 	}
 
-	if(g_options.m_crcOnly)
-		return 0;
-
 	// build dll path
 	std::string	dllPath;
 	if(dllHasFullPath)
@@ -247,7 +245,7 @@ int main(int argc, char ** argv)
 	}
 	else
 	{
-		dllPath = runtimeDir + "\\" + baseDllName + "_" + dllSuffix + ".dll";
+		dllPath = runtimeDir + baseDllName + "_" + dllSuffix + ".dll";
 	}
 
 	_MESSAGE("dll = %s", dllPath.c_str());
@@ -289,15 +287,62 @@ int main(int argc, char ** argv)
 			FreeLibrary(resourceHandle);
 		}
 
+		if(dllOK)
+		{
+			if(!CheckDLLSignature(dllPath))
+				dllOK = false;
+		}
+
 		if(!dllOK)
 		{
-			PrintLoaderError(
-				"Bad F4SE DLL (%s).\n"
-				"Do not rename files; it will not magically make anything work.\n"
-				"%08X %08X", dllPath.c_str(), procHookInfo.packedVersion, dllVersion);
+			bool preSigning = false;
+
+			VS_FIXEDFILEINFO info;
+			std::string productName;
+
+			if(GetFileVersion(dllPath.c_str(), &info, &productName))
+			{
+				_MESSAGE("DLL version");
+				DumpVersionInfo(info);
+				_MESSAGE("productName = %s", productName.c_str());
+
+				UInt64 fullVersion = (UInt64(info.dwFileVersionMS) << 32) | info.dwFileVersionLS;
+				UInt64 kFirstSignedVersion = 0x0000000000070003;
+
+				if(fullVersion < kFirstSignedVersion)
+					preSigning = true;
+			}
+			else
+			{
+				_MESSAGE("couldn't get file version info");
+			}
+
+			if(preSigning)
+			{
+				PrintLoaderError(
+					"Old F4SE DLL (%s).\n"
+					"Please make sure that you have replaced all files with their new versions.\n"
+					"DLL version (%d.%d.%d) EXE version (%d.%d.%d)",
+					dllPath.c_str(),
+					(info.dwFileVersionMS >> 16) & 0xFFFF,
+					(info.dwFileVersionLS >> 16) & 0xFFFF,
+					info.dwFileVersionLS & 0xFFFF,
+					F4SE_VERSION_INTEGER, F4SE_VERSION_INTEGER_MINOR, F4SE_VERSION_INTEGER_BETA);
+			}
+			else
+			{
+				PrintLoaderError(
+					"Bad F4SE DLL (%s).\n"
+					"Do not rename files; it will not magically make anything work.\n"
+					"%08X %08X", dllPath.c_str(), procHookInfo.packedVersion, dllVersion);
+			}
+
 			return 1;
 		}
 	}
+
+	if(g_options.m_crcOnly)
+		return 0;
 
 	// steam setup
 	if(procHookInfo.procType == kProcType_Steam)

@@ -3,7 +3,7 @@
 #include "f4se_common/f4se_version.h"
 #include <string>
 
-static bool GetFileVersion(const char * path, VS_FIXEDFILEINFO * info, std::string * outProductName)
+bool GetFileVersion(const char * path, VS_FIXEDFILEINFO * info, std::string * outProductName)
 {
 	bool result = false;
 
@@ -62,25 +62,30 @@ static bool GetFileVersionData(const char * path, UInt64 * out, std::string * ou
 		return false;
 	}
 
-	_MESSAGE("dwSignature = %08X", versionInfo.dwSignature);
-	_MESSAGE("dwStrucVersion = %08X", versionInfo.dwStrucVersion);
-	_MESSAGE("dwFileVersionMS = %08X", versionInfo.dwFileVersionMS);
-	_MESSAGE("dwFileVersionLS = %08X", versionInfo.dwFileVersionLS);
-	_MESSAGE("dwProductVersionMS = %08X", versionInfo.dwProductVersionMS);
-	_MESSAGE("dwProductVersionLS = %08X", versionInfo.dwProductVersionLS);
-	_MESSAGE("dwFileFlagsMask = %08X", versionInfo.dwFileFlagsMask);
-	_MESSAGE("dwFileFlags = %08X", versionInfo.dwFileFlags);
-	_MESSAGE("dwFileOS = %08X", versionInfo.dwFileOS);
-	_MESSAGE("dwFileType = %08X", versionInfo.dwFileType);
-	_MESSAGE("dwFileSubtype = %08X", versionInfo.dwFileSubtype);
-	_MESSAGE("dwFileDateMS = %08X", versionInfo.dwFileDateMS);
-	_MESSAGE("dwFileDateLS = %08X", versionInfo.dwFileDateLS);
+	DumpVersionInfo(versionInfo);
 
 	UInt64 version = (((UInt64)versionInfo.dwFileVersionMS) << 32) | versionInfo.dwFileVersionLS;
 
 	*out = version;
 
 	return true;
+}
+
+void DumpVersionInfo(const VS_FIXEDFILEINFO & info)
+{
+	_MESSAGE("dwSignature = %08X", info.dwSignature);
+	_MESSAGE("dwStrucVersion = %08X", info.dwStrucVersion);
+	_MESSAGE("dwFileVersionMS = %08X", info.dwFileVersionMS);
+	_MESSAGE("dwFileVersionLS = %08X", info.dwFileVersionLS);
+	_MESSAGE("dwProductVersionMS = %08X", info.dwProductVersionMS);
+	_MESSAGE("dwProductVersionLS = %08X", info.dwProductVersionLS);
+	_MESSAGE("dwFileFlagsMask = %08X", info.dwFileFlagsMask);
+	_MESSAGE("dwFileFlags = %08X", info.dwFileFlags);
+	_MESSAGE("dwFileOS = %08X", info.dwFileOS);
+	_MESSAGE("dwFileType = %08X", info.dwFileType);
+	_MESSAGE("dwFileSubtype = %08X", info.dwFileSubtype);
+	_MESSAGE("dwFileDateMS = %08X", info.dwFileDateMS);
+	_MESSAGE("dwFileDateLS = %08X", info.dwFileDateLS);
 }
 
 const IMAGE_SECTION_HEADER * GetImageSection(const UInt8 * base, const char * name)
