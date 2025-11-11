@@ -18,7 +18,7 @@ typedef bool (* _MessageQueueProcessTask)(void * messageQueue, float timeout, UI
 RelocAddr <_MessageQueueProcessTask> MessageQueueProcessTask(0x00C3FC30);
 _MessageQueueProcessTask MessageQueueProcessTask_Original = nullptr;
 
-RelocAddr <uintptr_t> ProcessEventQueue_HookTarget(0x01A7A8A0 + 0xFA5);
+RelocAddr <uintptr_t> ProcessEventQueue_HookTarget(0x01A7A8A0 + 0xFAC);
 typedef void (* _ProcessEventQueue_Internal)(void * unk1);
 RelocAddr <_ProcessEventQueue_Internal> ProcessEventQueue_Internal(0x01B1DFA0);
 
