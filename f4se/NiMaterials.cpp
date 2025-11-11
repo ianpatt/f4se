@@ -1,5 +1,5 @@
 #include "f4se/NiMaterials.h"
 
-RelocAddr <_CreateShaderMaterialByType> CreateShaderMaterialByType(0x02071980);
+RelocAddr <_CreateShaderMaterialByType> CreateShaderMaterialByType(0x021C11C0);
 
-RelocAddr <_LoadMaterialFile> LoadMaterialFile(0x0168EBF0);
+RelocAddr <_LoadMaterialFile> LoadMaterialFile(0x017A40C0);

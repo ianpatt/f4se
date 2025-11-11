@@ -363,7 +363,7 @@ EndEvent
 ; called by OnActivate and workbench scripts to check if player ownership should change
 function CheckOwnership()
 		; if location is cleared, automatically count this as owned by player
-		if myLocation.IsCleared() && !OwnedByPlayer && EnableAutomaticPlayerOwnership
+		if myLocation.IsCleared() && !OwnedByPlayer && EnableAutomaticPlayerOwnership && !WorkshopParent.PermanentActorsAliveAndPresent(self)
 			SetOwnedByPlayer(true)
 			; go into workshop mode
 ;			StartWorkshop()
@@ -661,17 +661,18 @@ endStruct
 ; 	bRealUpdate:
 ;		TRUE = normal daily update - consume/produce resources, etc.
 ;		FALSE = recalculate happiness etc. but don't produce/consume
-bool bDailyUpdateInProgress = false
+; Updated to handle lock, actor, and other related issues. 
+; bDailyUpdateInProgress bool has been removed, and function
+; just uses WorkshopParent.DailyUpdateInProgress 
 function DailyUpdate(bool bRealUpdate = true)
-;	;debug.tracestack(self + " DailyUpdate " + bRealUpdate)
 	WorkshopParent.wsTrace(self + "------------------------------------------------------------------------------ ")
 	WorkshopParent.wsTrace(self + " 	DAILY UPDATE: bRealUpdate=" + bRealUpdate, bNormalTraceAlso = true)
 	WorkshopParent.wsTrace(self + "------------------------------------------------------------------------------ ")
 
 	; wait for update lock to be released
-	if bDailyUpdateInProgress
+	if WorkshopParent.DailyUpdateInProgress
 		if bRealUpdate
-			while bDailyUpdateInProgress
+			while WorkshopParent.DailyUpdateInProgress
 				WorkshopParent.wsTrace(self + "		waiting for update lock to clear...")
 				utility.wait(0.5)
 			endWhile
@@ -681,7 +682,6 @@ function DailyUpdate(bool bRealUpdate = true)
 			return
 		endif
 	EndIf
-	bDailyUpdateInProgress = true
 	WorkshopParent.DailyUpdateInProgress = true
 
 	; create local pointer to WorkshopRatings array to speed things up
@@ -717,7 +717,6 @@ function DailyUpdate(bool bRealUpdate = true)
 	ObjectReference containerRef = GetContainer()
 	if !containerRef
 		WorkshopParent.wsTrace(self + " ERROR - no container linked to workshop " + self + " with " + WorkshopParent.WorkshopLinkContainer, 2)
-		bDailyUpdateInProgress = false
 		WorkshopParent.DailyUpdateInProgress = false
 		return
 	endif
@@ -731,7 +730,11 @@ function DailyUpdate(bool bRealUpdate = true)
 		ObjectReference[] WorkshopActors = WorkshopParent.GetWorkshopActors(self)
 		int i = 0
 		while i < WorkshopActors.Length
-			WorkshopParent.UpdateActorsWorkObjects(WorkshopActors[i] as WorkShopNPCScript, self)
+			; extra check to make sure only valid actors are used (to match similar GetWorkshopActors() calls in script)
+			WorkshopNPCScript theActor = (WorkshopActors[i] as Actor) as WorkshopNPCScript
+			if theActor
+				WorkshopParent.UpdateActorsWorkObjects(theActor, self)
+			endif
 			i += 1
 		endWhile
 	endif
@@ -765,7 +768,6 @@ function DailyUpdate(bool bRealUpdate = true)
 	WorkshopParent.wsTrace(self + "------------------------------------------------------------------------------ ")
 
 	; clear update lock
-	bDailyUpdateInProgress = false
 	WorkshopParent.DailyUpdateInProgress = false
 endFunction
 

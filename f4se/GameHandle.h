@@ -272,7 +272,7 @@ public:
 	static bool GetSmartPointer(NiPointer<T>& spSmartPointer, const BSPointerHandle<T>& aHandle)
 	{
 		using _GetSmartPointer = bool(*)(NiPointer<T>& spSmartPointer, const BSPointerHandle<T>& aHandle);
-		RelocAddr <_GetSmartPointer> GetSmartPointerAddr(0x001D4DE0);
+		RelocAddr <_GetSmartPointer> GetSmartPointerAddr(0x0021B210);
 		return GetSmartPointerAddr(spSmartPointer, aHandle);
 	}
 };

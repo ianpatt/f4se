@@ -192,7 +192,7 @@ public:
 	virtual void	Unk_0E(UInt64 unk0, UInt64 unk1, UInt8 unk2, UInt64 unk3, UInt64 unk4);
 
 	MEMBER_FN_PREFIX(IObjectBindPolicy);
-	DEFINE_MEMBER_FN(BindObject, void, 0x01F86870, VMIdentifier ** identifier, UInt64 handle);
+	DEFINE_MEMBER_FN(BindObject, void, 0x020D6100, VMIdentifier ** identifier, UInt64 handle);
 };
 
 class TESObjectREFR;

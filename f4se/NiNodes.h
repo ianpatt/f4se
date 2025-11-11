@@ -25,7 +25,7 @@ public:
 	static NiNode * Create(UInt16 children = 0);
 
 	MEMBER_FN_PREFIX(NiNode);
-	DEFINE_MEMBER_FN(ctor, NiNode*, 0x015A3450, UInt16 children);
+	DEFINE_MEMBER_FN(ctor, NiNode*, 0x016B8850, UInt16 children);
 };
 STATIC_ASSERT(sizeof(NiNode) == 0x140);
 

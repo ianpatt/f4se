@@ -670,6 +670,8 @@ endEvent
 
 
 ; NOTE: changed from OnInit because of timing issues - startup stage will not be set until aliases are filled
+; Updated to handle cases where the workshop grabbed from the WorkshopsCollection is invalid
+int lastValidWorkshopIndex = 0 ; keep track of index of the last valid workshop added to the Workshops array
 Event OnStageSet(int auiStageID, int auiItemID)
 	wsTrace(self + " stage=" + auiStageID)
 	if auiStageID == 10
@@ -681,25 +683,30 @@ Event OnStageSet(int auiStageID, int auiItemID)
 		Workshops = new WorkshopScript[WorkshopsCollection.GetCount()]
 		WorkshopRatingValues = new ActorValue[WorkshopRatings.Length]
 
-		int index = 0
+		; Initialize workshop and workshop location arrays
+		int collectionIndex = 0
 		int crimeFactionIndex = 0
+		wsTrace(" OnInit: initializing Workshops and WorkshopLocations arrays...", bNormalTraceAlso = true)
+		while collectionIndex < WorkshopsCollection.GetCount()
+			wsTrace(" OnInit: " + collectionIndex + " of " + WorkshopsCollection.GetCount())
+			
+			; Grab the workshop reference from the WorkshopsCollection
+			WorkshopScript workshopRef = WorkshopsCollection.GetAt(collectionIndex) as WorkshopScript
 
-		wsTrace(" OnInit: initializing workshop arrays...", bNormalTraceAlso = true)
-		while index < WorkshopsCollection.GetCount()
-			wsTrace(" OnInit: " + index + " of " + WorkshopsCollection.GetCount())
-			WorkshopScript workshopRef = WorkshopsCollection.GetAt(index) as WorkshopScript
+			; We only want to add a workshop reference to the Workshops array if it is valid
+			if workshopRef
 			wsTrace("	" + workshopRef + ": EnableAutomaticPlayerOwnership=" + workshopRef.EnableAutomaticPlayerOwnership)
 			; add workshop to array
-			Workshops[index] = workshopRef
+				Workshops[lastValidWorkshopIndex] = workshopref
 			; initialize workshopID on this workshop
-			workshopRef.InitWorkshopID(index)
+				workshopRef.InitWorkshopID(lastValidWorkshopIndex)
 			; initialize location
-			WorkshopLocations[index] = workshopRef.GetCurrentLocation()
-			workshopRef.myLocation = WorkshopLocations[index]
+				WorkshopLocations[lastValidWorkshopIndex] = workshopRef.GetCurrentLocation()
+				workshopRef.myLocation = WorkshopLocations[lastValidWorkshopIndex]
 			; initialize happiness to 50 for safety
 			workshopRef.SetValue(WorkshopRatings[WorkshopRatingHappiness].resourceValue, startingHappiness)
 			; register for location cleared events
-			RegisterForRemoteEvent(WorkshopLocations[index], "OnLocationCleared")
+				RegisterForRemoteEvent(WorkshopLocations[lastValidWorkshopIndex], "OnLocationCleared")
 
 			; set ownership/crime faction if it doesn't have one already
 			if workshopRef.SettlementOwnershipFaction == NONE && workshopRef.UseOwnershipFaction && crimeFactionIndex < WorkshopCrimeFactions.GetSize()
@@ -707,49 +714,55 @@ Event OnStageSet(int auiStageID, int auiItemID)
 				crimeFactionIndex += 1
 			endif
 
-			wsTrace(" OnInit: location " + index + "=" + WorkshopLocations[index])
+				wsTrace(" OnInit: location " + lastValidWorkshopIndex + "=" + WorkshopLocations[lastValidWorkshopIndex])
 			; register for daily update
-			Workshops[index].RegisterForCustomEvent(self, "WorkshopDailyUpdate")
-
-			index += 1
-		endWhile
-		wsTrace(" OnInit: initializing WorkshopLocations... DONE ", bNormalTraceAlso = true)
-
-		index = 0
-		wsTrace(" OnInit: initializing workshop keyword array...", bNormalTraceAlso = true)
-		int resourceAVCount = 0
-		while index < WorkshopRatings.Length
-			wsTrace(" OnInit: keyword " + index + "=" + WorkshopRatings[index].resourceValue)
-			; add keyword to array
-			WorkshopRatingValues[index] = WorkshopRatings[index].resourceValue
-			; if this has a resource AV, increment count
-			if WorkshopRatings[index].resourceValue
-				resourceAVCount += 1
-				wsTrace(" OnInit: found resourceValue= " + WorkshopRatings[index].resourceValue + ", resourceAVCount=" + resourceAVCount)
+				Workshops[lastValidWorkshopIndex].RegisterForCustomEvent(self, "WorkshopDailyUpdate")
+				
+				; Increment Workshop array index when we add a valid workshop to the array
+				lastValidWorkshopIndex += 1
 			endif
-			index += 1
+
+			; Increment collection index regardless of if we found a valid workshop reference
+			collectionIndex += 1
+		endWhile
+		wsTrace(" OnInit: initializing Workshops and WorkshopLocations... DONE ", bNormalTraceAlso = true)
+
+		; Initialize workshop rating values array using keywords
+		int ratingIndex = 0
+		int resourceAVCount = 0
+		wsTrace(" OnInit: initializing WorkshopRatingValues array...", bNormalTraceAlso = true)
+		while ratingIndex < WorkshopRatings.Length
+			wsTrace(" OnInit: keyword " + ratingIndex + "=" + WorkshopRatings[ratingIndex].resourceValue)
+			; add keyword to array
+			WorkshopRatingValues[ratingIndex] = WorkshopRatings[ratingIndex].resourceValue
+			; if this has a resource AV, increment count
+			if WorkshopRatings[ratingIndex].resourceValue
+				resourceAVCount += 1
+				wsTrace(" OnInit: found resourceValue= " + WorkshopRatings[ratingIndex].resourceValue + ", resourceAVCount=" + resourceAVCount)
+			endif
+			ratingIndex += 1
 		endWhile
 		wsTrace(" OnInit: initializing WorkshopRatingValues... DONE.", bNormalTraceAlso = true)
 
-		; initialize workshop resource AV array
+		; Initialize workshop resource AV array using workshop ratings array
 		wstrace(" OnInit: initializing WorkshopResourceAVs array to " + resourceAVCount)
 		WorkshopResourceAVs = new WorkshopActorValue[resourceAVCount]
 
-		index = 0
+		ratingIndex = 0
 		int resourceAVIndex = 0
 		wsTrace(" OnInit: initializing workshop resource AV array...", bNormalTraceAlso = true)
-		while index < WorkshopRatings.Length
-			; if this has a resource AV, add to resource AV array and increment index
-			if WorkshopRatings[index].resourceValue
-				wsTrace(" OnInit: resource AV " + resourceAVIndex + "=" + WorkshopRatings[index].resourceValue, bNormalTraceAlso = true)
+		while ratingIndex < WorkshopRatings.Length
+			; if this has a resource AV, add to resource AV array and increment rating index
+			if WorkshopRatings[ratingIndex].resourceValue
+				wsTrace(" OnInit: resource AV " + resourceAVIndex + "=" + WorkshopRatings[ratingIndex].resourceValue, bNormalTraceAlso = true)
 				WorkshopResourceAVs[resourceAVIndex] = new WorkshopActorValue
-				WorkshopResourceAVs[resourceAVIndex].workshopRatingIndex = index
-				WorkshopResourceAVs[resourceAVIndex].resourceValue = WorkshopRatings[index].resourceValue
+				WorkshopResourceAVs[resourceAVIndex].workshopRatingIndex = ratingIndex
+				WorkshopResourceAVs[resourceAVIndex].resourceValue = WorkshopRatings[ratingIndex].resourceValue
 				wsTrace(" 		WorkshopResourceAVs[" + resourceAVIndex + "].resourceValue=" + WorkshopResourceAVs[resourceAVIndex].resourceValue)
 
 				resourceAVIndex += 1
 			endif
-			index += 1
+			ratingIndex += 1
 		endWhile
 
 		; initialize Minutemen recruitment available
@@ -825,15 +838,22 @@ int initializationIndex = 0
 Event WorkshopParentScript.WorkshopInitializeLocation(WorkshopParentScript akSender, Var[] akArgs)
 	wsTrace("WorkshopInitializeLocation event received " + initializationIndex, bNormalTraceAlso = true)
 	WorkshopScript nextWorkshopRef = NONE
+	; The akArgs.Length is expected to be 0 when this event is sent from OnStageSet for the first time
 	if (akArgs.Length > 0)
+		; Grab the workshop reference that was just initialized
 		WorkshopScript workshopRef = akArgs[0] as WorkshopScript
+
+		; If the workshop reference is valid, we find the next workshop since 
+		; the current one successfully initialized
 		if workshopRef
-			; this is the location that was just initialized - find the next
-			;int newWorkshopIndex = workshopRef.GetWorkshopID() + 1
 			; Try just going up through the array
 			initializationIndex += 1
 			int newWorkshopIndex = initializationIndex
-			if newWorkshopIndex >= Workshops.Length
+
+			; If our new workshop index passes the last valid workshop added to the Workshops array,
+			; or it is greater than the size of the Workshops array, we've finished initializing
+			; all valid workshop locations
+			if newWorkshopIndex >= lastValidWorkshopIndex || newWorkshopIndex >= Workshops.Length
 				wsTrace(" WorkshopInitializeLocation: Finished all locations", bNormalTraceAlso = true)
 
 				setStage(20) ; way to easily track when this is done
@@ -853,12 +873,17 @@ Event WorkshopParentScript.WorkshopInitializeLocation(WorkshopParentScript akSen
 			wsTrace(" WARNING: WorkshopInitializeLocation event received with invalid args", bNormalTraceAlso = true)
 		endif
 	else
+		; In this case, there were no parameters sent with the event, which means this event is most likely coming from 
+		; the OnStageSet() event
 		wsTrace(" 	No parameters- start with workshop 0=" + Workshops[0].myLocation, bNormalTraceAlso = true)
-		; if no location sent, start with first
+		
+		; If no parameters were sent, start with the first workshop in the Workshops array.
+		; This should no longer have a chance to be an invalid reference as only valid 
+		; elements were added to the Workshops array
 		nextWorkshopRef = Workshops[0]
 	endif
 
-	; send event if we found next workshop
+	; Send the event to initialize the workshop's location if the next workshop is valid
 	if nextWorkshopRef
 		wsTrace(" 	send story event for next workshop: " + nextWorkshopRef.myLocation + "(" + nextWorkshopRef.GetWorkshopID() + ")")
 		; wait a bit for quest to finish shutting down
@@ -900,13 +925,15 @@ bool function ReinitializeLocationsPUBLIC(WorkshopScript[] newWorkshops, Form in
 	; make sure to unregister WorkshopParent from this event - DLC will register and handle the event for themselves
 	UnregisterForCustomEvent(self, "WorkshopInitializeLocation")
 
-	; save current size of Workshops array - this will be our starting point for the new init loop
-	int startingNewWorkshopIndex = Workshops.Length
+	; save the index of the last workshop added - this is the starting point for new init loop
+	int startingNewWorkshopIndex = lastValidWorkshopIndex
 
 	; run through newWorkshops to see if they're already in the workshop list
 	int i = 0
 	while i < newWorkshops.Length
 		WorkshopScript workshopRef = newWorkshops[i]
+		; We only add workshop references if they are valid
+		if workshopRef
 		; is this already in Workshops array?
 		int workshopIndex = Workshops.Find(workshopRef)
 		if workshopIndex == -1
@@ -931,18 +958,23 @@ bool function ReinitializeLocationsPUBLIC(WorkshopScript[] newWorkshops, Form in
 				debug.trace(" OnInit: location " + newIndex + "=" + WorkshopLocations[newIndex])
 				; register for daily update
 				Workshops[newIndex].RegisterForCustomEvent(self, "WorkshopDailyUpdate")
+
+					; If we added a new workshop, increment our last valid workshop index so new locations
+					; can successfully initialize
+					lastValidWorkshopIndex += 1
 			; END
+		endif
 		endif
 		i += 1
 	endWhile
 
 	; if we added any new locations, need to initialize them
-	bool bLocationsToInit = (startingNewWorkshopIndex < Workshops.Length)
+	bool bLocationsToInit = (startingNewWorkshopIndex < lastValidWorkshopIndex)
 	if bLocationsToInit
 		; whatever was passed in will handle this event
 		initializeEventHandler.RegisterForCustomEvent(self, "WorkshopInitializeLocation")
 
-		; start the process by sending the event with the LAST initialized workshop (top of original Workshops array)
+		; start the process by sending the event with the LAST initialized workshop (last valid workshop, or top of original Workshops array)
 		WorkshopScript lastInitializedWorkshop = Workshops[startingNewWorkshopIndex - 1]
 		Var[] kargs = new Var[1]
 		kargs[0] = lastInitializedWorkshop
@@ -998,6 +1030,7 @@ endFunction
 
 
 ; utility function - updates flag used to indicate if there are any settlements available for recruitment
+; Updated so the function does not attempt to use invalid workshop references when updating counts
 function UpdateMinutemenRecruitmentAvailable()
 	wsTrace(self + " UpdateMinutemenRecruitmentAvailable:", bNormalTraceAlso = true)
 	; go through locations - looking for:
@@ -1008,6 +1041,8 @@ function UpdateMinutemenRecruitmentAvailable()
 	int totalCount = 0		; count total number of populated settlements
 	while index < Workshops.Length
 		WorkshopScript workshopRef = Workshops[index]
+		; We only want to increment count values when there is a valid workshop
+		if workshopRef
 		wstrace(self + " Workshops[" + index + "]=" + workshopRef)
 		If workshopRef.GetBaseValue(WorkshopRatings[WorkshopRatingPopulation].resourceValue) > 0 && workshopRef.HasKeyword(WorkshopType02) == false && workshopRef.HasKeyword(WorkshopType02Vassal) == false
 			wsTrace(self + " 	" + workshopRef + ": valid workshop settlement, population rating = " + workshopRef.GetBaseValue(WorkshopRatings[WorkshopRatingPopulation].resourceValue), bNormalTraceAlso = true)
@@ -1016,6 +1051,7 @@ function UpdateMinutemenRecruitmentAvailable()
 				wsTrace(self + " 		- not owned by player - add to neutral count", bNormalTraceAlso = true)
 				neutralCount += 1
 			endif
+		endif
 		endif
 		index += 1
 	endWhile
@@ -2639,6 +2675,8 @@ endFunction
 ; trigger story manager attack
 function TriggerAttack(WorkshopScript workshopRef, int attackStrength)
 	wsTrace("   TriggerAttack on " + workshopRef)
+	;#102677 - Don't throw workshop attacks for vassal locations
+	if workshopRef.HasKeyword(WorkshopType02Vassal) == false
 	if !WorkshopEventAttack.SendStoryEventAndWait(akLoc = workshopRef.myLocation, aiValue1 = attackStrength, akRef1 = workshopRef)
 		; Removed - now that we have an attack message, don't do fake attacks
 		;/
@@ -2648,6 +2686,7 @@ function TriggerAttack(WorkshopScript workshopRef, int attackStrength)
 			ResolveAttack(workshopRef, attackStrength, RaiderFaction)
 		endif
 		/;
+	endif
 	endif
 	wsTrace("   TriggerAttack DONE")
 endFunction
@@ -3841,4 +3880,37 @@ function ToggleOnAllWorkshops()
 	endwhile
 
 	PlayerOwnsAWorkshop = true
+endFunction
+
+bool Function PermanentActorsAliveAndPresent(WorkshopScript workshopRef)
+	int i = 0
+	int iCount = PermanentActorAliases.GetCount()
+
+	;If there are permanent actors...
+	if iCount > 0
+
+		int iClearedWorkshopID = workshopRef.GetWorkshopID()
+
+		;Then loop through all the permanent actors and get their workshop ID...
+		while i < iCount
+			Actor act = (PermanentActorAliases.GetAt(i) as Actor)
+			wsTrace("PermanentActorsAliveAndPresent: Checking permanent actor: " + act)
+			int iActorWorkshopID = (act as WorkshopNPCScript).GetWorkshopID()
+
+			;If the selected Permanent Actor is assigned to a workshop location and isn't dead...
+			if iActorWorkshopID > -1 && !act.IsDead()
+				wsTrace("PermanentActorsAliveAndPresent: Comparing actor's workshop ID: " + iActorWorkshopID + "  and cleared workshop ID: " + iClearedWorkshopID)
+
+				;And they're assigned to the cleared location, return true
+				if iActorWorkshopID == iClearedWorkshopID
+					return true
+				endif
+
+			endif
+
+			i += 1
+		endwhile
+	endif
+
+	return false
 endFunction

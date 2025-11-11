@@ -1,3 +1,6 @@
+0.7.4
+- support for runtime 1.11.137
+
 0.7.3
 - passing -- as a command line argument to f4se_loader ignores following arguments
 - closing the f4se_loader process before it is done loading now terminates the game process as well. this is primarily useful for developers, but only if you are passing -waitfordebugger and -waitforclose as command line arguments

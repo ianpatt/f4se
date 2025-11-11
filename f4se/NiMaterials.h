@@ -202,7 +202,7 @@ public:
 	BSNonReentrantSpinLock	LoadTextureSetLock;				// BC
 
 	MEMBER_FN_PREFIX(BSLightingShaderMaterialBase);
-	DEFINE_MEMBER_FN(Copy, void, 0x02070900, const BSLightingShaderMaterialBase * src);
+	DEFINE_MEMBER_FN(Copy, void, 0x021C0140, const BSLightingShaderMaterialBase * src);
 };
 
 // D0
@@ -515,9 +515,9 @@ public:
 	UInt32				eClampMode;*/
 
 	MEMBER_FN_PREFIX(BSShaderData);
-	DEFINE_MEMBER_FN(ctor, void, 0x0200D340);
-	DEFINE_MEMBER_FN(dtor, void, 0x00543AC0);
-	DEFINE_MEMBER_FN(ApplyMaterialData, void, 0x02014440, BSGeometry * trishape, bool unk1);
+	DEFINE_MEMBER_FN(ctor, void, 0x0215CB80);
+	DEFINE_MEMBER_FN(dtor, void, 0x00594AE0);
+	DEFINE_MEMBER_FN(ApplyMaterialData, void, 0x02163C80, BSGeometry * trishape, bool unk1);
 };
 STATIC_ASSERT(sizeof(BSShaderData) == 0x1E0);
 

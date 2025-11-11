@@ -245,7 +245,7 @@ public:
 private:
 	// GameMenuBase:BSInputEventUser override should be the only one calling this function
 	friend class GameMenuBase;
-	DEFINE_MEMBER_FN_1(Impl_OnGameMenuBaseButtonEvent, bool, 0x019FE850, ButtonEvent * button);
+	DEFINE_MEMBER_FN_1(Impl_OnGameMenuBaseButtonEvent, bool, 0x01B13E60, ButtonEvent * button);
 };
 
 // 30

@@ -348,7 +348,7 @@ public:
 	UInt32      unk44;			// 44
 
 	MEMBER_FN_PREFIX(ExtraTextDisplayData);
-	DEFINE_MEMBER_FN(GetReferenceName, BSFixedString *, 0x002581E0, TESForm * baseForm);
+	DEFINE_MEMBER_FN(GetReferenceName, BSFixedString *, 0x002A9580, TESForm * baseForm);
 };
 
 // 20

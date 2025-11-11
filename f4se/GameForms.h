@@ -1528,7 +1528,7 @@ public:
 	UInt32					unkEC;				// EC
 
 	MEMBER_FN_PREFIX(TESObjectCELL);
-	DEFINE_MEMBER_FN(GetHavokWorld, bhkWorld*, 0x004768C0);
+	DEFINE_MEMBER_FN(GetHavokWorld, bhkWorld*, 0x004C77D0);
 };
 STATIC_ASSERT(offsetof(TESObjectCELL, objectList) == 0x70);
 STATIC_ASSERT(offsetof(TESObjectCELL, worldSpace) == 0xC8);
@@ -1808,7 +1808,7 @@ public:
 	MEMBER_FN_PREFIX(TESQuest);
 	// broken address
 //	DEFINE_MEMBER_FN(ForceRefTo, UInt32, 0x00375050, UInt32 aliasId, TESObjectREFR * reference);
-	DEFINE_MEMBER_FN(NewGame_Internal, UInt8, 0x00617770, UInt8 * unk1, UInt8 unk2);
+	DEFINE_MEMBER_FN(NewGame_Internal, UInt8, 0x006681A0, UInt8 * unk1, UInt8 unk2);
 
 	UInt8 NewGame_Hook(UInt8 * unk1, UInt8 unk2);
 };

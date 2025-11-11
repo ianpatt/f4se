@@ -84,5 +84,5 @@ public:
 	virtual ~SWFToCodeFunctionHandler() { }
 	virtual void	RegisterFunctions() = 0;	// 02
 
-	DEFINE_MEMBER_FN_2(RegisterNativeFunction, void, 0x019FF440, const char * name, UInt32 index);
+	DEFINE_MEMBER_FN_2(RegisterNativeFunction, void, 0x01B14A80, const char * name, UInt32 index);
 };

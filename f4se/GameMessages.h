@@ -46,7 +46,7 @@ public:
 	ScrapHeap	* m_pScrapHeap;
 
 	MEMBER_FN_PREFIX(BSTCommonScrapHeapMessageQueue);
-	DEFINE_MEMBER_FN(SetTextureSet, void, 0x00BC4EC0, BSGeometry * geometry, BGSTextureSet * textureSet);
+	DEFINE_MEMBER_FN(SetTextureSet, void, 0x00C459A0, BSGeometry * geometry, BGSTextureSet * textureSet);
 };
 
 extern RelocPtr <BSTCommonScrapHeapMessageQueue<BSPackedTask>*> g_messageQueue;

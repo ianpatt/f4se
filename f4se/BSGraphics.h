@@ -108,9 +108,9 @@ public:
 	UInt64				unk2588[0x2590 >> 3];	// 2588
 	CRITICAL_SECTION	m_renderLock;			// 2590
 
-	DEFINE_MEMBER_FN_4(CreateTriShape, TriShape*, 0x016FD950, UInt32* arDataSize, void* apData, UInt64 auiVertexDesc, IndexBuffer* apIndexBuffer);
-	DEFINE_MEMBER_FN_3(CreateVertexBuffer, VertexBuffer*, 0x016FF1C0, UInt32* auiDataSize, SInt8* apData, UInt32 auiStride);
-	DEFINE_MEMBER_FN_2(CreateIndexBuffer, IndexBuffer*, 0x016FF4E0, UInt32 auiIndexCount, const UInt16* apIndices);
+	DEFINE_MEMBER_FN_4(CreateTriShape, TriShape*, 0x01812EB0, UInt32* arDataSize, void* apData, UInt64 auiVertexDesc, IndexBuffer* apIndexBuffer);
+	DEFINE_MEMBER_FN_3(CreateVertexBuffer, VertexBuffer*, 0x01814720, UInt32* auiDataSize, SInt8* apData, UInt32 auiStride);
+	DEFINE_MEMBER_FN_2(CreateIndexBuffer, IndexBuffer*, 0x01814A40, UInt32 auiIndexCount, const UInt16* apIndices);
 };
 STATIC_ASSERT(offsetof(Renderer, m_renderLock) == 0x2590);
 
@@ -135,11 +135,11 @@ public:
 		UInt8	pad[3];						// 1D
 	};
 
-	DEFINE_MEMBER_FN_1(LockTextureType, void, 0x0171F9B0, UInt32 type);
-	DEFINE_MEMBER_FN_1(ReleaseTextureType, void, 0x0171FA40, UInt32 type);
-	DEFINE_MEMBER_FN_4(GetRenderData, BSRenderData *, 0x0171F910, UInt32 type, UInt64 unk1, UInt64 unk2, UInt32 unk3); // type, 0, 1, 0
-	DEFINE_MEMBER_FN_3(Unk_01, void, 0x0171F960, UInt32 type, BSRenderData *, UInt8 unk3); // type, rendererData, 1
-	DEFINE_MEMBER_FN_4(CreateRenderTarget, void, 0x0171DE10, UInt32 aIndex, const RenderTargetProperties& properties, UInt8 aPersistent);
+	DEFINE_MEMBER_FN_1(LockTextureType, void, 0x01834F60, UInt32 type);
+	DEFINE_MEMBER_FN_1(ReleaseTextureType, void, 0x01834FF0, UInt32 type);
+	DEFINE_MEMBER_FN_4(GetRenderData, BSRenderData *, 0x01834EC0, UInt32 type, UInt64 unk1, UInt64 unk2, UInt32 unk3); // type, 0, 1, 0
+	DEFINE_MEMBER_FN_3(Unk_01, void, 0x01834F10, UInt32 type, BSRenderData *, UInt8 unk3); // type, rendererData, 1
+	DEFINE_MEMBER_FN_4(CreateRenderTarget, void, 0x018333C0, UInt32 aIndex, const RenderTargetProperties& properties, UInt8 aPersistent);
 };
 }
 
