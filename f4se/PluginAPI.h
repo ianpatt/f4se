@@ -298,6 +298,9 @@ struct F4SEPluginVersionData
 
 		// set this if you are using a 1.10.980+ version of the Address Library
 		kAddressIndependence_AddressLibrary_1_10_980 = 1 << 1,
+
+		// set this if you are using a 1.11.137+ version of the Address Library
+		kAddressIndependence_AddressLibrary_1_11_137 = 1 << 2,
 	};
 	
 	enum

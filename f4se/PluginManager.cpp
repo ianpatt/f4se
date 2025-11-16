@@ -658,7 +658,7 @@ const char * PluginManager::CheckPluginCompatibility(const F4SEPluginVersionData
 		}
 
 		// version compatibility
-		const UInt32 kCurrentAddressLibrary = F4SEPluginVersionData::kAddressIndependence_AddressLibrary_1_10_980;
+		const UInt32 kCurrentAddressLibrary = F4SEPluginVersionData::kAddressIndependence_AddressLibrary_1_11_137;
 
 		bool hasAddressIndependence = version.addressIndependence &
 			(F4SEPluginVersionData::kAddressIndependence_Signatures |
