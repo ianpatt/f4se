@@ -658,14 +658,14 @@ const char * PluginManager::CheckPluginCompatibility(const F4SEPluginVersionData
 		}
 
 		// version compatibility
-		const UInt32 kCurrentAddressLibrary = F4SEPluginVersionData::kAddressIndependence_AddressLibrary_1_10_980;
+		const UInt32 kCurrentAddressLibrary = F4SEPluginVersionData::kAddressIndependence_AddressLibrary_1_11_137;
 
 		bool hasAddressIndependence = version.addressIndependence &
 			(F4SEPluginVersionData::kAddressIndependence_Signatures |
 			kCurrentAddressLibrary);
 		bool hasStructureIndependence = version.structureIndependence &
 			(F4SEPluginVersionData::kStructureIndependence_NoStructs |
-			F4SEPluginVersionData::kStructureIndependence_1_10_980Layout);
+			F4SEPluginVersionData::kStructureIndependence_1_11_137Layout);
 		
 		bool versionIndependent = hasAddressIndependence && hasStructureIndependence;
 
