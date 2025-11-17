@@ -665,7 +665,7 @@ const char * PluginManager::CheckPluginCompatibility(const F4SEPluginVersionData
 			kCurrentAddressLibrary);
 		bool hasStructureIndependence = version.structureIndependence &
 			(F4SEPluginVersionData::kStructureIndependence_NoStructs |
-			F4SEPluginVersionData::kStructureIndependence_1_10_980Layout);
+			F4SEPluginVersionData::kStructureIndependence_1_11_137Layout);
 		
 		bool versionIndependent = hasAddressIndependence && hasStructureIndependence;
 

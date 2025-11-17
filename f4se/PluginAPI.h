@@ -310,6 +310,9 @@ struct F4SEPluginVersionData
 
 		// works with the structure layout in 1.10.980+
 		kStructureIndependence_1_10_980Layout = 1 << 1,
+
+		// works with the structure layout in 1.11.137+
+		kStructureIndependence_1_11_137Layout = 1 << 2,
 	};
 
 	UInt32	dataVersion;			// set to kVersion
