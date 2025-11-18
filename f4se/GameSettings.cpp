@@ -2,13 +2,13 @@
 #include "f4se/GameTypes.h"
 
 // 
-RelocPtr <INISettingCollection *> g_iniSettings(0x03424F38);
+RelocPtr <INISettingCollection *> g_iniSettings(0x03425EB8);
 // 
-RelocPtr <INIPrefSettingCollection*> g_iniPrefSettings(0x0337E960);
+RelocPtr <INIPrefSettingCollection*> g_iniPrefSettings(0x0337F8E0);
 // 
-RelocPtr <RegSettingCollection *> g_regSettings(0x038B4860);
+RelocPtr <RegSettingCollection *> g_regSettings(0x038B57E0);
 // 
-RelocPtr <GameSettingCollection *> g_gameSettings(0x030DC5A0);
+RelocPtr <GameSettingCollection *> g_gameSettings(0x030DD520);
 
 UInt32 Setting::GetType(void) const
 {

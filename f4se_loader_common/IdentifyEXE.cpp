@@ -308,7 +308,7 @@ bool IdentifyEXE(const char * procName, bool isEditor, std::string * dllSuffix, 
 
 	bool result = false;
 
-	const UInt64 kCurVersion = 0x0001000B00890000;	// 1.11.137.0
+	const UInt64 kCurVersion = 0x0001000B009F0000;	// 1.11.159.0
 
 	// convert version resource to internal version format
 	UInt32 versionInternal = MAKE_EXE_VERSION(version >> 48, version >> 32, version >> 16);

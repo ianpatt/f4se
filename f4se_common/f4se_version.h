@@ -4,10 +4,10 @@
 // these have to be macros so they can be used in the .rc
 #define F4SE_VERSION_INTEGER		0
 #define F4SE_VERSION_INTEGER_MINOR	7
-#define F4SE_VERSION_INTEGER_BETA	4
-#define F4SE_VERSION_VERSTRING		"0, 0, 7, 4"
-#define F4SE_VERSION_PADDEDSTRING	"0028"
-#define F4SE_VERSION_RELEASEIDX		28
+#define F4SE_VERSION_INTEGER_BETA	5
+#define F4SE_VERSION_VERSTRING		"0, 0, 7, 5"
+#define F4SE_VERSION_PADDEDSTRING	"0029"
+#define F4SE_VERSION_RELEASEIDX		29
 
 #define MAKE_EXE_VERSION_EX(major, minor, build, sub)	((((major) & 0xFF) << 24) | (((minor) & 0xFF) << 16) | (((build) & 0xFFF) << 4) | ((sub) & 0xF))
 #define MAKE_EXE_VERSION(major, minor, build)			MAKE_EXE_VERSION_EX(major, minor, build, 0)
@@ -75,13 +75,14 @@
 #define RUNTIME_VERSION_1_10_980	MAKE_EXE_VERSION(1, 10, 980)	// 0x010A3D40	'next generation' update
 #define RUNTIME_VERSION_1_10_984	MAKE_EXE_VERSION(1, 10, 984)	// 0x010A3D80	hotfix
 #define RUNTIME_VERSION_1_11_137	MAKE_EXE_VERSION(1, 11, 137)	// 0x010B0890	'anniversary edition' update
+#define RUNTIME_VERSION_1_11_159	MAKE_EXE_VERSION(1, 11, 159)	// 0x010B09F0	hotfix
 
 #define PACKED_F4SE_VERSION		MAKE_EXE_VERSION(F4SE_VERSION_INTEGER, F4SE_VERSION_INTEGER_MINOR, F4SE_VERSION_INTEGER_BETA)
 
 // information about the state of the game at the time of release
 #define F4SE_TARGETING_BETA_VERSION	0
-#define CURRENT_RELEASE_RUNTIME		RUNTIME_VERSION_1_11_137
-#define CURRENT_RELEASE_F4SE_STR	"0.7.4"
+#define CURRENT_RELEASE_RUNTIME		RUNTIME_VERSION_1_11_159
+#define CURRENT_RELEASE_F4SE_STR	"0.7.5"
 
 #if GET_EXE_VERSION_SUB(RUNTIME_VERSION) == RUNTIME_TYPE_BETHESDA
 #define SAVE_FOLDER_NAME "Fallout4"

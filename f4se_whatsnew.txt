@@ -1,3 +1,7 @@
+0.7.5
+- support for runtime 1.11.159
+- address library requires a new version for the 1.11+ series of games, so plugins will need to be recompiled
+
 0.7.4
 - support for runtime 1.11.137
 

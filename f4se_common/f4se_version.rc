@@ -20,7 +20,7 @@ BEGIN
             VALUE "FileDescription", "A component of the Fallout 4 Script Extender"
 			VALUE "FileVersion", F4SE_VERSION_VERSTRING
             VALUE "InternalName", "F4SE"
-            VALUE "LegalCopyright", "Copyright (C) 2006-2024"
+            VALUE "LegalCopyright", "Copyright (C) 2006-2026"
             VALUE "ProductName", "F4SE"
 			VALUE "ProductVersion", F4SE_VERSION_VERSTRING
         END
