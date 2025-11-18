@@ -754,6 +754,7 @@ struct BetterPluginName
 // some plugins have non-descriptive names resulting in bad bug reports
 static const BetterPluginName kBetterPluginNames[] =
 {
+	{ "f4ee.dll", "LooksMenu" },
 	{ nullptr, nullptr }
 };
 
