@@ -143,6 +143,8 @@ PluginAllocator	g_localPluginAllocator;
 PluginManager::LoadedPlugin *	PluginManager::s_currentLoadingPlugin = NULL;
 PluginHandle					PluginManager::s_currentPluginHandle = 0;
 
+PluginManager::PluginListeners	PluginManager::s_pluginListeners;
+
 static const F4SEInterface g_F4SEInterface =
 {
 	PACKED_F4SE_VERSION,
@@ -542,6 +544,8 @@ void PluginManager::ScanPlugins(void)
 			LogPluginLoadError(plugin, "couldn't load plugin", GetLastError());
 		}
 	}
+
+	s_pluginListeners.resize(handleIdx + 1);
 }
 
 const char * PluginManager::CheckAddressLibrary(void)
@@ -825,27 +829,11 @@ void PluginManager::UpdateAddressLibraryPrompt()
 }
 
 // Plugin communication interface
-struct PluginListener {
-	PluginHandle	listener;
-	F4SEMessagingInterface::EventCallback	handleMessage;
-};
-
-typedef std::vector<std::vector<PluginListener> > PluginListeners;
-static PluginListeners s_pluginListeners;
-
 bool PluginManager::RegisterListener(PluginHandle listener, const char* sender, F4SEMessagingInterface::EventCallback handler)
 {
-	// because this can be called while plugins are loading, gotta make sure number of plugins hasn't increased
-	UInt32 numPlugins = g_pluginManager.GetNumPlugins() + 1;
-	if (s_pluginListeners.size() < numPlugins)
-	{
-		s_pluginListeners.resize(numPlugins + 5);	// add some extra room to avoid unnecessary re-alloc
-	}
+	_MESSAGE("registering plugin listener for %s at %u of %u", sender, listener, s_pluginListeners.size());
 
-	_MESSAGE("registering plugin listener for %s at %u of %u", sender, listener, numPlugins);
-
-	// handle > num plugins = invalid
-	if (listener > g_pluginManager.GetNumPlugins() || !handler) 
+	if (listener >= s_pluginListeners.size() || !handler) 
 	{
 		return false;
 	}

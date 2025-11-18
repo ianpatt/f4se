@@ -79,8 +79,8 @@ private:
 
 	typedef std::vector <LoadedPlugin>	LoadedPluginList;
 
-	std::string			m_pluginDirectory;
-	LoadedPluginList	m_plugins;
+	std::string				m_pluginDirectory;
+	LoadedPluginList		m_plugins;
 
 	LoadedPluginList	m_erroredPlugins;
 
@@ -88,6 +88,14 @@ private:
 
 	static LoadedPlugin		* s_currentLoadingPlugin;
 	static PluginHandle		s_currentPluginHandle;
+
+	struct PluginListener {
+		PluginHandle	listener;
+		F4SEMessagingInterface::EventCallback	handleMessage;
+	};
+
+	typedef std::vector<std::vector<PluginListener> > PluginListeners;
+	static PluginListeners s_pluginListeners;
 };
 
 // a non-owning, thread-safe allocator for a block of memory
