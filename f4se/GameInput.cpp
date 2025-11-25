@@ -1,17 +1,17 @@
 #include "f4se/GameInput.h"
 
 // 
-RelocPtr <InputEventTable*> g_inputEventTable(0x032586D0);
+RelocPtr <InputEventTable*> g_inputEventTable(0x0325D8D0);
 // 
-RelocPtr <InputDeviceManager*> g_inputDeviceMgr(0x03E4A1E8);
+RelocPtr <InputDeviceManager*> g_inputDeviceMgr(0x03E4F468);
 // 
-RelocPtr <InputManager*> g_inputMgr(0x031D5788);
+RelocPtr <InputManager*> g_inputMgr(0x031DA988);
 
 // 
-RelocPtr<MenuControls*> g_menuControls(0x030CD710); // BSInputEventReceiver
+RelocPtr<MenuControls*> g_menuControls(0x030D2910); // BSInputEventReceiver
 
 // 
-RelocPtr<PlayerControls*> g_playerControls(0x031D5780);
+RelocPtr<PlayerControls*> g_playerControls(0x031DA980);
 
 UInt8 InputManager::AllowTextInput(bool allow)
 {

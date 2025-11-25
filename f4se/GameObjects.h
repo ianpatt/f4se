@@ -228,16 +228,16 @@ public:
 	tArray<BGSCharacterTint::Entry*>	* tints;			// 300 - CF 0x800
 
 	MEMBER_FN_PREFIX(TESNPC);
-	DEFINE_MEMBER_FN(ctor, TESNPC*, 0x0064B5A0);
-	DEFINE_MEMBER_FN(HasOverlays, bool, 0x0065BC80);
-	DEFINE_MEMBER_FN(GetOverlayHeadParts, BGSHeadPart**, 0x0065BD90);
-	DEFINE_MEMBER_FN(GetNumOverlayHeadParts, int, 0x0065BE40);
-	DEFINE_MEMBER_FN(GetSex, SInt64, 0x00641750); // npc->actorData.unk08 & 1
-	DEFINE_MEMBER_FN(ChangeHeadPartRemovePart, void, 0x00652440, BGSHeadPart *, bool bRemoveExtraParts);
-	DEFINE_MEMBER_FN(ChangeHeadPart, void, 0x00656850, BGSHeadPart *);
-	DEFINE_MEMBER_FN(GetSkinColorFromTint, void, 0x006527B0, NiColorA * outColor, BGSCharacterTint::PaletteEntry* paletteEntry, bool allowCustomization); // This function alters the npc's Skin Color values
-	DEFINE_MEMBER_FN_0(GetFacialBoneMorphIntensity, float, 0x00651CC0);
-	DEFINE_MEMBER_FN_1(SetFacialBoneMorphIntensity, void, 0x00651C60, float intensity);
+	DEFINE_MEMBER_FN(ctor, TESNPC*, 0x0064B990);
+	DEFINE_MEMBER_FN(HasOverlays, bool, 0x0065C070);
+	DEFINE_MEMBER_FN(GetOverlayHeadParts, BGSHeadPart**, 0x0065C180);
+	DEFINE_MEMBER_FN(GetNumOverlayHeadParts, int, 0x0065C230);
+	DEFINE_MEMBER_FN(GetSex, SInt64, 0x00641B40); // npc->actorData.unk08 & 1
+	DEFINE_MEMBER_FN(ChangeHeadPartRemovePart, void, 0x00652830, BGSHeadPart *, bool bRemoveExtraParts);
+	DEFINE_MEMBER_FN(ChangeHeadPart, void, 0x00656C40, BGSHeadPart *);
+	DEFINE_MEMBER_FN(GetSkinColorFromTint, void, 0x00652BA0, NiColorA * outColor, BGSCharacterTint::PaletteEntry* paletteEntry, bool allowCustomization); // This function alters the npc's Skin Color values
+	DEFINE_MEMBER_FN_0(GetFacialBoneMorphIntensity, float, 0x006520B0);
+	DEFINE_MEMBER_FN_1(SetFacialBoneMorphIntensity, void, 0x00652050, float intensity);
 
 	void ChangeHeadPart(BGSHeadPart * headPart, bool bRemovePart, bool bRemoveExtraParts);
 	BGSHeadPart * GetHeadPartByType(UInt32 type, bool bOverlays = false);

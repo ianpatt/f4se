@@ -1,6 +1,6 @@
 #include "PapyrusVM.h"
 
-RelocPtr <GameVM *> g_gameVM(0x030CFF08);
+RelocPtr <GameVM *> g_gameVM(0x030D5108);
 
 bool VirtualMachine::HasStack(UInt32 stackId)
 {

@@ -1,18 +1,18 @@
 #include "f4se/GameWorkshop.h"
 #include "f4se/GameAPI.h"
 
-RelocAddr <PowerUtils::_UpdateMovingWirelessItem> PowerUtils::UpdateMovingWirelessItem(0x0038BB60); // Usually paired with LinkPower
+RelocAddr <PowerUtils::_UpdateMovingWirelessItem> PowerUtils::UpdateMovingWirelessItem(0x0038BF50); // Usually paired with LinkPower
 // this was inlined everywhere
 //RelocAddr <_GetObjectAtConnectPoint> GetObjectAtConnectPoint(0x001FF360); // Acquires objects that are touching attach points
-RelocAddr <TerminalUtils::_EstablishTerminalLinks> TerminalUtils::EstablishTerminalLinks(0x0038C9F0);
-RelocAddr <SplineUtils::_ConnectSpline> SplineUtils::ConnectSpline(0x0038AE90);
-RelocAddr <SplineUtils::_UpdateSpline> SplineUtils::UpdateSpline(0x0038AA00);
+RelocAddr <TerminalUtils::_EstablishTerminalLinks> TerminalUtils::EstablishTerminalLinks(0x0038CDE0);
+RelocAddr <SplineUtils::_ConnectSpline> SplineUtils::ConnectSpline(0x0038B280);
+RelocAddr <SplineUtils::_UpdateSpline> SplineUtils::UpdateSpline(0x0038ADF0);
 
 // 
-RelocAddr <Workshop::_ScrapReference> Workshop::ScrapReference(0x00390DE0);
+RelocAddr <Workshop::_ScrapReference> Workshop::ScrapReference(0x003911D0);
 
-RelocPtr<BSPointerHandle<TESObjectREFR>> Workshop::hCurrentWorkshop(0x030DC298);
-RelocAddr<Workshop::_FindNearestValidWorkshop> Workshop::FindNearestValidWorkshop(0x003825D0);
+RelocPtr<BSPointerHandle<TESObjectREFR>> Workshop::hCurrentWorkshop(0x030E1498);
+RelocAddr<Workshop::_FindNearestValidWorkshop> Workshop::FindNearestValidWorkshop(0x003829C0);
 
 namespace BSConnectPoint
 {
@@ -68,7 +68,7 @@ STATIC_ASSERT(sizeof(SnappedReferencePointStatus) == 0x10);
 TESObjectREFR * GetSnappedReferenceImpl(const TESObjectREFR & a_refr, const NiPoint3 & a_connectPointWS, const bhkWorld & a_physicsWorld, SnappedReferencePointStatus & a_status, float a_radius)
 {
 	using func_t = decltype(&GetSnappedReferenceImpl);
-	RelocAddr <func_t> func(0x003BB2B0);
+	RelocAddr <func_t> func(0x003BB6A0);
 	return func(a_refr, a_connectPointWS, a_physicsWorld, a_status, a_radius);
 }
 

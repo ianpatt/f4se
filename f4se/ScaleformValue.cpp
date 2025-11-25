@@ -1,12 +1,12 @@
 #include "f4se/ScaleformValue.h"
 #include "f4se/GameEvents.h"
 
-RelocAddr <_GetExtDisplayInfo> GetExtDisplayInfo(0x01B12CC0);
-RelocAddr <_SetExtDisplayInfoAlpha> SetExtDisplayInfoAlpha(0x01B12E90);
-RelocAddr <_SetExtDisplayInfo> SetExtDisplayInfo(0x01B12D10);
+RelocAddr <_GetExtDisplayInfo> GetExtDisplayInfo(0x01B13640);
+RelocAddr <_SetExtDisplayInfoAlpha> SetExtDisplayInfoAlpha(0x01B13810);
+RelocAddr <_SetExtDisplayInfo> SetExtDisplayInfo(0x01B13690);
 
-RelocAddr <_PlayUISound>			PlayUISound(0x010815D0);
-RelocAddr <_CreateBaseShaderTarget>	CreateBaseShaderTarget(0x0103F590);
+RelocAddr <_PlayUISound>			PlayUISound(0x01081BE0);
+RelocAddr <_CreateBaseShaderTarget>	CreateBaseShaderTarget(0x0103FA40);
 
 GFxValue::~GFxValue()
 {
