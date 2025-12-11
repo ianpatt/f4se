@@ -22,7 +22,7 @@ class LoadedModFinder
 public:
 	LoadedModFinder(const char * str) : m_stringToFind(str) { }
 
-	bool Accept(ModInfo* modInfo)
+	bool Accept(ModInfo* modInfo) const
 	{
 		return _stricmp(modInfo->name, m_stringToFind) == 0;
 	}
@@ -30,12 +30,16 @@ public:
 
 const ModInfo * DataHandler::LookupModByName(const char * modName)
 {
-	return modList.modInfoList.Find(LoadedModFinder(modName));
+	LoadedModFinder finder(modName);
+
+	return modList.modInfoList.Find(finder);
 }
 
 UInt8 DataHandler::GetModIndex(const char* modName)
 {
-	return modList.modInfoList.GetIndexOf(LoadedModFinder(modName));
+	LoadedModFinder finder(modName);
+
+	return modList.modInfoList.GetIndexOf(finder);
 }
 
 const ModInfo* DataHandler::LookupLoadedModByName(const char* modName)
