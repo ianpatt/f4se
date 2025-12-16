@@ -20,7 +20,7 @@ typedef bool (* _LoadGame)(BGSSaveLoadGame * saveLoadMgr, const char * name, UIn
 RelocAddr <_LoadGame> LoadGame(0x00BEE240);
 _LoadGame LoadGame_Original = nullptr;
 
-RelocAddr <uintptr_t> NewGame_Enter(0x0106F460 + 0x47C);
+RelocAddr <uintptr_t> NewGame_Enter(0x0106F460 + 0x4B7);
 
 typedef void (* _DeleteSaveGame)(BGSSaveLoadGame * saveLoadMgr, const char * name, UInt32 unk1, UInt8 unk2);
 RelocAddr <_DeleteSaveGame> DeleteSaveGame(0x00BF8C50);
