@@ -1,3 +1,7 @@
+0.7.7
+- support for runtime 1.11.191
+- better reporting when the documents folder is blocked
+
 0.7.6
 - support for runtime 1.11.169
 

@@ -32,9 +32,9 @@ public:
 
 	MEMBER_FN_PREFIX(NiObject);
 	// 
-	DEFINE_MEMBER_FN(Internal_LoadBinary, void, 0x016B7180, void * stream);
+	DEFINE_MEMBER_FN(Internal_LoadBinary, void, 0x016BB8C0, void * stream);
 	// 
-	DEFINE_MEMBER_FN(Internal_SaveBinary, void, 0x016B7220, void * stream);
+	DEFINE_MEMBER_FN(Internal_SaveBinary, void, 0x016BB960, void * stream);
 };
 
 // 20
@@ -82,7 +82,7 @@ public:
 protected:
 	// Fills the vertex data from the original object's vertex data in NiPoint3 layout
 	MEMBER_FN_PREFIX(BSFaceGenBaseMorphExtraData);
-	DEFINE_MEMBER_FN(ctor, BSFaceGenBaseMorphExtraData*, 0x006E4480, BSTriShape * shape);
+	DEFINE_MEMBER_FN(ctor, BSFaceGenBaseMorphExtraData*, 0x006E6EB0, BSTriShape * shape);
 };
 
 extern RelocAddr<uintptr_t> s_BSFaceGenBaseMorphExtraDataVtbl;

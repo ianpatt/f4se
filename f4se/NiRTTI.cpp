@@ -11,12 +11,7 @@ NiObject * DoNiRTTICast(NiObject * src, const NiRTTI * typeInfo)
 	return nullptr;
 }
 
-// 
-const RelocPtr<NiRTTI>	NiRTTI_BSLightingShaderProperty(0x03CA13D0);
-
-// 
-const RelocPtr<NiRTTI>	NiRTTI_BSEffectShaderProperty(0x03CA13C0);
-
-const RelocPtr<NiRTTI>	NiRTTI_BSShaderProperty(0x03CA1358);
-
-const RelocPtr<NiRTTI>	NiRTTI_NiExtraData(0x03191220);
+const RelocPtr<NiRTTI>	NiRTTI_BSLightingShaderProperty(0x03E47310);
+const RelocPtr<NiRTTI>	NiRTTI_BSEffectShaderProperty(0x03E47300);
+const RelocPtr<NiRTTI>	NiRTTI_BSShaderProperty(0x03E47298);
+const RelocPtr<NiRTTI>	NiRTTI_NiExtraData(0x03438040);

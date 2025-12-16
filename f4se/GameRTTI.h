@@ -438,6 +438,7 @@ extern const void * RTTI_BGSZoneTargetListener;
 extern const void * RTTI_BGSZoomData;
 extern const void * RTTI_BGShkMatFadeController;
 extern const void * RTTI_BGShkPhonemeController;
+extern const void * RTTI_BNETSystem__ConfirmResetCallback;
 extern const void * RTTI_BSAlignBoneModifier;
 extern const void * RTTI_BSAlignBoneModifierInterface;
 extern const void * RTTI_BSAnimGraphVisit__BShkbVisitor;

@@ -15,12 +15,12 @@ ICriticalSection		s_uiQueueLock;
 std::queue<ITaskDelegate*>	s_uiQueue;
 
 typedef bool (* _MessageQueueProcessTask)(void * messageQueue, float timeout, UInt32 unk1);
-RelocAddr <_MessageQueueProcessTask> MessageQueueProcessTask(0x00C406A0);
+RelocAddr <_MessageQueueProcessTask> MessageQueueProcessTask(0x00C44C30);
 _MessageQueueProcessTask MessageQueueProcessTask_Original = nullptr;
 
-RelocAddr <uintptr_t> ProcessEventQueue_HookTarget(0x01A7B8F0 + 0xFAC);
+RelocAddr <uintptr_t> ProcessEventQueue_HookTarget(0x01A80030 + 0xFAC);
 typedef void (* _ProcessEventQueue_Internal)(void * unk1);
-RelocAddr <_ProcessEventQueue_Internal> ProcessEventQueue_Internal(0x01B194C0);
+RelocAddr <_ProcessEventQueue_Internal> ProcessEventQueue_Internal(0x01B1DD10);
 
 bool MessageQueueProcessTask_Hook(void * messageQueue, float timeout, UInt32 unk1)
 {

@@ -2,7 +2,7 @@
 #include "f4se/GameReferences.h"
 #include "f4se/GameUtilities.h"
 
-RelocAddr <_PlaceAtMe_Native> PlaceAtMe_Native(0x011554F0);
+RelocAddr <_PlaceAtMe_Native> PlaceAtMe_Native(0x01159990);
 
 bool TESObjectARMA::GetNodeName(char * dstBuff, TESNPC * npc, TESObjectARMO * armor)
 {

@@ -241,12 +241,12 @@ public:
 	void DecRef() { handleRefObject.DecRef(); }
 
 	MEMBER_FN_PREFIX(TESObjectREFR);
-	DEFINE_MEMBER_FN(GetReferenceName, const char *, 0x005108D0);
-	DEFINE_MEMBER_FN(GetWorldspace, TESWorldSpace*, 0x00514580);
-	DEFINE_MEMBER_FN(GetInventoryWeight, float, 0x00505040);
-	DEFINE_MEMBER_FN(GetCarryWeight, float, 0x00C6C5A0);
+	DEFINE_MEMBER_FN(GetReferenceName, const char *, 0x00513300);
+	DEFINE_MEMBER_FN(GetWorldspace, TESWorldSpace*, 0x00516FB0);
+	DEFINE_MEMBER_FN(GetInventoryWeight, float, 0x00507A70);
+	DEFINE_MEMBER_FN(GetCarryWeight, float, 0x00C70B30);
 	// 
-	DEFINE_MEMBER_FN_1(ForEachAlias, void, 0x004FBE40, IAliasFunctor * functor);
+	DEFINE_MEMBER_FN_1(ForEachAlias, void, 0x004FE870, IAliasFunctor * functor);
 };
 STATIC_ASSERT(offsetof(TESObjectREFR, parentCell) == 0xB8);
 STATIC_ASSERT(offsetof(TESObjectREFR, baseForm) == 0xE0);
@@ -446,9 +446,9 @@ public:
 			RESET_DISMEMBERMENT = (1 << 11),
 		};
 
-		DEFINE_MEMBER_FN_1(Set3DUpdateFlag, void, 0x00D31910, UInt32 flags);
-		DEFINE_MEMBER_FN_2(DoUpdate3dModel, void, 0x00D227D0, Actor * actor, UInt32 flags);
-		DEFINE_MEMBER_FN_2(Update3DModel, void, 0x00CFDB50, Actor* apActor, bool abQueueUpdate);
+		DEFINE_MEMBER_FN_1(Set3DUpdateFlag, void, 0x00D35EA0, UInt32 flags);
+		DEFINE_MEMBER_FN_2(DoUpdate3dModel, void, 0x00D26D60, Actor * actor, UInt32 flags);
+		DEFINE_MEMBER_FN_2(Update3DModel, void, 0x00D020E0, Actor* apActor, bool abQueueUpdate);
 	};
 	AIProcess * middleProcess;					// 300
 	UInt64	unk308[(0x338-0x308)/8];
@@ -485,9 +485,9 @@ public:
 	bool GetEquippedExtraData(UInt32 slotIndex, ExtraDataList ** extraData);
 
 	MEMBER_FN_PREFIX(Actor);
-	DEFINE_MEMBER_FN_4(Reset3D, void, 0x00C6F840, bool abReloadAll, UInt32 auiAdditionalFlags, bool abQueueReset, UInt32 auiExcludeFlags); // 0, 0, 1, 0
-	DEFINE_MEMBER_FN(IsHostileToActor, bool, 0x00C770F0, Actor * actor);
-	DEFINE_MEMBER_FN(UpdateEquipment, void, 0x0050D420); // TESObjectREFR::ReplaceModel
+	DEFINE_MEMBER_FN_4(Reset3D, void, 0x00C73DD0, bool abReloadAll, UInt32 auiAdditionalFlags, bool abQueueReset, UInt32 auiExcludeFlags); // 0, 0, 1, 0
+	DEFINE_MEMBER_FN(IsHostileToActor, bool, 0x00C7B680, Actor * actor);
+	DEFINE_MEMBER_FN(UpdateEquipment, void, 0x0050FE50); // TESObjectREFR::ReplaceModel
 };
 STATIC_ASSERT(offsetof(Actor, biped) == 0x428);
 STATIC_ASSERT(offsetof(Actor, uiFlags) == 0x43C);

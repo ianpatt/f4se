@@ -219,7 +219,7 @@ public:
 
 	MEMBER_FN_PREFIX(BSGeometry);
 	// 
-	DEFINE_MEMBER_FN(UpdateShaderProperty, UInt32, 0x021BC6A0);
+	DEFINE_MEMBER_FN(UpdateShaderProperty, UInt32, 0x021C1190);
 };
 STATIC_ASSERT(sizeof(BSGeometry) == 0x160);
 
@@ -234,7 +234,7 @@ public:
 	float	unk16C;	// 16C
 
 	MEMBER_FN_PREFIX(BSTriShape);
-	DEFINE_MEMBER_FN(CreateDynamicTriShape, BSDynamicTriShape*, 0x0182D030, NiAVObject * unk1);
+	DEFINE_MEMBER_FN(CreateDynamicTriShape, BSDynamicTriShape*, 0x01831770, NiAVObject * unk1);
 };
 STATIC_ASSERT(sizeof(BSTriShape) == 0x170);
 
