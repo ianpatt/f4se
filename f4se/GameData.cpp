@@ -1,19 +1,19 @@
 #include "f4se/GameData.h"
 
 // 
-RelocPtr <DataHandler*> g_dataHandler(0x030DC000);
+RelocPtr <DataHandler*> g_dataHandler(0x030DC080);
 
 // 
-RelocPtr <bool> g_isGameDataReady(0x032622A4);
+RelocPtr <bool> g_isGameDataReady(0x03262324);
 
 // 
-RelocPtr <DefaultObjectMap*> g_defaultObjectMap(0x030E0DD0);
+RelocPtr <DefaultObjectMap*> g_defaultObjectMap(0x030E0E50);
 
 // 
-RelocPtr <BSReadWriteLock> g_defaultObjectMapLock(0x030E0E20);
+RelocPtr <BSReadWriteLock> g_defaultObjectMapLock(0x030E0EA0);
 
 // 
-RelocPtr <FavoritesManager*> g_favoritesManager(0x03268A38);
+RelocPtr <FavoritesManager*> g_favoritesManager(0x03268AB8);
 
 class LoadedModFinder
 {

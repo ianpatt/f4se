@@ -2102,6 +2102,7 @@ extern const void * RTTI_ModManager__DeleteLibraryMod_ConfirmCallback;
 extern const void * RTTI_ModManager__DeleteMod_ConfirmCallback;
 extern const void * RTTI_ModManager__DownloadImageRequest;
 extern const void * RTTI_ModManager__DownloadModRequest;
+extern const void * RTTI_ModManager__ErrorMessageCallback;
 extern const void * RTTI_ModManager__GetDependencyRequest;
 extern const void * RTTI_ModManager__GetDetailsRequest;
 extern const void * RTTI_ModManager__GetIntRequest;

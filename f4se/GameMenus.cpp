@@ -1,17 +1,17 @@
 #include "f4se/GameMenus.h"
 
 // 
-RelocPtr <UI*> g_ui(0x030DD830);
+RelocPtr <UI*> g_ui(0x030DD8B0);
 
-RelocAddr <_HasHUDContext> HasHUDContext(0x009DCBD0);
+RelocAddr <_HasHUDContext> HasHUDContext(0x009DCC10);
 
-RelocAddr<_GetChildElement>		GetChildElement(0x01B03160);
-
-// 
-RelocPtr <UIMessageManager*>	g_uiMessageManager(0x030DDA20);
+RelocAddr<_GetChildElement>		GetChildElement(0x01B03280);
 
 // 
-RelocPtr <BSReadWriteLock> g_menuTableLock(0x03DA6A70);
+RelocPtr <UIMessageManager*>	g_uiMessageManager(0x030DDAA0);
+
+// 
+RelocPtr <BSReadWriteLock> g_menuTableLock(0x03DA6AF0);
 
 bool UI::IsMenuOpen(const BSFixedString & menuName)
 {
