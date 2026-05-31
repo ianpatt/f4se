@@ -13,7 +13,7 @@ public:
 	NiRTTI		* parent;
 };
 
-NiRTTI * RelocateNiRTTI(RVA_NiRTTI * rva);
+NiRTTI * RelocateNiRTTI(const RVA_NiRTTI * rva);
 NiObject * DoNiRTTICast(NiObject * src, const NiRTTI * typeInfo);
 
 #define ni_cast(obj, type)	(type *)DoNiRTTICast(obj, RelocateNiRTTI(NiRTTI_##type))
@@ -28,7 +28,7 @@ extern const RVA_NiRTTI *	NiRTTI_DebrisNode;
 extern const RVA_NiRTTI *	NiRTTI_BSDismembermentExtraData;
 extern const RVA_NiRTTI *	NiRTTI_BSDismembermentLimbExtraData;
 extern const RVA_NiRTTI *	NiRTTI_BGSAddonNodeSoundHandleExtra;
-extern const RVA_NiRTTI *	NiRTTI_BSFadeNode;
+extern const RVA_NiRTTI *	NiRTTI_BGSStaticCollection_RootFacade;
 extern const RVA_NiRTTI *	NiRTTI_REFRSyncController;
 extern const RVA_NiRTTI *	NiRTTI_BSFaceGenAnimationData;
 extern const RVA_NiRTTI *	NiRTTI_BSFaceGenModelExtraData;

@@ -2,7 +2,7 @@
 #include "f4se/NiObjects.h"
 #include "f4se_common/Relocation.h"
 
-NiRTTI * RelocateNiRTTI(NiRTTI * rva)
+NiRTTI * RelocateNiRTTI(const RVA_NiRTTI * rva)
 {
 	NiRTTI * result = nullptr;
 
@@ -35,7 +35,7 @@ const RVA_NiRTTI *	NiRTTI_DebrisNode = (RVA_NiRTTI *)0x030ED940;
 const RVA_NiRTTI *	NiRTTI_BSDismembermentExtraData = (RVA_NiRTTI *)0x030EEF20;
 const RVA_NiRTTI *	NiRTTI_BSDismembermentLimbExtraData = (RVA_NiRTTI *)0x030EEF38;
 const RVA_NiRTTI *	NiRTTI_BGSAddonNodeSoundHandleExtra = (RVA_NiRTTI *)0x030EF1F8;
-const RVA_NiRTTI *	NiRTTI_BSFadeNode = (RVA_NiRTTI *)0x030EF400;
+const RVA_NiRTTI *	NiRTTI_BGSStaticCollection_RootFacade = (RVA_NiRTTI *)0x030EF400;
 const RVA_NiRTTI *	NiRTTI_REFRSyncController = (RVA_NiRTTI *)0x031E5380;
 const RVA_NiRTTI *	NiRTTI_BSFaceGenAnimationData = (RVA_NiRTTI *)0x031E96A8;
 const RVA_NiRTTI *	NiRTTI_BSFaceGenModelExtraData = (RVA_NiRTTI *)0x0320BD20;
