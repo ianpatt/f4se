@@ -11,7 +11,7 @@ class NiExtraData : public NiObject
 public:
 	virtual ~NiExtraData() { };
 
-	virtual NiRTTI				* GetRTTI(void) override { return NIRTTI_NiExtraData; };
+	virtual NiRTTI				* GetRTTI(void) override { return NiRTTI_NiExtraData; };
 
 	virtual void				LoadBinary(void * stream) override { CALL_MEMBER_FN(this, Internal_LoadBinary)(stream); };
 	virtual void				SaveBinary(void * stream) override { CALL_MEMBER_FN(this, Internal_SaveBinary)(stream); };

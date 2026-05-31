@@ -19,4 +19,4 @@ NiObject * DoNiRTTICast(NiObject * src, const NiRTTI * typeInfo);
 extern const RelocPtr<NiRTTI>	NiRTTI_BSLightingShaderProperty;
 extern const RelocPtr<NiRTTI>	NiRTTI_BSEffectShaderProperty;
 extern const RelocPtr<NiRTTI>	NiRTTI_BSShaderProperty;
-extern const RelocPtr<NiRTTI>	NIRTTI_NiExtraData;
+extern const RelocPtr<NiRTTI>	NiRTTI_NiExtraData;
