@@ -87,7 +87,7 @@ public:
 	virtual bool				Unk_27() { return false; };
 
 	MEMBER_FN_PREFIX(NiObject);
-	DEFINE_MEMBER_FN(Internal_IsEqual, bool, 0x016BA8B0, NiObject * object);
+	DEFINE_MEMBER_FN(Internal_IsEqual, bool, 0x016BACB0, NiObject * object);
 };
 
 // 28
@@ -110,7 +110,7 @@ public:
 	bool HasExtraData(const BSFixedString & name) { return GetExtraData(name) != nullptr; }
 
 	MEMBER_FN_PREFIX(NiObjectNET);
-	DEFINE_MEMBER_FN(Internal_AddExtraData, bool, 0x016BCF20, NiExtraData * extraData);
+	DEFINE_MEMBER_FN(Internal_AddExtraData, bool, 0x016BD320, NiExtraData * extraData);
 };
 
 // 120
@@ -199,8 +199,8 @@ public:
 	UInt32			unk11C;				// 11C
 
 	MEMBER_FN_PREFIX(NiAVObject);
-	DEFINE_MEMBER_FN(GetAVObjectByName, NiAVObject*, 0x017A0B50, BSFixedString * name, bool unk1, bool unk2);
-	DEFINE_MEMBER_FN(SetScenegraphChange, void, 0x016C8D60);
+	DEFINE_MEMBER_FN(GetAVObjectByName, NiAVObject*, 0x017A0F50, BSFixedString * name, bool unk1, bool unk2);
+	DEFINE_MEMBER_FN(SetScenegraphChange, void, 0x016C9160);
 
 	// Return true in the functor to halt traversal
 	bool Visit(const std::function<bool(NiAVObject*)>& functor);

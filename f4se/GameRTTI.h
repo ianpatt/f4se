@@ -2719,6 +2719,7 @@ extern const void * RTTI_StaggeredStopHandler;
 extern const void * RTTI_Stars;
 extern const void * RTTI_StartFloatingHandler;
 extern const void * RTTI_StartMenuBase;
+extern const void * RTTI_StartMenuBase__BNetParentalControlCallback;
 extern const void * RTTI_StartMenuBase__noConnectionLoadOrder;
 extern const void * RTTI_StartPCapVoiceHandler;
 extern const void * RTTI_StaticAvoidNodeManager;

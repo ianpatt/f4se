@@ -2,7 +2,7 @@
 #include "f4se/NiExtraData.h"
 #include "f4se/NiNodes.h"
 
-RelocAddr <_WorldToScreen> WorldToScreen_Internal(0x00A37980);
+RelocAddr <_WorldToScreen> WorldToScreen_Internal(0x00A37C90);
 
 void NiRefObject::IncRef(void)
 {

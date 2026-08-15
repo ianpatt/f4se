@@ -2,7 +2,7 @@
 #include <cstdio>
 
 // 
-RelocPtr <Heap> g_mainHeap(0x03E5E170);
+RelocPtr <Heap> g_mainHeap(0x03E74AB0);
 
 void * Heap_Allocate(size_t size)
 {
@@ -15,10 +15,10 @@ void Heap_Free(void * ptr)
 }
 
 // 
-RelocPtr <ConsoleManager *> g_console(0x030ED338);
+RelocPtr <ConsoleManager *> g_console(0x030F83B8);
 
 // 
-RelocAddr <UInt32 *> g_consoleHandle(0x033077A0);
+RelocAddr <UInt32 *> g_consoleHandle(0x03312820);
 
 void Console_Print(const char * fmt, ...)
 {
