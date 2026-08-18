@@ -172,8 +172,9 @@ public:
 		UInt32	key;		// 00
 		float	value;		// 04
 
-		bool operator==(const UInt32 a_key) const	{ return key == a_key; }
-		operator UInt32() const						{ return key; }
+		bool operator==(const UInt32 a_key) const		{ return key == a_key; }
+		bool operator==(const MorphSetData & rhs) const	{ return key == rhs.key; }
+		operator UInt32() const							{ return key; }
 		static inline UInt32 GetHash(const UInt32 * key)
 		{
 			UInt32 hash;
@@ -194,8 +195,9 @@ public:
 		UInt32	index;		// 00
 		float	value[8];	// 04
 
-		bool operator==(const UInt32 a_key) const	{ return index == a_key; }
-		operator UInt32() const						{ return index; }
+		bool operator==(const UInt32 a_key) const			{ return index == a_key; }
+		bool operator==(const FaceMorphRegion & rhs) const	{ return index == rhs.index; }
+		operator UInt32() const								{ return index; }
 		static inline UInt32 GetHash(const UInt32 * key)
 		{
 			UInt32 hash;
