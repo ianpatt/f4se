@@ -280,7 +280,7 @@ namespace Serialization
 		case VMValue::kType_Float:
 			{
 				float f = 0.0f;
-				if(!WriteData(intfc, &f))
+				if(!ReadData(intfc, &f))
 					return false;
 				val->SetFloat(f);
 			}
@@ -288,7 +288,7 @@ namespace Serialization
 		case VMValue::kType_Bool:
 			{
 				bool b = false;
-				if(!WriteData(intfc, &b))
+				if(!ReadData(intfc, &b))
 					return false;
 				val->SetBool(b);
 			}
@@ -443,7 +443,7 @@ namespace Serialization
 		case VMValue::kType_VariableArray:
 			{
 				UInt32 length = 0;
-				if(!WriteData(intfc, &length))
+				if(!ReadData(intfc, &length))
 					return false;
 
 				VMValue::ArrayData * data = nullptr;
